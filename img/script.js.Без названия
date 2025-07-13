@@ -1,79 +1,65 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function initProcessTabs() {
-        const processSection = document.querySelector('.process');
-        if (!processSection) return;
-        
-        const allTabButtons = processSection.querySelectorAll('.tab-button');
-        const contentSections = processSection.querySelectorAll('.content-section');
-        
-        function switchTab(tabId) {
-            allTabButtons.forEach(button => button.classList.remove('active'));
-            contentSections.forEach(contentSection => contentSection.classList.remove('active'));
-
-            const activeSection = document.querySelector(`#${tabId}`);
-            if (activeSection) {
-                activeSection.classList.add('active');
-
-                const activeButtons = processSection.querySelectorAll(`[data-tab="${tabId}"]`);
-                activeButtons.forEach(button => button.classList.add('active'));
-            }
-        }
-        
-        // Обработка кликов по кнопкам
-        allTabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                switchTab(tabId);
-                // Сброс таймера при клике
-                resetTimer();
-            });
-        });
-
-        // Автоматическое переключение
-        let currentTabIndex = 0;
-        const tabIds = ['process1', 'process2', 'process3'];
-        let timer;
-
-        function nextTab() {
-            currentTabIndex = (currentTabIndex + 1) % tabIds.length;
-            switchTab(tabIds[currentTabIndex]);
-        }
-
-        function resetTimer() {
-            clearInterval(timer);
-            timer = setInterval(nextTab, 15000); // 15 секунд
-        }
-
-        // Запуск автоматического переключения
-        resetTimer();
-    }
-
-    initProcessTabs();
-
-    // Add slide-section class to all sections and footer
-    const sections = document.querySelectorAll('section, footer');
+    // Добавление класса slide-section к секциям и футеру
+    const sections = document.querySelectorAll('section');
     sections.forEach(section => {
         section.classList.add('slide-section');
     });
 
-    // Create the observer
+    // Создание наблюдателя
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // Add 'active' class when section comes into view
+            // Добавление класса 'active', когда секция в видимой области
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                // Optional: Unobserve after animation
-                // observer.unobserve(entry.target);
             }
         });
     }, {
-        // Options
-        threshold: 0.1, // Trigger when at least 10% of the section is visible
-        rootMargin: '0px' // No margin
+        threshold: 0.1,
+        rootMargin: '0px'
     });
 
-    // Observe all sections
+    // Наблюдение за всеми секциями
     sections.forEach(section => {
         observer.observe(section);
     });
-}); 
+    
+    
+    
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+    // Показать или скрыть кнопку при прокрутке
+    window.onscroll = function() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scrollToTopBtn.style.display = 'block'; // Показываем кнопку
+        } else {
+            scrollToTopBtn.style.display = 'none'; // Скрываем кнопку
+        }
+    };
+
+    // Прокрутка к верху страницы
+    scrollToTopBtn.onclick = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+    
+    
+    
+});
+
+function scrollToHeader(headerId) {
+    const header = document.getElementById(headerId);
+    if (header) {
+        const offset = 150; // Замените на нужное вам значение
+        const elementPosition = header.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
+  
