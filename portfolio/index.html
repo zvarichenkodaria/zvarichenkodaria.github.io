@@ -67,33 +67,62 @@
       <h2 id="target-header">Дизайн сайтов:</h2>
   
       <section class="slide-section">
-        <div class = "service-body-one"><h4>Создание одностраничных/статичных сайтов:</h4>
-        </div>
+          <center><img class = "portfolio-body-one"src="../img/mockup-website-one.png" alt="Логотип"></center>
       </section>
 
       <h2 id="target-header2">Цифровые изображения:</h2>
   
       <section class="slide-section">
-        <div class = "service-body-one"><h4>Создание одностраничных/статичных сайтов:</h4>
+        <div class = "portfolio-body-one">
+          <table class="table-portfolio">
+		      <tr>
+			      <td colspan="4" class="td-p-one"><img class="img-portfolio" style="border-radius: 38px 38px 0px 0px;" src="../img/banner.png" alt="Логотип"></td>
+			    </tr>
+			    <tr>
+			      <td colspan="2" class="td-p-two"><img class="img-portfolio" src="../img/picture1.png" alt="Логотип"></td>
+			      <td colspan="2" class="td-p-two"><img class="img-portfolio" src="../img/picture2.png" alt="Логотип"></td>
+			    </tr>
+			    <tr>
+			      <td class="td-p-two" style="border-radius: 5px;"><img style="border-radius: 5px;" class="img-portfolio" src="../img/picture3.png" alt="Логотип"></td>
+			      <td class="td-p-two"><img class="img-portfolio" src="../img/picture4.png" alt="Логотип"></td>
+			      <td class="td-p-two"><img class="img-portfolio" src="../img/picture5.png" alt="Логотип"></td>
+			      <td class="td-p-two"><img class="img-portfolio" src="../img/picture6.png" alt="Логотип"></td>
+			    </tr>
+			    <tr>
+			      <td colspan="2" class="td-p-two"><img class="img-portfolio" style="border-radius: 0px 0px 0px 38px;" src="../img/picture7.png" alt="Логотип"></td>
+			      <td colspan="2" class="td-p-two"><img class="img-portfolio" style="border-radius: 0px 0px 38px 0px;" src="../img/picture8.png" alt="Логотип"></td>
+			    </tr>
+          </table>
         </div>
       </section>
 
       <h2 id="target-header3">Полиграфия:</h2>
   
       <section class="slide-section">
-        <div class = "service-body-one"><h4>Создание одностраничных/статичных сайтов:</h4>
+        <div class = "portfolio-body-one">
+          <table class="table-portfolio">
+			    <tr>
+			      <td class="td-p-two"><img class="img-portfolio" style="border-radius: 38px 0px 0px 0px;" src="../img/print1.png" alt="Логотип">
+            <img class="img-portfolio" style="margin-top: 44px; border-radius: 0px 0px 0px 38px;" src="../img/print3.png" alt="Логотип"></td>
+			      <td class="td-p-two"><img class="img-portfolio" style="border-radius: 0px 38px 0px 0px;" src="../img/print2.png" alt="Логотип">
+            <img class="img-portfolio" style="margin-top: 44px; border-radius: 0px 0px 38px 0px;" src="../img/print4.png" alt="Логотип"></td>
+			    </tr>
+          </table>
         </div>
       </section>
 
       <h2 id="target-header4">Рассылка:</h2>
   
       <section class="slide-section">
-        <div class = "service-body-one"><h4>Создание одностраничных/статичных сайтов:</h4>
+        <div class = "portfolio-body-one">
+          <table class="table-portfolio">
+			    <tr>
+			      <td class="td-p-one"><img class="img-portfolio" style="border-radius: 38px 0px 0px 38px;" src="../img/letter1.png" alt="Логотип"></td>
+			      <td class="td-p-one"><img class="img-portfolio" style="border-radius: 0px 38px 38px 0px;" src="../img/letter2.png" alt="Логотип"></td>
+			    </tr>
+          </table>
         </div>
       </section>
-
-
-
 
       <h2>Что еще я умею?</h2>
   
@@ -105,18 +134,13 @@
           Выполнение работ самого сложного уровня<br>за максимально быстрый срок.
           <hr>
           </div>
-        <div class = "tab-button-contacts">
-          <a href="ссылка">Цены и контакты</a>
+        <div class = "tab-button-contacts"><a href="ссылка">Цены и контакты</a></div>
         </div>
-
-        </div>
-
-
       </section>
-
 
   </main>
 
+<button id="scrollToTopBtn">&#8593;</button>
 
 <footer>
   <section>
@@ -125,22 +149,6 @@
 </footer>
 
 </body>
-
-<script>
-function scrollToHeader(headerId) {
-  const header = document.getElementById(headerId);
-  if (header) {
-    const offset = 150; // Замените на нужное вам значение
-    const elementPosition = header.getBoundingClientRect().top + window.scrollY;
-    const offsetPosition = elementPosition - offset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
-  }
-}
-</script>
 
 
 </html>
