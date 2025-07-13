@@ -1,0 +1,1134 @@
+:root {
+  --primary-color: #000000;
+  --secondary-color: #000000;
+  --tertiary-color: #7F2E6B;
+  --dark-bg: #2A2A2A;
+  --light-bg: #FFFFFF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus,
+a:focus,
+select:focus {
+  outline: none;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+input,
+textarea,
+span,
+label {
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ЭЛЕМЕНТЫ В ШАПКЕ И МЕНЮ */
+
+header /* Шапка */
+{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px 100px 20px 100px;
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  border-radius: 0px 0px 100px 100px;
+}
+
+nav /* Шапка */
+{
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.logo img /* Логотип в шапке */
+{
+  height: 55px;
+  vertical-align: middle;
+}
+
+nav ul /* Расстояние между кнопками в шапке */
+{
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  margin: 0;
+  flex: 1;
+  justify-content: right;
+}
+
+nav ul li /* Кнопки меню в шапке */
+{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 100px 100px 100px 100px;
+  font-size: 15px;
+  font-weight: 200;
+  transition: box-shadow 0.3s ease;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  position: relative;
+}
+
+nav ul li a /* Ссылки внутри кнопок меню в шапке */
+{
+  width: 200px;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+}
+
+nav ul li:hover {
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.25);
+}
+
+.name_zero /* Творческое портфолио дизайнера */
+{
+  color: #ffffff;
+  font-size: 16px;
+  padding: 10px 20px 10px 30px;
+}
+
+.name_one
+{
+  font-weight: 500;
+}
+
+.name_two
+{
+  font-weight: 200;
+}
+
+.circle-tg /* Ссылка на телеграм в шапке */
+{
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  height: 49px;
+  width: 49px;
+  margin: 0px 0px 0px 40px;
+}
+
+.title-pad /* Серый фон в начале каждой страницы */
+{
+  background: linear-gradient(0deg, #EFEFEF 0%, #ffffff 100%);
+  border-radius: 100px 100px 100px 100px;
+}
+
+/* ОБЩИЕ ЭЛЕМЕНТЫ ДЛЯ ВСЕХ СТРАНИЦ */
+
+.page-title /* Расстояние заголовка h1 */
+{
+  margin-left: 180px;
+  margin-top: 250px;
+}
+
+h1 {
+  color: #000000;
+  font-weight: 750;
+  font-size: 100px;
+  line-height: 120px;
+}
+
+h2 {
+  color: #000000;
+  margin-top: 150px;
+  margin-bottom: 110px;
+  font-weight: 650;
+  font-size: 60px;
+  text-align: left;
+  margin-left: 180px;
+}
+
+h3 {
+  color: #ffffff;
+  font-weight: 650;
+  font-size: 25px;
+  text-align: center;
+  padding: 13px;
+}
+
+h4 {
+  color: #000000;
+  font-weight: 650;
+  font-size: 25px;
+  text-align: center;
+  padding: 60px 13px 0px 13px;
+}
+
+.table {
+  width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-spacing: 44px;
+  table-layout: fixed;
+}
+
+.slide-section
+{
+  opacity: 0;
+  transform: translateY(100px);
+  transition: all 1s ease-out;
+}
+
+.slide-section.active
+{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+section
+{
+  will-change: transform, opacity;
+}
+
+section a {
+  text-decoration: none;
+}
+
+/* СТРАНИЦА УСЛУГИ */
+
+.additional-inscription /* Дополнительная надпись на странице с услугами */
+{
+  margin: 100px 0px 0px 5px;
+  color: #000000;
+  font-weight: 200;
+  font-size: 25px;
+}
+
+.additional-button /* Кнопка "Связаться со мной" на странице с услугами */
+{
+  margin: 100px 0px 0px 5px;
+  color: #000000;
+  font-weight: 650;
+  font-size: 25px;
+  transition: color 0.3s ease;
+}
+
+.additional-button:hover
+{
+  color: #ff0000;
+}
+
+.additional-indentation /* Кнопка "Связаться со мной" на странице с услугами */
+{
+  padding: 0px 0px 170px 0px;
+}
+
+.picture-cube {
+  position: absolute; /* Div будет "прилипать" к экрану */
+  z-index: 1; /* Максимальное значение z-индекса */
+  top: 90%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+}
+
+/* СТРАНИЦА "УСЛУГИ" - БЛОК 1 */
+
+.service-header-one
+{
+  width: 370px;
+  border-radius: 100px 100px 100px 100px;
+  font-weight: 200;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  z-index: 10;
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.service-body-one
+{
+  width: 1100px;
+  height: 438px;
+  padding: 10px 0px 10px 0px;
+  margin-top: 111px;
+  margin-bottom: 180px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 60px rgba(150, 0, 0, 0.5);
+  border-radius: 70px;
+}
+
+.td-one
+{
+  width: 50%
+}
+
+.service-body-elements-one
+{
+  color: #000000;
+  padding: 10px 10px 10px 10px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 25px rgba(141, 0, 0, 0.3);
+  border-radius: 100px 100px 100px 100px;
+  font-size: 23px;
+  font-weight: 300;
+  margin: 0px 0px 30px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.circle-elements-one
+{
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  border-radius: 50%;
+  height: 65px;
+  width: 65px;
+  margin: 10px 10px 10px 10px;
+}
+
+.p-one
+{
+  padding: 10px;
+}
+
+/* СТРАНИЦА "УСЛУГИ" - БЛОК 2 */
+
+.service-header-two
+{
+  width: 370px;
+  border-radius: 100px 100px 100px 100px;
+  font-weight: 200;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(30deg, #2800A1 0%, #8600B3 100%);
+  z-index: 10;
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.service-body-two
+{
+  width: 1100px;
+  height: 438px;
+  padding: 10px 0px 10px 0px;
+  margin-top: 111px;
+  margin-bottom: 180px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 60px rgba(113, 0, 148, 0.5);
+  border-radius: 70px;
+}
+
+.td-two
+{
+  width: 33.33%
+}
+
+.service-body-elements-two
+{
+  color: #000000;
+  padding: 10px 10px 10px 10px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 25px rgba(103, 0, 134, 0.3);
+  border-radius: 50px;
+  font-size: 23px;
+  font-weight: 300;
+  margin: 0px 0px 30px 0px;
+  align-items: center;
+}
+
+/* СТРАНИЦА "УСЛУГИ" - БЛОК 3 */
+
+.service-header-three
+{
+  width: 370px;
+  border-radius: 100px 100px 100px 100px;
+  font-weight: 200;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(30deg, #0070A1 0%, #00B351 100%);
+  z-index: 10;
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.service-body-three
+{
+  width: 1100px;
+  height: 438px;
+  padding: 10px 0px 10px 0px;
+  margin-top: 111px;
+  margin-bottom: 180px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 60px rgba(0, 128, 111, 0.5);
+  border-radius: 70px;
+}
+
+.td-three
+{
+  width: 50%
+}
+
+.service-body-elements-three
+{
+  color: #000000;
+  padding: 10px 10px 10px 10px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 25px rgba(0, 128, 111, 0.3);
+  border-radius: 50px;
+  font-size: 23px;
+  font-weight: 300;
+  margin: 0px 0px 30px 0px;
+  align-items: center;
+}
+
+/* СТРАНИЦА "УСЛУГИ" - БЛОК 4 */
+
+.service-header-four
+{
+  width: 370px;
+  border-radius: 100px 100px 100px 100px;
+  font-weight: 200;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(30deg, #A10000 0%, #E4700B 100%);
+  z-index: 10;
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.service-body-four
+{
+  width: 1100px;
+  height: 438px;
+  padding: 10px 0px 10px 0px;
+  margin-top: 111px;
+  margin-bottom: 180px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 60px rgba(150, 42, 0, 0.5);
+  border-radius: 70px;
+}
+
+.td-four
+{
+  width: 50%
+}
+
+.service-body-elements-four
+{
+  color: #000000;
+  padding: 10px 10px 10px 10px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 25px rgba(150, 42, 0, 0.3);
+  border-radius: 100px 100px 100px 100px;
+  font-size: 23px;
+  font-weight: 300;
+  margin: 0px 0px 30px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.circle-elements-four
+{
+  background: linear-gradient(30deg, #A10000 0%, #E4700B 100%);
+  border-radius: 50%;
+  height: 65px;
+  width: 65px;
+  margin: 10px 10px 10px 10px;
+}
+
+.p-four
+{
+  padding: 10px;
+}
+
+/* СТРАНИЦА "УСЛУГИ" - БЛОК "ЧТО ЕЩЕ Я УМЕЮ" */
+
+.service-header-end
+{
+  width: 370px;
+  border-radius: 100px 100px 100px 100px;
+  font-weight: 200;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  z-index: 10;
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.service-body-end
+{
+  width: 1100px;
+  height: 438px;
+  padding: 10px 0px 10px 0px;
+  margin-top: 111px;
+  margin-bottom: 180px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 60px rgba(150, 0, 0, 0.5);
+  border-radius: 70px;
+}
+
+.service-body-elements-end
+{
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-align: center;
+  font-size: 23px;
+  font-weight: 300;
+  margin: 30px;
+}
+
+.service-body-elements-contacts
+{
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-align: left;
+  font-size: 23px;
+  font-weight: 300;
+  margin: 30px;
+}
+
+.tab-button-contacts /* Кнопка "Цены и контакты" в блоке "Связь со мной" */
+{
+  margin-top: 55px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 100px;
+  font-size: 20px;
+  font-weight: 200;
+  transition: box-shadow 0.3s ease;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+}
+
+.tab-button-contacts a
+{
+  width: 200px;
+  color: #000000;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  text-align: center;
+  padding: 10px 0px 10px 0px;
+  border-radius: 100px;
+}
+
+.tab-button-contacts:hover
+{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+hr
+{
+	margin: 20px 0;
+	padding: 0;
+	height: 0;
+	border: none;
+	border-top: 2px dashed #ddd;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+.picture-star {
+  position: absolute; /* Div будет "прилипать" к экрану */
+  z-index: 1; /* Максимальное значение z-индекса */
+  top: 90%;
+  left: 22%;
+  transform: translate(-50%, -50%);
+}
+
+/* СТРАНИЦА "ПОРТФОЛИО" */
+
+.tab-button-portfolio
+{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 100px;
+  transition: box-shadow 0.3s ease;
+  letter-spacing: 0.5px;
+  text-align: center;
+  width: 200px;
+  display: inline-block;
+  margin: 80px 30px 100px 0px;
+  overflow: auto; /* Включает полосу прокрутки */
+  scroll-behavior: smooth; /* Плавный скроллинг */
+}
+
+.tab-button-portfolio button /* Кнопки для скроллинга на странице портфолио */
+{
+  width: 200px;
+  color: #000000;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  text-align: center;
+  padding: 13px 0px 13px 0px;
+  border-radius: 100px;
+  border: none;
+  font-size: 15px;
+  font-weight: 200;
+}
+
+.tab-button-portfolio:hover
+{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* СТРАНИЦА "ЦЕНЫ И КОНТАКТЫ" */
+
+.additional-contacts /* Дополнительная надпись на странице с контактами */
+{
+  margin: 30px 0px 0px 5px;
+  color: #000000;
+  font-weight: 200;
+  font-size: 25px;
+}
+
+.a-contacts /* Строчки с именем и почтой */
+{
+  margin: 70px 70px 0px 5px;
+  color: #000000;
+  font-weight: 200;
+  font-size: 20px;
+  display: inline-block;
+}
+
+.button-circle-telergam /* Ссылка на телеграм на странице с контактами */
+{
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  height: 49px;
+  width: 49px;
+  margin: 0px 15px 0px 0px;
+  transition: box-shadow 0.3s ease;
+  display: inline-block;
+}
+
+.button-circle-telergam:hover
+{
+  box-shadow: 0px 0px 20px rgba(0, 119, 255, 0.5);
+}
+
+.button-circle-telergam-svg
+{
+  color: #c0c0c0;
+  transform: scale(0.62);
+  transition: color 0.3s ease;
+}
+
+.button-circle-telergam-svg:hover
+{
+  color: #1e62c9;
+}
+
+.button-circle-whatsapp /* Ссылка на ватсап на странице с контактами */
+{
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  height: 49px;
+  width: 49px;
+  margin: 0px 15px 0px 0px;
+  transition: box-shadow 0.3s ease;
+  display: inline-block;
+}
+
+.button-circle-whatsapp:hover
+{
+  box-shadow: 0px 0px 20px rgba(13, 155, 0, 0.5);
+}
+
+.button-circle-whatsapp-svg
+{
+  color: #c0c0c0;
+  transform: scale(0.63);
+  transition: color 0.3s ease;
+}
+
+.button-circle-whatsapp-svg:hover
+{
+  color: #34883b;
+}
+
+.button-circle-vk /* Ссылка на вконтакте на странице с контактами */
+{
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  height: 49px;
+  width: 49px;
+  margin: 0px 15px 0px 0px;
+  transition: box-shadow 0.3s ease;
+  display: inline-block;
+  color: #0077FF;
+}
+
+.button-circle-vk:hover
+{
+  box-shadow: 0px 0px 20px rgba(0, 47, 255, 0.5);
+}
+
+.button-circle-vk-svg
+{
+  color: #c0c0c0;
+  transform: scale(0.55);
+  transition: color 0.3s ease;
+}
+
+.button-circle-vk-svg:hover
+{
+  color: #2e3f9e;
+}
+
+.circle-skills
+{
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 4px;
+  margin-right: 10px;
+}
+
+.table-skills {
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  border-spacing: 50px 35px;
+  table-layout: fixed;
+  margin-top: 30px;
+}
+
+.td-contacts
+{
+  width: 50%;
+  text-align: left;
+}
+
+.elements-contacts
+{
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-align: left;
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.elements-ii
+{
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 300;
+  margin: 0px;
+  display: inline-block;
+  vertical-align: top;
+  font-style: italic;
+}
+
+/* ФУТЕР */
+
+.footer-top
+{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px 100px 20px 100px;
+  background: linear-gradient(0deg, #ffffff 0%, #EFEFEF 100%);
+  border-radius: 100px 100px 0px 0px;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+  color: #000000
+}
+
+/* ГИБКИЕ МАКЕТЫ */
+
+@media (max-width: 1400px) {
+
+  h1
+  {
+    font-size: 60px;
+    line-height: 80px;
+  }
+
+  nav ul li
+  {
+    font-size: 15px;
+  }
+
+  nav ul li a
+  {
+    width: 140px;
+  }
+
+  nav ul
+  {
+    gap: 20px;
+  }
+
+}
+
+@media (max-width: 1150px)
+{
+
+  h1
+  {
+    font-size: 60px;
+    line-height: 80px;
+  }
+
+  nav ul li
+  {
+    font-size: 13px;
+  }
+
+  nav ul li a
+  {
+    width: 120px;
+    font-weight: 400;
+  }
+
+  nav ul
+  {
+    gap: 10px;
+  }
+
+  .service-body-one,
+  .service-body-two,
+  .service-body-three,
+  .service-body-four,
+  .service-body-end
+  {
+    width: 650px;
+    height: 300px;
+    border-radius: 20px;
+  }
+
+  .service-body-elements-one,
+  .service-body-elements-two,
+  .service-body-elements-three,
+  .service-body-elements-four,
+  .service-body-elements-end
+  {
+    color: #000000;
+    padding: 0px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    box-shadow: none;
+    font-size: 17px;
+    font-weight: 300;
+    margin: 0px 0px 30px 0px;
+    display: flex;
+    align-items: center;
+    display: inline;
+  }
+
+  .circle-elements-one,
+  .circle-elements-four
+  {
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    margin: auto;
+  }
+
+  h2
+  {
+    font-size: 40px;
+  }
+
+  h3
+  {
+    font-size: 21px;
+  }
+
+  h4
+  {
+    color: #000000;
+    font-weight: 650;
+    font-size: 19px;
+    text-align: center;
+    padding: 60px 13px 0px 13px;
+  }
+
+  hr
+  {
+    margin-top: 20px;
+  }
+
+  .tab-button-contacts
+  {
+    margin-top: 30px;
+  }
+
+  .table
+  {
+    border-spacing: 20px;
+  }
+
+}
+
+@media (max-width: 1030px)
+{
+  .name_zero,
+  .name_one,
+  .name_two
+  {
+    display: none;
+  }
+
+  .circle-tg
+  {
+    height: 45px;
+    width: 45px;
+    margin: 0px 0px 0px 10px;
+  }
+
+  .page-title
+  {
+    margin-left: 40px;
+    margin-top: 250px;
+  }
+
+  h2
+  {
+    margin-left: 40px;
+  }
+
+}
+
+@media (max-width: 700px)
+{
+
+  .page-title
+  {
+    margin-left: 40px;
+    margin-top: 180px;
+  }
+
+  h1
+  {
+    font-size: 40px;
+    line-height: 60px;
+  }
+
+  .additional-inscription
+  {
+    margin: 40px 0px 0px 5px;
+    color: #000000;
+    font-weight: 200;
+    font-size: 16px;
+  }
+
+  .additional-button
+  {
+    margin: 40px 0px 0px 5px;
+    color: #000000;
+    font-weight: 650;
+    font-size: 25px;
+    transition: color 0.3s ease;
+  }
+
+  header
+  {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px 20px 20px 20px;
+    background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+    border-radius: 0px 0px 0px 0px;
+    display: flex;
+    justify-content: center;
+  }
+
+  nav ul li
+  {
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  nav ul li a
+  {
+    width: 90px;
+  }
+
+  nav ul
+  {
+    gap: 10px;
+  }
+
+  .logo img
+  {
+    display: none;
+  }
+
+  .service-header-one,
+  .service-header-two,
+  .service-header-three,
+  .service-header-four,
+  .service-header-end
+  {
+    width: 250px;
+    padding: 0px;
+  }
+
+  h2
+  {
+    font-size: 30px;
+    margin-left: 20px;
+  }
+
+  .service-body-one,
+  .service-body-two,
+  .service-body-three,
+  .service-body-four,
+  .service-body-end
+  {
+    width: 333px;
+    height: 500px;
+    border-radius: 20px;
+  }
+
+  .service-body-elements-one,
+  .service-body-elements-two,
+  .service-body-elements-three,
+  .service-body-elements-four,
+  .service-body-elements-end
+  {
+    color: #000000;
+    padding: 0px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    box-shadow: none;
+    font-size: 17px;
+    font-weight: 300;
+    margin: 0px 0px 30px 0px;
+    display: flex;
+    align-items: center;
+    display: inline;
+  }
+
+  td
+  {
+    display: block; /* Превращаем ячейки в блоки */
+    width: 100%; /* Занимают всю ширину */
+    box-sizing: border-box; /* Учитываем padding и border */
+    display: flex;
+    align-items: center;
+    display: inline;
+  }
+
+  .table td::before
+  {
+    content: attr(data-label); /* Добавляем метку из атрибута data-label */
+    font-weight: bold;
+    display: block; /* Отображаем метку как блок */
+  }
+
+  .table-skills td::before
+  {
+    content: attr(data-label); /* Добавляем метку из атрибута data-label */
+    font-weight: bold;
+    display: block; /* Отображаем метку как блок */
+  }
+
+  .tab-button-contacts
+  {
+    margin-top: 55px;
+  }
+
+  hr
+  {
+    margin-top: 50px;
+  }
+
+}
+
+
+
+
+
+
+
+
+
