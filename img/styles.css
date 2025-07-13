@@ -145,14 +145,16 @@ nav ul li:hover {
   margin-top: 250px;
 }
 
-h1 {
+h1
+{
   color: #000000;
   font-weight: 750;
   font-size: 100px;
   line-height: 120px;
 }
 
-h2 {
+h2
+{
   color: #000000;
   margin-top: 150px;
   margin-bottom: 110px;
@@ -162,7 +164,8 @@ h2 {
   margin-left: 180px;
 }
 
-h3 {
+h3
+{
   color: #ffffff;
   font-weight: 650;
   font-size: 25px;
@@ -170,7 +173,8 @@ h3 {
   padding: 13px;
 }
 
-h4 {
+h4
+{
   color: #000000;
   font-weight: 650;
   font-size: 25px;
@@ -178,7 +182,8 @@ h4 {
   padding: 60px 13px 0px 13px;
 }
 
-.table {
+.table
+{
   width: 100%;
   text-align: center;
   margin-left: auto;
@@ -207,6 +212,33 @@ section
 
 section a {
   text-decoration: none;
+}
+
+#scrollToTopBtn /* Кнопка "вверх" */
+{
+  position: fixed;
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px rgba(126, 5, 5, 0.5);
+  height: 40px;
+  width: 40px;
+  margin: 0px 15px 0px 0px;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  bottom: 30px;
+  right: 15px;
+  display: none; /* Скрываем кнопку по умолчанию */
+  background-color: rgba(126, 5, 5, 0.2);;
+  color: rgb(185, 115, 115);
+  border: none;
+  padding-bottom: 1px;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 800;
+}
+    
+#scrollToTopBtn:hover
+{
+  background-color: rgba(126, 5, 5, 0.3);;
 }
 
 /* СТРАНИЦА УСЛУГИ */
@@ -238,7 +270,8 @@ section a {
   padding: 0px 0px 170px 0px;
 }
 
-.picture-cube {
+.picture-cube
+{
   position: absolute; /* Div будет "прилипать" к экрану */
   z-index: 1; /* Максимальное значение z-индекса */
   top: 90%;
@@ -284,7 +317,7 @@ section a {
 
 .td-one
 {
-  width: 50%
+  width: 50%;
 }
 
 .service-body-elements-one
@@ -551,7 +584,7 @@ section a {
   color: #000000;
   letter-spacing: 0.5px;
   text-align: left;
-  font-size: 23px;
+  font-size: 22px;
   font-weight: 300;
   margin: 30px;
 }
@@ -643,6 +676,54 @@ hr
 .tab-button-portfolio:hover
 {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+.portfolio-body-one
+{
+  width: 1300px;
+  height: 100%;
+  padding: 0px 0px 0px 0px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 60px rgba(150, 0, 0, 0.5);
+  border-radius: 70px;
+}
+
+.table-portfolio
+{
+  width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-spacing: 44px;
+  table-layout: fixed;
+}
+
+.td-p-one
+{
+  width: 100%;
+}
+
+.td-p-two
+{
+  width: 50%;
+}
+
+.td-p-three
+{
+  width: 50%;
+}
+
+.img-portfolio
+{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: auto;
 }
 
 /* СТРАНИЦА "ЦЕНЫ И КОНТАКТЫ" */
@@ -749,6 +830,42 @@ hr
   color: #2e3f9e;
 }
 
+.picture-ring
+{
+  position: absolute; /* Div будет "прилипать" к экрану */
+  z-index: 2; /* Максимальное значение z-индекса */
+  top: 0%;
+  left: 53%;
+  transform: scale(0.8);
+}
+
+.circle-contacts
+{
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  border-radius: 50%;
+  height: 320px;
+  width: 320px;
+  margin: 10px 10px 10px 10px;
+  position: absolute; /* Div будет "прилипать" к экрану */
+  z-index: 1; /* Максимальное значение z-индекса */
+  top: 25%;
+  left: 73%;
+  transform: translate(-50%, -50%);
+}
+
+.contacts-indentation
+{
+  padding-bottom: 170px;
+}
+
+.img-photo
+{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  width: auto;
+  height: 300px;
+  border-radius: 150px;
+}
+
 .circle-skills
 {
   background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
@@ -799,6 +916,41 @@ hr
   display: inline-block;
   vertical-align: top;
   font-style: italic;
+}
+
+.contacts-body
+{
+  width: 1100px;
+  height: auto;
+  padding: 10px 0px 10px 0px;
+  margin-top: 111px;
+  margin-bottom: 180px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 60px rgba(150, 0, 0, 0.5);
+  border-radius: 70px;
+}
+
+.body-elements-contacts
+{
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-align: left;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 30px;
+}
+
+.table-skills2 {
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  border-spacing: 20px;
+  table-layout: fixed;
+  margin-top: 30px;
 }
 
 /* ФУТЕР */
