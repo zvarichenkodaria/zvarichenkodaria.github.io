@@ -182,6 +182,11 @@ h4
   padding: 60px 13px 0px 13px;
 }
 
+b
+{
+  font-weight: 550;
+}
+
 .table
 {
   width: 100%;
@@ -241,6 +246,15 @@ section a {
   background-color: rgba(126, 5, 5, 0.3);;
 }
 
+@keyframes rotation {
+  from {
+    transform: scale(0.5) rotate(0deg);
+  }
+  to {
+    transform: scale(0.5) rotate(360deg);
+  }
+}
+
 /* СТРАНИЦА УСЛУГИ */
 
 .additional-inscription /* Дополнительная надпись на странице с услугами */
@@ -277,6 +291,13 @@ section a {
   top: 90%;
   left: 75%;
   transform: translate(-50%, -50%);
+}
+
+.cube-elements
+{
+  color: #ffffff;
+  width: 35px;
+  height: 35px;
 }
 
 /* СТРАНИЦА "УСЛУГИ" - БЛОК 1 */
@@ -343,6 +364,9 @@ section a {
   height: 65px;
   width: 65px;
   margin: 10px 10px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .p-one
@@ -394,7 +418,7 @@ section a {
 .service-body-elements-two
 {
   color: #000000;
-  padding: 10px 10px 10px 10px;
+  padding: 15px 10px 10px 15px;
   letter-spacing: 0.5px;
   text-align: center;
   background-color: #ffffff;
@@ -404,6 +428,14 @@ section a {
   font-weight: 300;
   margin: 0px 0px 30px 0px;
   align-items: center;
+}
+
+.icons-two
+{
+  color: #3300ac;
+  margin: 20px 10px 10px 10px;
+  height: 60px;
+  width: 60px;
 }
 
 /* СТРАНИЦА "УСЛУГИ" - БЛОК 3 */
@@ -444,13 +476,13 @@ section a {
 
 .td-three
 {
-  width: 50%
+  width: 50%;
 }
 
 .service-body-elements-three
 {
   color: #000000;
-  padding: 10px 10px 10px 10px;
+  padding: 15px 10px 10px 15px;
   letter-spacing: 0.5px;
   text-align: center;
   background-color: #ffffff;
@@ -460,6 +492,14 @@ section a {
   font-weight: 300;
   margin: 0px 0px 30px 0px;
   align-items: center;
+}
+
+.icons-three
+{
+  color: #00ac95;
+  margin: 20px 10px 10px 10px;
+  height: 60px;
+  width: 60px;
 }
 
 /* СТРАНИЦА "УСЛУГИ" - БЛОК 4 */
@@ -526,6 +566,9 @@ section a {
   height: 65px;
   width: 65px;
   margin: 10px 10px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .p-four
@@ -644,6 +687,15 @@ hr
 
 /* СТРАНИЦА "ПОРТФОЛИО" */
 
+.picture-ball
+{
+  position: absolute; /* Div будет "прилипать" к экрану */
+  z-index: 1; /* Максимальное значение z-индекса */
+  top: 15%;
+  left: 65%;
+  animation: rotation 20s infinite linear;
+}
+
 .tab-button-portfolio
 {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
@@ -758,7 +810,7 @@ hr
 
 .button-circle-telergam:hover
 {
-  box-shadow: 0px 0px 20px rgba(0, 119, 255, 0.5);
+  box-shadow: 0px 0px 20px rgba(0, 136, 204, 0.5);
 }
 
 .button-circle-telergam-svg
@@ -770,7 +822,7 @@ hr
 
 .button-circle-telergam-svg:hover
 {
-  color: #1e62c9;
+  color: rgba(0, 136, 204, 1);
 }
 
 .button-circle-whatsapp /* Ссылка на ватсап на странице с контактами */
@@ -786,7 +838,7 @@ hr
 
 .button-circle-whatsapp:hover
 {
-  box-shadow: 0px 0px 20px rgba(13, 155, 0, 0.5);
+  box-shadow: 0px 0px 20px rgba(44, 183, 66, 0.5);
 }
 
 .button-circle-whatsapp-svg
@@ -798,7 +850,7 @@ hr
 
 .button-circle-whatsapp-svg:hover
 {
-  color: #34883b;
+  color: rgba(44, 183, 66, 1);
 }
 
 .button-circle-vk /* Ссылка на вконтакте на странице с контактами */
@@ -815,7 +867,7 @@ hr
 
 .button-circle-vk:hover
 {
-  box-shadow: 0px 0px 20px rgba(0, 47, 255, 0.5);
+  box-shadow: 0px 0px 20px rgba(0, 119, 255, 0.5);
 }
 
 .button-circle-vk-svg
@@ -827,7 +879,7 @@ hr
 
 .button-circle-vk-svg:hover
 {
-  color: #2e3f9e;
+  color: rgba(0, 119, 255, 1);
 }
 
 .picture-ring
@@ -996,7 +1048,15 @@ hr
     gap: 20px;
   }
 
+  .picture-cube
+  {
+    top: 35%;
+    left: 55%;
+    transform: scale(0.5);
+  }
+
 }
+
 
 @media (max-width: 1150px)
 {
@@ -1030,8 +1090,8 @@ hr
   .service-body-end
   {
     width: 650px;
-    height: 300px;
-    border-radius: 20px;
+    height: 360px;
+    border-radius: 30px;
   }
 
   .service-body-elements-one,
@@ -1057,8 +1117,8 @@ hr
   .circle-elements-four
   {
     border-radius: 50%;
-    height: 25px;
-    width: 25px;
+    height: 35px;
+    width: 35px;
     margin: auto;
   }
 
@@ -1078,7 +1138,7 @@ hr
     font-weight: 650;
     font-size: 19px;
     text-align: center;
-    padding: 60px 13px 0px 13px;
+    padding: 50px 13px 13px 13px;
   }
 
   hr
@@ -1094,6 +1154,20 @@ hr
   .table
   {
     border-spacing: 20px;
+  }
+
+  .picture-cube
+  {
+    top: 35%;
+    left: 55%;
+    transform: scale(0.3);
+  }
+
+  .cube-elements
+  {
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
   }
 
 }
@@ -1207,24 +1281,65 @@ hr
   h2
   {
     font-size: 30px;
-    margin-left: 20px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .service-body-one,
-  .service-body-two,
-  .service-body-three,
-  .service-body-four,
+  .service-body-one
+  {
+    width: 333px;
+    height: 590px;
+    border-radius: 30px;
+  }
+
+  .service-body-two
+  {
+    width: 333px;
+    height: 830px;
+    border-radius: 30px;
+  }
+
+  .service-body-three
+  {
+    width: 333px;
+    height: 660px;
+    border-radius: 30px;
+  }
+
+  .service-body-four
+  {
+    width: 333px;
+    height: 625px;
+    border-radius: 30px;
+  }
+
   .service-body-end
   {
     width: 333px;
-    height: 500px;
-    border-radius: 20px;
+    height: 450px;
+    border-radius: 30px;
+    padding: 0px 35px 35px 35px;
   }
 
   .service-body-elements-one,
   .service-body-elements-two,
   .service-body-elements-three,
-  .service-body-elements-four,
+  .service-body-elements-four
+  {
+    color: #000000;
+    padding: 0px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    box-shadow: none;
+    font-size: 17px;
+    font-weight: 300;
+    margin: 0px 0px 30px 0px;
+    display: flex;
+    align-items: center;
+    display: inline;
+  }
+
   .service-body-elements-end
   {
     color: #000000;
@@ -1248,6 +1363,7 @@ hr
     display: flex;
     align-items: center;
     display: inline;
+    padding: 0px 0px 0px 10px;
   }
 
   .table td::before
@@ -1273,6 +1389,105 @@ hr
   {
     margin-top: 50px;
   }
+
+  .picture-cube
+  {
+    top: 32%;
+    left: 17%;
+    transform: scale(0.3);
+  }
+
+  .cube-elements
+  {
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+  }
+
+  .picture-star
+  {
+    position: absolute; /* Div будет "прилипать" к экрану */
+    z-index: 1; /* Максимальное значение z-индекса */
+    top: 67%;
+    left: -5%;
+    transform: scale(0.5);
+  }
+
+  .tab-button-portfolio
+  {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 100px;
+    transition: box-shadow 0.3s ease;
+    letter-spacing: 0.5px;
+    text-align: center;
+    width: 200px;
+    margin: 0px 5px 20px 5px;
+    overflow: auto; /* Включает полосу прокрутки */
+    scroll-behavior: smooth; /* Плавный скроллинг */
+  }
+
+  .tab-button-portfolio button /* Кнопки для скроллинга на странице портфолио */
+  {
+    width: 200px;
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    text-align: center;
+    padding: 13px 0px 13px 0px;
+    border-radius: 100px;
+    border: none;
+    font-size: 15px;
+    font-weight: 200;
+  }
+
+  .picture-ball
+  {
+    display: none;
+  }
+
+  .a-portfolio
+  {
+    padding: 40px 0px 40px 0px;
+  }
+
+  .portfolio-body-one
+  {
+    width: 80%;
+    height: 100%;
+    padding: 0px 0px 0px 0px;
+    margin-top: auto;
+    margin-bottom: auto;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 60px rgba(150, 0, 0, 0.5);
+    border-radius: 20px;
+  }
+
+  style
+  {
+    border-radius: 2000px;
+  }
+  
+  .img-portfolio
+  {
+    border-radius: 20px;
+  }
+
+  .table-portfolio
+  {
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 40px;
+    table-layout: fixed;
+    border-radius: 20px;
+    margin-left: -2%;
+}
 
 }
 
