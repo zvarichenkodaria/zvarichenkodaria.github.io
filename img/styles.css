@@ -1,4 +1,7 @@
 :root {
+  color-scheme: light dark; /* Указывает браузеру, что поддерживаются обе темы */
+  --bg-color: light-dark(#fff, #000); /*  Белый для светлой темы, черный для темной */
+  --text-color: light-dark(#000, #fff); /*  Черный для светлой темы, белый для темной */
   --primary-color: #000000;
   --secondary-color: #000000;
   --tertiary-color: #7F2E6B;
@@ -23,6 +26,7 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
+  background-color: var(--bg-color);
 }
 
 h1,
@@ -1748,7 +1752,7 @@ hr
 
 .circle-skills
 {
-  margin: 80px;
+  margin: 10px;
   text-align: center;
 }
 
