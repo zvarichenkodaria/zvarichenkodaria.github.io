@@ -7,6 +7,8 @@
   --tertiary-color: #7F2E6B;
   --dark-bg: #2A2A2A;
   --light-bg: #FFFFFF;
+  --gradient-start: #EFEFEF;
+  --gradient-end: #FFFFFF;
 }
 
 * {
@@ -159,7 +161,7 @@ nav ul li:hover {
 
 .title-pad /* Серый фон в начале каждой страницы */
 {
-  background: linear-gradient(0deg, #EFEFEF 0%, #ffffff 100%);
+  background: linear-gradient(0deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
   border-radius: 100px 100px 100px 100px;
 }
 
