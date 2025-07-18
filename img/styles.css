@@ -1748,7 +1748,14 @@ hr
 
 .circle-skills
 {
-  margin: 8px;
+  margin: 80px;
+}
+
+.elements-ii
+{
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 	
 }
