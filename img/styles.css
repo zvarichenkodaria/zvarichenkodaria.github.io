@@ -7,8 +7,8 @@
   --tertiary-color: #7F2E6B;
   --dark-bg: #2A2A2A;
   --light-bg: #FFFFFF;
-  --gradient-start: #EFEFEF;
-  --gradient-end: #FFFFFF;
+  --gradient-start: light-dark(#EFEFEF, #1c1c1c);
+  --gradient-end: light-dark(#ffffff, #000);
 }
 
 * {
