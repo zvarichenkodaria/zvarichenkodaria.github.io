@@ -69,6 +69,12 @@ label
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+  iframe {
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  }
+}
+
 /* ЭЛЕМЕНТЫ В ШАПКЕ И МЕНЮ */
 
 header /* Шапка */
@@ -873,7 +879,7 @@ section a {
 .service-body-end
 {
   width: 1100px;
-  height: 438px;
+  height: auto;
   padding: 10px 0px 10px 0px;
   margin-top: 111px;
   margin-bottom: 180px;
@@ -912,6 +918,7 @@ section a {
 .tab-button-contacts /* Кнопка "Цены и контакты" в блоке "Связь со мной" */
 {
   margin-top: 55px;
+  margin-bottom: 55px;
   box-shadow: 0px 0px 20px rgba(150, 0, 0, 0.3);
   border-radius: 100px;
   font-size: 20px;
@@ -1343,14 +1350,21 @@ hr
 .footer-top-text-one
 {
   font-size: 20px;
-  font-weight: 300;
+  font-weight: 350;
+  color: #757575;
 }
 
 .footer-top-text-two
 {
   font-size: 12px;
-  font-weight: 300;
-  color: #757575
+  font-weight: 350;
+  color: #757575;
+}
+
+.a-privacy
+{
+  text-decoration: underline;
+  color: #757575;
 }
 
 /* ГИБКИЕ МАКЕТЫ */
