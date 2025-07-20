@@ -1361,6 +1361,11 @@ hr
   color: #757575;
 }
 
+iframe
+{
+  width: 650px;
+}
+
 .a-privacy
 {
   text-decoration: underline;
@@ -1485,6 +1490,10 @@ hr
   margin-top: 30px;
 }
 
+iframe
+{
+  width: 310px;
+}
 
   .service-body-elements-one,
   .service-body-elements-two,
@@ -1805,7 +1814,7 @@ hr
     width: 333px;
     height: auto;
     border-radius: 30px;
-    padding: 0px 35px 35px 35px;
+    padding: 0px 15px 15px 15px;
   }
 
   .service-body-elements-one,
@@ -2082,6 +2091,11 @@ hr
 .eyes
 {
   margin: 5px 0px 40px 0px;
+}
+
+iframe
+{
+  width: 100%;
 }
 
 }
