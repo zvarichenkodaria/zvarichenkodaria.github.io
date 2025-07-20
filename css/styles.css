@@ -232,7 +232,7 @@ h4
   font-weight: 650;
   font-size: 25px;
   text-align: center;
-  padding: 60px 13px 0px 13px;
+  padding: 65px 13px 0px 13px;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
@@ -273,6 +273,12 @@ section a {
   text-decoration: none;
 }
 
+.button-container
+{
+  display: flex;
+  justify-content: space-between;
+}
+
 #theme-toggle /* Переключатель - тёмная и светлая тема */
 {
   position: fixed;
@@ -280,11 +286,11 @@ section a {
   box-shadow: 0px 0px 30px var(--button-color-one);
   height: 40px;
   width: 40px;
-  margin: 0px 15px 0px 0px;
+  margin: 15px 15px 0px 15px;
   transition: background-color 0.3s ease;
   display: inline-block;
   bottom: 30px;
-  left: 15px;
+  left: 0;
   background-color: var(--button-color-one);
   color: var(--button-color-two);
   border: none;
@@ -306,11 +312,11 @@ section a {
   box-shadow: 0px 0px 30px var(--button-color-one);
   height: 40px;
   width: 40px;
-  margin: 0px 15px 0px 0px;
+  margin: 15px 15px 0px 15px;
   transition: background-color 0.3s ease;
   display: inline-block;
   bottom: 30px;
-  right: 15px;
+  right: 0;
   display: none; /* Скрываем кнопку по умолчанию */
   background-color: var(--button-color-one);
   color: var(--button-color-two);
@@ -369,6 +375,91 @@ section a {
 .additional-indentation /* Кнопка "Связаться со мной" на странице с услугами */
 {
   padding: 95px 0px 170px 0px;
+}
+
+.table-buy
+{
+  width: 90%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -30px;
+  margin-bottom: 0px;
+  border-spacing: 0px;
+}
+
+.table-buy-mob
+{
+  display: none;
+}
+
+.td-buy-one
+{
+  width: 18%;
+}
+
+.td-buy-two
+{
+  width: 46%;
+  text-align: right;
+}
+
+.td-buy-three
+{
+  width: 18%;
+  text-align: right;
+  float: right;
+}
+
+.text-buy-one
+{
+  color: var(--text-color);
+  font-weight: 650;
+  font-size: 20px;
+}
+
+.text-buy-two
+{
+  color: var(--text-color);
+  font-weight: 350;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.text-buy-three
+{
+  color: var(--text-color);
+  font-weight: 350;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.tab-button-buy /* Кнопка "Заказать" */
+{
+  box-shadow: 0px 0px 20px rgba(122, 122, 122, 0.3);
+  font-size: 20px;
+  font-weight: 200;
+  border-radius: 100px;
+  transition: box-shadow 0.3s ease, font-weight 0.3s ease;
+  letter-spacing: 0.5px;
+  text-align: center;
+  float: right;
+}
+
+.tab-button-buy a
+{
+  width: 150px;
+  color: var(--text-color);
+  text-decoration: none;
+  display: block;
+  padding: 10px 0px 10px 0px;
+  border-radius: 100px;
+}
+
+.tab-button-buy:hover
+{
+  box-shadow: 0px 0px 20px rgba(112, 112, 112, 0.6);
+  font-weight: 350;
 }
 
 .picture-cube
@@ -494,8 +585,8 @@ section a {
 .service-body-one
 {
   width: 1100px;
-  height: 438px;
-  padding: 10px 0px 10px 0px;
+  height: auto;
+  padding: 10px 0px 0px 0px;
   margin-top: 111px;
   margin-bottom: 180px;
   letter-spacing: 0.5px;
@@ -571,7 +662,7 @@ section a {
 .service-body-two
 {
   width: 1100px;
-  height: 438px;
+  height: auto;
   padding: 10px 0px 10px 0px;
   margin-top: 111px;
   margin-bottom: 180px;
@@ -638,7 +729,7 @@ section a {
 .service-body-three
 {
   width: 1100px;
-  height: 438px;
+  height: auto;
   padding: 10px 0px 10px 0px;
   margin-top: 111px;
   margin-bottom: 180px;
@@ -705,7 +796,7 @@ section a {
 .service-body-four
 {
   width: 1100px;
-  height: 438px;
+  height: auto;
   padding: 10px 0px 10px 0px;
   margin-top: 111px;
   margin-bottom: 180px;
@@ -840,7 +931,6 @@ section a {
   text-decoration: none;
   text-align: center;
   display: block;
-  text-align: center;
   padding: 10px 0px 10px 0px;
   border-radius: 100px;
   transition: background-color 0.5s ease, color 0.5s ease;
@@ -905,7 +995,6 @@ hr
   text-decoration: none;
   text-align: center;
   display: block;
-  text-align: center;
   padding: 13px 0px 13px 0px;
   border-radius: 100px;
   border: none;
@@ -1246,11 +1335,22 @@ hr
   padding: 20px 100px 20px 100px;
   background: linear-gradient(0deg, var(--gradient-end) 0%, var(--gradient-start) 100%);
   border-radius: 100px 100px 0px 0px;
-  font-size: 20px;
-  font-weight: 300;
   text-align: center;
   color: var(--text-color);
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.footer-top-text-one
+{
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.footer-top-text-two
+{
+  font-size: 12px;
+  font-weight: 300;
+  color: #757575
 }
 
 /* ГИБКИЕ МАКЕТЫ */
@@ -1337,7 +1437,7 @@ hr
   .service-body-end
   {
     width: 650px;
-    height: 360px;
+    height: auto;
     border-radius: 30px;
   }
 
@@ -1668,38 +1768,28 @@ hr
     margin-right: auto;
   }
 
-  .service-body-one
+  h4
   {
-    width: 333px;
-    height: 590px;
-    border-radius: 30px;
+    font-weight: 650;
+    font-size: 19px;
+    text-align: center;
+    padding: 50px 13px 0px 13px;
   }
 
-  .service-body-two
-  {
-    width: 333px;
-    height: 830px;
-    border-radius: 30px;
-  }
-
-  .service-body-three
-  {
-    width: 333px;
-    height: 660px;
-    border-radius: 30px;
-  }
-
+  .service-body-one,
+  .service-body-two,
+  .service-body-three,
   .service-body-four
   {
     width: 333px;
-    height: 625px;
+    height: auto;
     border-radius: 30px;
   }
 
   .service-body-end
   {
     width: 333px;
-    height: 450px;
+    height: auto;
     border-radius: 30px;
     padding: 0px 35px 35px 35px;
   }
@@ -1715,7 +1805,7 @@ hr
     box-shadow: none;
     font-size: 17px;
     font-weight: 300;
-    margin: 0px 0px 30px 0px;
+    margin: 0px 0px 20px 0px;
     display: flex;
     align-items: center;
     display: inline;
@@ -1734,6 +1824,43 @@ hr
     align-items: center;
     display: inline;
   }
+
+.table-buy
+{
+  display: none;
+}
+
+.table-buy-mob
+{
+  display: block;
+  width: 90%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 20px 0px 60px 40px;
+}
+
+.tab-button-buy /* Кнопка "Заказать" */
+{
+  box-shadow: 0px 0px 20px rgba(122, 122, 122, 0.3);
+  font-size: 20px;
+  font-weight: 200;
+  border-radius: 100px;
+  transition: box-shadow 0.3s ease, font-weight 0.3s ease;
+  letter-spacing: 0.5px;
+  text-align: center;
+  float: left;
+}
+
+.tab-button-buy a
+{
+  width: 150px;
+  color: var(--text-color);
+  text-decoration: none;
+  display: block;
+  padding: 10px 0px 10px 0px;
+  border-radius: 100px;
+}
 
   td
   {
@@ -1825,7 +1952,7 @@ hr
     border-radius: 40px;
   }
 
-    .portfolio-body-one-mob-1
+  .portfolio-body-one-mob-1
   {
     width: 80%;
     display: block;
