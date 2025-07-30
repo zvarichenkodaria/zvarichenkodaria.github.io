@@ -110,5 +110,18 @@ document.addEventListener('mousemove', (e) => {
 });
 
 
+document.addEventListener("DOMContentLoaded", function() {
+  fetch('data.json')
+    .then(response => response.json())
+    .then(data => {
+      document.title = data.title;
+      document.querySelector('meta[name="description"]').setAttribute('content', data.description);
+    })
+    .catch(error => console.error('Ошибка при загрузке JSON:', error));
+});
+
+
+
+
 
   
