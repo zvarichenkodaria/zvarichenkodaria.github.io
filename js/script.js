@@ -110,15 +110,34 @@ document.addEventListener('mousemove', (e) => {
 });
 
 
-document.addEventListener("DOMContentLoaded", function() {
-  fetch('data.json')
-    .then(response => response.json())
-    .then(data => {
-      document.title = data.title;
-      document.querySelector('meta[name="description"]').setAttribute('content', data.description);
-    })
-    .catch(error => console.error('Ошибка при загрузке JSON:', error));
-});
+
+
+
+async function loadData() {
+      try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+
+        // Получаем текущий URL
+        const currentPath = window.location.pathname;
+        // Определяем текущую страницу, убирая начальный слэш
+        const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, "") || 'home';
+
+        // Находим объект для текущей страницы
+        const pageData = data.find(item => item.page === currentPage);
+
+        // Если данные для текущей страницы найдены, обновляем title и description
+        if (pageData) {
+          document.title = pageData.title;
+          document.querySelector('meta[name="description"]').setAttribute('content', pageData.description);
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки JSON:', error);
+      }
+    }
+
+    // Вызываем функцию загрузки данных при загрузке страницы
+    window.onload = loadData;
 
 
 
