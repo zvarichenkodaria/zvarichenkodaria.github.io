@@ -5,121 +5,160 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>QR с расширенными настройками</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-  .qr-container { max-width: 400px; margin: auto; position: relative; }
-  #qrWrapper {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: 20px auto;
-    border: 1px solid #ccc;
+  body { font-family: Arial, sans-serif; padding: 0; margin: 0; background: #f5f5f5; }
+  .page-header { background: #e2e2e2; padding: 30px 0 16px 0; text-align: center; }
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 48px auto;
+    align-items: start;
+    min-height: 80vh;
   }
-  #qr-code { width: 300px; height: 300px; }
-  #logoOverlay {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    display: none; pointer-events: none;
-    max-height: 100%; max-width: 50%; height: auto;
+  .settings-panel { display: flex; flex-direction: column; gap: 18px; }
+  .preview-panel { display: flex; flex-direction: column; gap: 24px;}
+  .preview-block { background: #e2e2e2; min-height: 320px; display: flex; align-items: center; justify-content: center;}
+  .export-block, .seed-block { background: #e2e2e2; padding: 20px 0; text-align: center;}
+  .details-accordion { background: #e2e2e2; border-radius: 20px; margin-bottom: 0; }
+  .details-summary {padding:22px 36px; cursor:pointer; font-size:1.15rem; border-radius:20px; outline:none; user-select: none;}
+  .details-accordion[open] .details-summary { background: #d0d0d0; }
+  .details-content {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 36px;
+    overflow: hidden;
+    transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .35s;
   }
-  label, select, input, textarea, button {
-    display: block; margin: 10px 0; width: 100%; box-sizing: border-box;
+  .details-accordion.open .details-content {
+    max-height: 500px;
+    opacity: 1;
+    padding: 10px 36px 22px 36px;
+    transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .4s;
   }
+  label, input, select, textarea, button { margin: 8px 0; width: 100%; box-sizing: border-box;}
   button { padding: 10px; font-size: 1rem; cursor: pointer;}
-  #exportButtons { display: none; margin-top: 10px; }
-  #seedArea { width: 100%; min-height: 80px; resize: vertical; }
-  #logoPreviewContainer {
-    position: relative; width: 100px; height: 100px; margin-top: 5px;
-  }
-  #logoPreview {
-    max-width: 100%; max-height: 100%; display: none; border: 1px solid #ccc;
-  }
-  #removeLogo {
-    position: absolute; top: 0; right: 0;
-    background: red; color: white; border: none; border-radius: 50%;
-    width: 20px; height: 20px; cursor: pointer; display: none;
-    font-weight: bold; line-height: 18px; padding: 0;
-  }
-  #messageBox {
-    position: fixed; top: 10px; right: 10px;
-    background-color: #4caf50; color: white;
-    padding: 12px 20px; border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    z-index: 1000; min-width: 220px; font-size: 14px;
-  }
-  #messageBox.error { background-color: #f44336; }
+  #logoPreviewContainer { position: relative; width: 100px; height: 100px; margin-top: 5px;}
+  #logoPreview { max-width: 100%; max-height: 100%; display: none; border: 1px solid #ccc;}
+  #removeLogo { position: absolute; top: 0; right: 0; background: red; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; display: none; font-weight: bold; line-height: 18px; padding: 0;}
+  #messageBox { position: fixed; top: 10px; right: 10px; background-color: #4caf50; color: white; padding: 12px 20px; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,0.2); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; min-width: 220px; font-size: 14px;}
+  #messageBox.error { background-color: #f44336;}
 </style>
 </head>
 <body>
-<div class="qr-container">
-  <h2>QR с расширенными настройками</h2>
-
-  <label for="urlInput">URL</label>
-  <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com" />
-
-  <label for="dotColor">Цвет точек</label>
-  <input type="color" id="dotColor" value="#000000" />
-  <input type="text" id="dotColorHex" maxlength="7" style="margin-top:2px;" />
-
-  <label for="bgColor">Цвет фона</label>
-  <input type="color" id="bgColor" value="#ffffff" />
-  <input type="text" id="bgColorHex" maxlength="7" style="margin-top:2px;" />
-
-  <label for="bgTransparency">Прозрачный фон</label>
-  <input type="checkbox" id="bgTransparency" />
-
-  <label for="dotShape">Форма точек</label>
-  <select id="dotShape">
-    <option value="square">Квадрат</option>
-    <option value="dots">Точки</option>
-    <option value="classy">Стильный</option>
-  </select>
-
-  <label for="markerShape">Форма маркеров углов</label>
-  <select id="markerShape">
-    <option value="square">Квадрат</option>
-    <option value="dot">Точка</option>
-  </select>
-
-  <label for="logoInput">URL Логотипа или Загрузить файл</label>
-  <input type="text" id="logoInput" placeholder="https://example.com/logo.png" />
-  <input type="file" id="logoFile" accept="image/*" />
-  <div id="logoPreviewContainer">
-    <img id="logoPreview" alt="Предпросмотр логотипа" />
-    <button id="removeLogo" title="Удалить логотип">×</button>
-  </div>
-
-  <label for="logoSize">Размер логотипа (%)</label>
-  <input type="range" id="logoSize" min="1" max="50" value="15" />
-
-  <label for="errorLevel">Уровень коррекции ошибок</label>
-  <select id="errorLevel">
-    <option value="L">L</option>
-    <option value="M" selected>M</option>
-    <option value="Q">Q</option>
-    <option value="H">H</option>
-  </select>
-
-  <div id="qrWrapper">
-    <div id="qr-code"></div>
-    <img id="logoOverlay" alt="Логотип QR" />
-  </div>
-
-  <div id="exportButtons" style="display:none;">
-    <button data-type="svg">SVG</button>
-    <button data-type="png">PNG</button>
-    <button data-type="jpg">JPG</button>
-    <button data-type="pdf">PDF</button>
-  </div>
-
-  <h3>base64</h3>
-  <textarea id="seedArea"></textarea>
-  <button id="copySettings">Скопировать код настроек</button>
-  <button id="loadSettingsBtn">Загрузить свои настройки</button>
-</div>
-
+<header class="page-header"><h1>Шапка страницы</h1></header>
+<main class="main-grid">
+  <aside class="settings-panel">
+    <div class="details-accordion open">
+      <div class="details-summary">Сюда вставлять URL</div>
+      <div class="details-content">
+        <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com"/>
+      </div>
+    </div>
+    <div class="details-accordion">
+      <div class="details-summary">Настройка цвета фона и цвета QR-кода</div>
+      <div class="details-content">
+        <input type="color" id="bgColor" value="#ffffff"/>
+        <input type="text" id="bgColorHex" maxlength="7" style="margin-top:2px;" placeholder="#ffffff"/>
+        <input type="color" id="dotColor" value="#000000"/>
+        <input type="text" id="dotColorHex" maxlength="7" style="margin-top:2px;" placeholder="#000000"/>
+        <label><input type="checkbox" id="bgTransparency"/> Прозрачный фон</label>
+      </div>
+    </div>
+    <div class="details-accordion">
+      <div class="details-summary">Настройка частиц, из которых состоит QR-код</div>
+      <div class="details-content">
+        <label for="dotShape">Форма точек</label>
+        <select id="dotShape">
+          <option value="square">Квадрат</option>
+          <option value="dots">Точки</option>
+          <option value="classy">Стильный</option>
+        </select>
+      </div>
+    </div>
+    <div class="details-accordion">
+      <div class="details-summary">Выбор границы и центра маркера</div>
+      <div class="details-content">
+        <label for="markerShape">Форма маркеров углов</label>
+        <select id="markerShape">
+          <option value="square">Квадрат</option>
+          <option value="dot">Точка</option>
+        </select>
+      </div>
+    </div>
+    <div class="details-accordion">
+      <div class="details-summary">Выбор логотипа и загрузка желаемого</div>
+      <div class="details-content">
+        <input type="text" id="logoInput" placeholder="https://example.com/logo.png"/>
+        <input type="file" id="logoFile" accept="image/*"/>
+        <div id="logoPreviewContainer">
+          <img id="logoPreview" alt="Предпросмотр логотипа"/>
+          <button id="removeLogo" title="Удалить логотип">×</button>
+        </div>
+        <label for="logoSize">Размер логотипа (%)</label>
+        <input type="range" id="logoSize" min="1" max="50" value="15"/>
+      </div>
+    </div>
+    <div class="details-accordion">
+      <div class="details-summary">Поле вокруг QR-кода</div>
+      <div class="details-content">
+        <label for="errorLevel">Уровень коррекции ошибок</label>
+        <select id="errorLevel">
+          <option value="L">L</option>
+          <option value="M" selected>M</option>
+          <option value="Q">Q</option>
+          <option value="H">H</option>
+        </select>
+      </div>
+    </div>
+  </aside>
+  <section class="preview-panel">
+    <div class="preview-block">
+      <div id="qrWrapper"><div id="qr-code"></div><img id="logoOverlay" alt="Логотип QR"/></div>
+    </div>
+    <div class="export-block" id="exportButtons" style="display:none;">
+      <button data-type="svg">SVG</button>
+      <button data-type="png">PNG</button>
+      <button data-type="jpg">JPG</button>
+      <button data-type="pdf">PDF</button>
+    </div>
+    <div class="seed-block">
+      <textarea id="seedArea"></textarea>
+      <button id="copySettings">Скопировать код настроек</button>
+      <button id="loadSettingsBtn">Загрузить свои настройки</button>
+    </div>
+  </section>
+</main>
 <div id="messageBox"></div>
+<script>
+// JS-аккордеон с плавным открытием и закрытием
+document.querySelectorAll('.details-accordion').forEach(block => {
+  const summary = block.querySelector('.details-summary');
+  const content = block.querySelector('.details-content');
+  summary.addEventListener('click', function() {
+    if (!block.classList.contains('open')) {
+      document.querySelectorAll('.details-accordion.open').forEach(openBlock => {
+        if (openBlock !== block) {
+          openBlock.classList.remove('open');
+        }
+      });
+      block.classList.add('open');
+    } else {
+      block.classList.remove('open');
+    }
+  });
+});
+// Открыть только первый блок по умолчанию
+document.querySelectorAll('.details-accordion').forEach((el,i)=>{
+  if(i!==0) el.classList.remove('open');
+});
+</script>
+
+
+
+
+
 
 <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 <script>
@@ -158,10 +197,8 @@ const dotColorHex = document.getElementById("dotColorHex");
 const bgColor = document.getElementById("bgColor");
 const bgColorHex = document.getElementById("bgColorHex");
 const bgTransparency = document.getElementById("bgTransparency");
-
 const dotShape = document.getElementById("dotShape");
 const markerShape = document.getElementById("markerShape");
-
 const logoInput = document.getElementById("logoInput");
 const logoFile = document.getElementById("logoFile");
 const logoPreview = document.getElementById("logoPreview");
@@ -187,7 +224,6 @@ function showMessage(message, isError = false) {
   }
   messageBox.style.opacity = "1";
   messageBox.style.pointerEvents = "auto";
-
   setTimeout(() => {
     messageBox.style.opacity = "0";
     messageBox.style.pointerEvents = "none";
@@ -225,31 +261,17 @@ function updateQR() {
   updateTimer = setTimeout(() => {
     const data = urlInput.value.trim();
     if (!data) return;
-
     qrCode.update({
       data: data,
-      dotsOptions: {
-        color: dotColor.value,
-        type: dotShape.value,
-      },
-      cornersSquareOptions: {
-        type: markerShape.value,
-        color: dotColor.value,
-      },
-      cornersDotOptions: {
-        type: markerShape.value,
-        color: dotColor.value,
-      },
+      dotsOptions: { color: dotColor.value, type: dotShape.value },
+      cornersSquareOptions: { type: markerShape.value, color: dotColor.value },
+      cornersDotOptions: { type: markerShape.value, color: dotColor.value },
       backgroundOptions: {
         color: bgTransparency.checked ? "transparent" : bgColor.value,
       },
-      qrOptions: {
-        errorCorrectionLevel: errorLevel.value,
-      },
+      qrOptions: { errorCorrectionLevel: errorLevel.value },
     });
-
     updateLogoOverlay();
-
     const settings = {
       data,
       dotColor: dotColor.value,
@@ -265,7 +287,6 @@ function updateQR() {
       errorLevel: errorLevel.value,
     };
     seedArea.value = btoa(JSON.stringify(settings));
-
     exportButtons.style.display = "flex";
   }, 500);
 }
@@ -354,7 +375,6 @@ loadSettingsBtn.addEventListener("click", () => {
     errorLevel.value = settings.errorLevel || "M";
 
     updateQR();
-
     showMessage("Код настроек успешно вставлен");
   } catch (e) {
     showMessage("Некорректный код настроек", true);
