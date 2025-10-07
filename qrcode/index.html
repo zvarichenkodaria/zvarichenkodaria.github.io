@@ -5,117 +5,284 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>QR с расширенными настройками</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 0; margin: 0; background: #f5f5f5; }
-  .page-header { background: #e2e2e2; padding: 30px 0 16px 0; text-align: center; }
-  .main-grid {
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0; padding:0;
+    color: #222;
+  }
+  header {
+    background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+    padding: 20px 50px;
+    text-align: center;
+    font-weight: 600;
+    color: #fff;
+    font-size: 2rem;
+    border-radius: 0 0 100px 100px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .grid-container {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
-    gap: 48px;
-    width: 100%;
-    max-width: 1100px;
-    margin: 48px auto;
-    align-items: start;
-    min-height: 80vh;
+    gap: 40px;
+    padding: 120px 40px 40px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
-  .settings-panel { display: flex; flex-direction: column; gap: 18px; }
-  .preview-panel { display: flex; flex-direction: column; gap: 24px;}
-  .preview-block { background: #e2e2e2; min-height: 320px; display: flex; align-items: center; justify-content: center;}
-  .export-block, .seed-block { background: #e2e2e2; padding: 20px 0; text-align: center;}
-  .details-accordion { background: #e2e2e2; border-radius: 20px; margin-bottom: 0; }
-  .details-summary {padding:22px 36px; cursor:pointer; font-size:1.15rem; border-radius:20px; outline:none; user-select: none;}
-  .details-accordion[open] .details-summary { background: #d0d0d0; }
-  .details-content {
+
+  .menu-section {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  .menu-header {
+    background: #f4f4f4;
+    padding: 22px 36px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
+    user-select: none;
+    border-radius: 20px;
+    transition: background .3s ease;
+  }
+  .menu-header.active {
+    background: #dca6ae;
+    color: #500007;
+  }
+
+  .menu-content {
     max-height: 0;
     opacity: 0;
-    padding: 0 36px;
     overflow: hidden;
-    transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .35s;
+    background: #fafafa;
+    padding: 0 36px;
+    transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s ease, padding 0.3s ease;
   }
-  .details-accordion.open .details-content {
-    max-height: 500px;
+  .menu-content.active {
+    max-height: 1000px;
     opacity: 1;
-    padding: 10px 36px 22px 36px;
-    transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .4s;
+    padding: 10px 36px 30px 36px;
   }
-  label, input, select, textarea, button { margin: 8px 0; width: 100%; box-sizing: border-box;}
-  button { padding: 10px; font-size: 1rem; cursor: pointer;}
-  #logoPreviewContainer { position: relative; width: 100px; height: 100px; margin-top: 5px;}
-  #logoPreview { max-width: 100%; max-height: 100%; display: none; border: 1px solid #ccc;}
-  #removeLogo { position: absolute; top: 0; right: 0; background: red; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; display: none; font-weight: bold; line-height: 18px; padding: 0;}
-  #messageBox { position: fixed; top: 10px; right: 10px; background-color: #4caf50; color: white; padding: 12px 20px; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,0.2); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; min-width: 220px; font-size: 14px;}
-  #messageBox.error { background-color: #f44336;}
+
+  input, select, textarea, button {
+    margin: 8px 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+  input[type="text"],
+  input[type="url"],
+  input[type="color"],
+  select,
+  textarea {
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+  }
+
+  button {
+    background: #ffcbcf;
+    border: none;
+    color: #500007;
+    padding: 14px 30px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    margin-top: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(204,87,101,0.3);
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #e999a1;
+  }
+
+  .logo-preview-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+  }
+  #logoPreview {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    display: none;
+  }
+  #removeLogo {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #500007;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    display: none;
+  }
+
+  .preview-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  #qrWrapper {
+    background: #fff;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 25px rgba(204,87,101,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #logoOverlay {
+    max-width: 50%;
+    height: auto;
+    pointer-events: none;
+    display: none;
+    position: absolute;
+  }
+  #exportButtons button {
+    width: 100%;
+    margin-bottom: 10px;
+    background: #ffcbcf;
+    border-radius: 20px;
+    border: none;
+    color: #500007;
+    font-size: 1.1rem;
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(204,87,101,0.3);
+    transition: background 0.3s ease;
+  }
+  #exportButtons button:hover {
+    background: #e999a1;
+  }
+  #seedArea {
+    width: 100%;
+    min-height: 120px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    font-size: 1rem;
+    font-family: "Segoe UI", Arial, sans-serif;
+    resize: vertical;
+  }
+  #copySettings, #loadSettingsBtn {
+    margin-top: 15px;
+    width: 48%;
+  }
+  .seed-block {
+    display: flex;
+    justify-content: space-between;
+  }
+  #messageBox {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #a10015;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(161,0,21,0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    min-width: 220px;
+  }
+
 </style>
 </head>
 <body>
-<header class="page-header"><h1>Шапка страницы</h1></header>
-<main class="main-grid">
-  <aside class="settings-panel">
-    <div class="details-accordion open">
-      <div class="details-summary">Сюда вставлять URL</div>
-      <div class="details-content">
-        <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com"/>
-      </div>
+<header>Звариченко Дарья | Творческое портфолио дизайнера | Цены и контакты</header>
+
+<div class="grid-container">
+
+  <div class="menu-section">
+    <div class="menu-header active">Сюда вставлять URL</div>
+    <div class="menu-content active">
+      <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com" />
     </div>
-    <div class="details-accordion">
-      <div class="details-summary">Настройка цвета фона и цвета QR-кода</div>
-      <div class="details-content">
-        <input type="color" id="bgColor" value="#ffffff"/>
-        <input type="text" id="bgColorHex" maxlength="7" style="margin-top:2px;" placeholder="#ffffff"/>
-        <input type="color" id="dotColor" value="#000000"/>
-        <input type="text" id="dotColorHex" maxlength="7" style="margin-top:2px;" placeholder="#000000"/>
-        <label><input type="checkbox" id="bgTransparency"/> Прозрачный фон</label>
-      </div>
+
+    <div class="menu-header">Настройка цвета фона и цвета QR-кода</div>
+    <div class="menu-content">
+      <input type="color" id="bgColor" value="#ffffff" />
+      <input type="text" id="bgColorHex" maxlength="7" style="margin-top:2px;" placeholder="#ffffff" />
+      <input type="color" id="dotColor" value="#000000" />
+      <input type="text" id="dotColorHex" maxlength="7" style="margin-top:2px;" placeholder="#000000" />
+      <label><input type="checkbox" id="bgTransparency" /> Прозрачный фон</label>
     </div>
-    <div class="details-accordion">
-      <div class="details-summary">Настройка частиц, из которых состоит QR-код</div>
-      <div class="details-content">
-        <label for="dotShape">Форма точек</label>
-        <select id="dotShape">
-          <option value="square">Квадрат</option>
-          <option value="dots">Точки</option>
-          <option value="classy">Стильный</option>
-        </select>
-      </div>
+
+    <div class="menu-header">Настройка частиц, из которых состоит QR-код</div>
+    <div class="menu-content">
+      <label for="dotShape">Форма точек</label>
+      <select id="dotShape">
+        <option value="square">Квадрат</option>
+        <option value="dots">Точки</option>
+        <option value="classy">Стильный</option>
+      </select>
     </div>
-    <div class="details-accordion">
-      <div class="details-summary">Выбор границы и центра маркера</div>
-      <div class="details-content">
-        <label for="markerShape">Форма маркеров углов</label>
-        <select id="markerShape">
-          <option value="square">Квадрат</option>
-          <option value="dot">Точка</option>
-        </select>
-      </div>
+
+    <div class="menu-header">Выбор границы и центра маркера</div>
+    <div class="menu-content">
+      <label for="markerShape">Форма маркеров углов</label>
+      <select id="markerShape">
+        <option value="square">Квадрат</option>
+        <option value="dot">Точка</option>
+      </select>
     </div>
-    <div class="details-accordion">
-      <div class="details-summary">Выбор логотипа и загрузка желаемого</div>
-      <div class="details-content">
-        <input type="text" id="logoInput" placeholder="https://example.com/logo.png"/>
-        <input type="file" id="logoFile" accept="image/*"/>
-        <div id="logoPreviewContainer">
-          <img id="logoPreview" alt="Предпросмотр логотипа"/>
-          <button id="removeLogo" title="Удалить логотип">×</button>
-        </div>
-        <label for="logoSize">Размер логотипа (%)</label>
-        <input type="range" id="logoSize" min="1" max="50" value="15"/>
+
+    <div class="menu-header">Выбор логотипа и загрузка желаемого</div>
+    <div class="menu-content">
+      <input type="text" id="logoInput" placeholder="https://example.com/logo.png" />
+      <input type="file" id="logoFile" accept="image/*" />
+      <div class="logo-preview-container">
+        <img id="logoPreview" alt="Предпросмотр логотипа" />
+        <button id="removeLogo" title="Удалить логотип">×</button>
       </div>
+      <label for="logoSize">Размер логотипа (%)</label>
+      <input type="range" id="logoSize" min="1" max="50" value="15" />
     </div>
-    <div class="details-accordion">
-      <div class="details-summary">Поле вокруг QR-кода</div>
-      <div class="details-content">
-        <label for="errorLevel">Уровень коррекции ошибок</label>
-        <select id="errorLevel">
-          <option value="L">L</option>
-          <option value="M" selected>M</option>
-          <option value="Q">Q</option>
-          <option value="H">H</option>
-        </select>
-      </div>
+
+    <div class="menu-header">Поле вокруг QR-кода</div>
+    <div class="menu-content">
+      <label for="errorLevel">Уровень коррекции ошибок</label>
+      <select id="errorLevel">
+        <option value="L">L</option>
+        <option value="M" selected>M</option>
+        <option value="Q">Q</option>
+        <option value="H">H</option>
+      </select>
     </div>
-  </aside>
-  <section class="preview-panel">
+  </div>
+
+  <div class="preview-panel">
     <div class="preview-block">
-      <div id="qrWrapper"><div id="qr-code"></div><img id="logoOverlay" alt="Логотип QR"/></div>
+      <div id="qrWrapper">
+        <div id="qr-code"></div>
+        <img id="logoOverlay" alt="Логотип QR" />
+      </div>
     </div>
     <div class="export-block" id="exportButtons" style="display:none;">
       <button data-type="svg">SVG</button>
@@ -124,297 +291,286 @@
       <button data-type="pdf">PDF</button>
     </div>
     <div class="seed-block">
-      <textarea id="seedArea"></textarea>
+      <textarea id="seedArea" placeholder="base64"></textarea>
       <button id="copySettings">Скопировать код настроек</button>
       <button id="loadSettingsBtn">Загрузить свои настройки</button>
     </div>
-  </section>
-</main>
+  </div>
+</div>
+
 <div id="messageBox"></div>
-<script>
-// JS-аккордеон с плавным открытием и закрытием
-document.querySelectorAll('.details-accordion').forEach(block => {
-  const summary = block.querySelector('.details-summary');
-  const content = block.querySelector('.details-content');
-  summary.addEventListener('click', function() {
-    if (!block.classList.contains('open')) {
-      document.querySelectorAll('.details-accordion.open').forEach(openBlock => {
-        if (openBlock !== block) {
-          openBlock.classList.remove('open');
-        }
-      });
-      block.classList.add('open');
-    } else {
-      block.classList.remove('open');
-    }
-  });
-});
-// Открыть только первый блок по умолчанию
-document.querySelectorAll('.details-accordion').forEach((el,i)=>{
-  if(i!==0) el.classList.remove('open');
-});
-</script>
-
-
-
-
-
 
 <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+
 <script>
-const qrCode = new QRCodeStyling({
-  width: 300,
-  height: 300,
-  type: "svg",
-  data: "https://example.com",
-  dotsOptions: {
-    color: "#000000",
-    type: "square"
-  },
-  cornersSquareOptions: {
-    type: "square",
-    color: "#000000"
-  },
-  cornersDotOptions: {
-    type: "dot",
-    color: "#000000"
-  },
-  backgroundOptions: {
-    color: "#ffffff"
-  },
-  margin: 5,
-  qrOptions: {
-    errorCorrectionLevel: "M"
-  }
-});
-
-const container = document.getElementById("qr-code");
-qrCode.append(container);
-
-const urlInput = document.getElementById("urlInput");
-const dotColor = document.getElementById("dotColor");
-const dotColorHex = document.getElementById("dotColorHex");
-const bgColor = document.getElementById("bgColor");
-const bgColorHex = document.getElementById("bgColorHex");
-const bgTransparency = document.getElementById("bgTransparency");
-const dotShape = document.getElementById("dotShape");
-const markerShape = document.getElementById("markerShape");
-const logoInput = document.getElementById("logoInput");
-const logoFile = document.getElementById("logoFile");
-const logoPreview = document.getElementById("logoPreview");
-const removeLogoBtn = document.getElementById("removeLogo");
-const logoSize = document.getElementById("logoSize");
-const errorLevel = document.getElementById("errorLevel");
-const logoOverlay = document.getElementById("logoOverlay");
-const exportButtons = document.getElementById("exportButtons");
-const seedArea = document.getElementById("seedArea");
-const copySettingsBtn = document.getElementById("copySettings");
-const loadSettingsBtn = document.getElementById("loadSettingsBtn");
-const messageBox = document.getElementById("messageBox");
-
-let updateTimer;
-let logoData;
-
-function showMessage(message, isError = false) {
-  messageBox.textContent = message;
-  if (isError) {
-    messageBox.classList.add("error");
-  } else {
-    messageBox.classList.remove("error");
-  }
-  messageBox.style.opacity = "1";
-  messageBox.style.pointerEvents = "auto";
-  setTimeout(() => {
-    messageBox.style.opacity = "0";
-    messageBox.style.pointerEvents = "none";
-  }, 3000);
-}
-
-function syncColorInputs(colorInput, hexInput) {
-  colorInput.addEventListener("input", () => {
-    hexInput.value = colorInput.value;
+  // Аккордеон лист для блоков меню с плавным раскрытием
+  const headers = document.querySelectorAll('.menu-header');
+  headers.forEach(header => {
+    header.addEventListener('click', () => {
+      const isActive = header.classList.contains('active');
+      headers.forEach(h => {
+        h.classList.remove('active');
+        h.nextElementSibling.classList.remove('active');
+      });
+      if (!isActive) {
+        header.classList.add('active');
+        header.nextElementSibling.classList.add('active');
+      }
+    });
   });
-  hexInput.addEventListener("input", () => {
-    const val = hexInput.value.trim();
-    if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
-      colorInput.value = val;
+
+  // Ваш основной JS код с обработчиками под вашу логику с QR-code
+
+  const qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    type: "svg",
+    data: "https://example.com",
+    dotsOptions: {
+      color: "#000000",
+      type: "square"
+    },
+    cornersSquareOptions: {
+      type: "square",
+      color: "#000000"
+    },
+    cornersDotOptions: {
+      type: "dot",
+      color: "#000000"
+    },
+    backgroundOptions: {
+      color: "#ffffff"
+    },
+    margin: 5,
+    qrOptions: {
+      errorCorrectionLevel: "M"
+    }
+  });
+
+  const container = document.getElementById("qr-code");
+  qrCode.append(container);
+
+  const urlInput = document.getElementById("urlInput");
+  const dotColor = document.getElementById("dotColor");
+  const dotColorHex = document.getElementById("dotColorHex");
+  const bgColor = document.getElementById("bgColor");
+  const bgColorHex = document.getElementById("bgColorHex");
+  const bgTransparency = document.getElementById("bgTransparency");
+  const dotShape = document.getElementById("dotShape");
+  const markerShape = document.getElementById("markerShape");
+  const logoInput = document.getElementById("logoInput");
+  const logoFile = document.getElementById("logoFile");
+  const logoPreview = document.getElementById("logoPreview");
+  const removeLogoBtn = document.getElementById("removeLogo");
+  const logoSize = document.getElementById("logoSize");
+  const errorLevel = document.getElementById("errorLevel");
+  const logoOverlay = document.getElementById("logoOverlay");
+  const exportButtons = document.getElementById("exportButtons");
+  const seedArea = document.getElementById("seedArea");
+  const copySettingsBtn = document.getElementById("copySettings");
+  const loadSettingsBtn = document.getElementById("loadSettingsBtn");
+  const messageBox = document.getElementById("messageBox");
+
+  let updateTimer;
+  let logoData;
+
+  function showMessage(message, isError = false) {
+    messageBox.textContent = message;
+    if (isError) {
+      messageBox.classList.add("error");
+    } else {
+      messageBox.classList.remove("error");
+    }
+    messageBox.style.opacity = "1";
+    messageBox.style.pointerEvents = "auto";
+    setTimeout(() => {
+      messageBox.style.opacity = "0";
+      messageBox.style.pointerEvents = "none";
+    }, 3000);
+  }
+
+  function syncColorInputs(colorInput, hexInput) {
+    colorInput.addEventListener("input", () => {
+      hexInput.value = colorInput.value;
+    });
+    hexInput.addEventListener("input", () => {
+      const val = hexInput.value.trim();
+      if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
+        colorInput.value = val;
+        updateQR();
+      }
+    });
+  }
+
+  function updateLogoOverlay() {
+    if (logoData) {
+      logoOverlay.src = logoData;
+      logoOverlay.style.display = "block";
+      let sizePerc = parseFloat(logoSize.value);
+      sizePerc = Math.min(Math.max(sizePerc, 1), 50);
+      logoOverlay.style.maxWidth = sizePerc + "%";
+      logoOverlay.style.height = "auto";
+    } else {
+      logoOverlay.style.display = "none";
+    }
+  }
+
+  function updateQR() {
+    clearTimeout(updateTimer);
+    updateTimer = setTimeout(() => {
+      const data = urlInput.value.trim();
+      if (!data) return;
+      qrCode.update({
+        data: data,
+        dotsOptions: { color: dotColor.value, type: dotShape.value },
+        cornersSquareOptions: { type: markerShape.value, color: dotColor.value },
+        cornersDotOptions: { type: markerShape.value, color: dotColor.value },
+        backgroundOptions: { color: bgTransparency.checked ? "transparent" : bgColor.value },
+        qrOptions: { errorCorrectionLevel: errorLevel.value },
+      });
+      updateLogoOverlay();
+      const settings = {
+        data,
+        dotColor: dotColor.value,
+        dotColorHex: dotColorHex.value,
+        bgColor: bgColor.value,
+        bgColorHex: bgColorHex.value,
+        bgTransparency: bgTransparency.checked,
+        dotShape: dotShape.value,
+        markerShape: markerShape.value,
+        logoUrl: logoInput.value,
+        logoBase64: logoData,
+        logoSize: logoSize.value,
+        errorLevel: errorLevel.value,
+      };
+      seedArea.value = btoa(JSON.stringify(settings));
+      exportButtons.style.display = "flex";
+    }, 500);
+  }
+
+  syncColorInputs(dotColor, dotColorHex);
+  syncColorInputs(bgColor, bgColorHex);
+
+  logoInput.addEventListener("input", () => {
+    if (logoInput.value.trim() !== "") {
+      logoData = logoInput.value.trim();
+      logoPreview.style.display = "none";
+      removeLogoBtn.style.display = logoData ? "inline-block" : "none";
+      updateQR();
+    } else if (!logoData) {
+      removeLogoBtn.style.display = "none";
+    }
+  });
+
+  logoFile.addEventListener("change", () => {
+    const file = logoFile.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      logoData = e.target.result;
+      logoPreview.src = logoData;
+      logoPreview.style.display = "block";
+      removeLogoBtn.style.display = "inline-block";
+      logoInput.value = "";
+      updateQR();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removeLogoBtn.addEventListener("click", () => {
+    logoData = undefined;
+    logoPreview.style.display = "none";
+    removeLogoBtn.style.display = "none";
+    logoFile.value = "";
+    logoInput.value = "";
+    updateQR();
+  });
+
+  copySettingsBtn.addEventListener("click", () => {
+    seedArea.select();
+    try {
+      document.execCommand("copy");
+      showMessage("Код настроек скопирован в буфер обмена");
+    } catch {
+      showMessage("Ошибка копирования", true);
+    }
+    window.getSelection().removeAllRanges();
+  });
+
+  loadSettingsBtn.addEventListener("click", () => {
+    try {
+      const jsonStr = atob(seedArea.value);
+      const settings = JSON.parse(jsonStr);
+      urlInput.value = settings.data || "https://example.com";
+      dotColor.value = settings.dotColor || "#000000";
+      dotColorHex.value = settings.dotColorHex || dotColor.value;
+      bgColor.value = settings.bgColor || "#ffffff";
+      bgColorHex.value = settings.bgColorHex || bgColor.value;
+      bgTransparency.checked = settings.bgTransparency || false;
+      dotShape.value = settings.dotShape || "square";
+      markerShape.value = settings.markerShape || "square";
+      logoInput.value = settings.logoUrl || "";
+      logoData = settings.logoBase64 || undefined;
+      if (logoData) {
+        if (logoData.startsWith("data:image")) {
+          logoPreview.src = logoData;
+          logoPreview.style.display = "block";
+          removeLogoBtn.style.display = "inline-block";
+          logoInput.value = "";
+        } else {
+          logoPreview.style.display = "none";
+          removeLogoBtn.style.display = "inline-block";
+          logoInput.value = logoData;
+        }
+      } else {
+        logoPreview.style.display = "none";
+        removeLogoBtn.style.display = "none";
+      }
+      logoFile.value = "";
+      logoSize.value = settings.logoSize || 15;
+      errorLevel.value = settings.errorLevel || "M";
+
+      updateQR();
+      showMessage("Код настроек успешно вставлен");
+    } catch (e) {
+      showMessage("Некорректный код настроек", true);
+    }
+  });
+
+  urlInput.addEventListener("input", updateQR);
+  dotColor.addEventListener("input", () => {
+    dotColorHex.value = dotColor.value;
+    updateQR();
+  });
+  dotColorHex.addEventListener("input", () => {
+    if (/^#([0-9A-Fa-f]{6})$/.test(dotColorHex.value)) {
+      dotColor.value = dotColorHex.value;
       updateQR();
     }
   });
-}
-
-function updateLogoOverlay() {
-  if (logoData) {
-    logoOverlay.src = logoData;
-    logoOverlay.style.display = "block";
-    let sizePerc = parseFloat(logoSize.value);
-    sizePerc = Math.min(Math.max(sizePerc, 1), 50);
-    logoOverlay.style.maxWidth = sizePerc + "%";
-    logoOverlay.style.height = "auto";
-  } else {
-    logoOverlay.style.display = "none";
-  }
-}
-
-function updateQR() {
-  clearTimeout(updateTimer);
-  updateTimer = setTimeout(() => {
-    const data = urlInput.value.trim();
-    if (!data) return;
-    qrCode.update({
-      data: data,
-      dotsOptions: { color: dotColor.value, type: dotShape.value },
-      cornersSquareOptions: { type: markerShape.value, color: dotColor.value },
-      cornersDotOptions: { type: markerShape.value, color: dotColor.value },
-      backgroundOptions: {
-        color: bgTransparency.checked ? "transparent" : bgColor.value,
-      },
-      qrOptions: { errorCorrectionLevel: errorLevel.value },
-    });
-    updateLogoOverlay();
-    const settings = {
-      data,
-      dotColor: dotColor.value,
-      dotColorHex: dotColorHex.value,
-      bgColor: bgColor.value,
-      bgColorHex: bgColorHex.value,
-      bgTransparency: bgTransparency.checked,
-      dotShape: dotShape.value,
-      markerShape: markerShape.value,
-      logoUrl: logoInput.value,
-      logoBase64: logoData,
-      logoSize: logoSize.value,
-      errorLevel: errorLevel.value,
-    };
-    seedArea.value = btoa(JSON.stringify(settings));
-    exportButtons.style.display = "flex";
-  }, 500);
-}
-
-syncColorInputs(dotColor, dotColorHex);
-syncColorInputs(bgColor, bgColorHex);
-
-logoInput.addEventListener("input", () => {
-  if (logoInput.value.trim() !== "") {
-    logoData = logoInput.value.trim();
-    logoPreview.style.display = "none";
-    removeLogoBtn.style.display = logoData ? "inline-block" : "none";
+  bgColor.addEventListener("input", () => {
+    bgColorHex.value = bgColor.value;
     updateQR();
-  } else if (!logoData) {
-    removeLogoBtn.style.display = "none";
-  }
-});
-
-logoFile.addEventListener("change", () => {
-  const file = logoFile.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    logoData = e.target.result;
-    logoPreview.src = logoData;
-    logoPreview.style.display = "block";
-    removeLogoBtn.style.display = "inline-block";
-    logoInput.value = "";
-    updateQR();
-  };
-  reader.readAsDataURL(file);
-});
-
-removeLogoBtn.addEventListener("click", () => {
-  logoData = undefined;
-  logoPreview.style.display = "none";
-  removeLogoBtn.style.display = "none";
-  logoFile.value = "";
-  logoInput.value = "";
-  updateQR();
-});
-
-copySettingsBtn.addEventListener("click", () => {
-  seedArea.select();
-  try {
-    document.execCommand("copy");
-    showMessage("Код настроек скопирован в буфер обмена");
-  } catch {
-    showMessage("Ошибка копирования", true);
-  }
-  window.getSelection().removeAllRanges();
-});
-
-loadSettingsBtn.addEventListener("click", () => {
-  try {
-    const jsonStr = atob(seedArea.value);
-    const settings = JSON.parse(jsonStr);
-
-    urlInput.value = settings.data || "https://example.com";
-    dotColor.value = settings.dotColor || "#000000";
-    dotColorHex.value = settings.dotColorHex || dotColor.value;
-    bgColor.value = settings.bgColor || "#ffffff";
-    bgColorHex.value = settings.bgColorHex || bgColor.value;
-    bgTransparency.checked = settings.bgTransparency || false;
-    dotShape.value = settings.dotShape || "square";
-    markerShape.value = settings.markerShape || "square";
-    logoInput.value = settings.logoUrl || "";
-    logoData = settings.logoBase64 || undefined;
-    if (logoData) {
-      if (logoData.startsWith("data:image")) {
-        logoPreview.src = logoData;
-        logoPreview.style.display = "block";
-        removeLogoBtn.style.display = "inline-block";
-        logoInput.value = "";
-      } else {
-        logoPreview.style.display = "none";
-        removeLogoBtn.style.display = "inline-block";
-        logoInput.value = logoData;
-      }
-    } else {
-      logoPreview.style.display = "none";
-      removeLogoBtn.style.display = "none";
-    }
-    logoFile.value = "";
-    logoSize.value = settings.logoSize || 15;
-    errorLevel.value = settings.errorLevel || "M";
-
-    updateQR();
-    showMessage("Код настроек успешно вставлен");
-  } catch (e) {
-    showMessage("Некорректный код настроек", true);
-  }
-});
-
-urlInput.addEventListener("input", updateQR);
-dotColor.addEventListener("input", () => {
-  dotColorHex.value = dotColor.value;
-  updateQR();
-});
-dotColorHex.addEventListener("input", () => {
-  if (/^#([0-9A-Fa-f]{6})$/.test(dotColorHex.value)) {
-    dotColor.value = dotColorHex.value;
-    updateQR();
-  }
-});
-bgColor.addEventListener("input", () => {
-  bgColorHex.value = bgColor.value;
-  updateQR();
-});
-bgColorHex.addEventListener("input", () => {
-  if (/^#([0-9A-Fa-f]{6})$/.test(bgColorHex.value)) {
-    bgColor.value = bgColorHex.value;
-    updateQR();
-  }
-});
-bgTransparency.addEventListener("change", updateQR);
-dotShape.addEventListener("change", updateQR);
-markerShape.addEventListener("change", updateQR);
-errorLevel.addEventListener("change", updateQR);
-
-exportButtons.querySelectorAll("button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const ext = btn.getAttribute("data-type");
-    qrCode.download({ extension: ext, name: "qr-code" });
   });
-});
+  bgColorHex.addEventListener("input", () => {
+    if (/^#([0-9A-Fa-f]{6})$/.test(bgColorHex.value)) {
+      bgColor.value = bgColorHex.value;
+      updateQR();
+    }
+  });
+  bgTransparency.addEventListener("change", updateQR);
+  dotShape.addEventListener("change", updateQR);
+  markerShape.addEventListener("change", updateQR);
+  errorLevel.addEventListener("change", updateQR);
 
-updateQR();
+  exportButtons.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const ext = btn.getAttribute("data-type");
+      qrCode.download({ extension: ext, name: "qr-code" });
+    });
+  });
+
+  updateQR();
 </script>
 </body>
 </html>
