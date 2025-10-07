@@ -1,0 +1,246 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  padding: 150px 40px 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pros {
+  display: inline-block;
+}
+
+.menu-section1 {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  top: 50px
+}
+
+.menu-header {
+  padding: 20px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  user-select: none;
+  border-radius: 30px;
+  transition: background 0.3s ease;
+  margin: 0px 0px 11px 0px;
+  background: #fff;
+  box-shadow: 0px 0px 20px rgba(150, 0, 0, 0.2);
+}
+
+.menu-header.active {
+  background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
+  color: #ffffff;
+}
+
+.menu-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 36px;
+  transition: max-height 0.4s cubic-bezier(.4, 0, .2, 1), opacity 0.3s ease, padding 0.3s ease;
+}
+
+.menu-content.active {
+  max-height: 1000px;
+  opacity: 1;
+  padding: 10px 36px 30px 36px;
+}
+
+input,
+select,
+textarea,
+button {
+  margin: 8px 0;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+input[type="text"],
+input[type="url"],
+input[type="color"],
+select,
+textarea {
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  color: #333;
+}
+
+label {
+  font-weight: 600;
+  margin-top: -5px;
+  display: block;
+}
+
+.button1 {
+
+  box-sizing: content-box; /* чтобы padding не влиял на размеры */
+  width: 25px !important;
+  height: 25px !important;
+  background: #500007 !important;
+  border-radius: 50% !important;
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  font-size: 15px !important;
+  color: #ffcbcf !important;
+  box-shadow: 0 0 20px rgba(150, 0, 0, 0.2) !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  padding: 0 !important;
+}
+
+.button2 {
+  background: #ffcbcf;
+  border: none;
+  color: #500007;
+  padding: 14px 30px;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  margin-top: 15px;
+  cursor: pointer;
+  box-shadow: 0px 0px 20px rgba(150, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+.button2:hover {
+  background: #e999a1;
+}
+
+.logo-preview-container {
+  position: relative;
+  width: 96px;
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: none; /* По умолчанию контейнер скрыт */
+}
+.logo-preview-container.active {
+  display: block;
+}
+#logoPreview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  display: none;
+  background: #f5f6f1; /* как ваш фон, чтобы не было "дырки" */
+}
+
+#logoFile {
+  display: block;
+}
+#logoFile.hidden {
+  display: none;
+}
+
+#removeLogo {
+  display: none; /* Это самый первый стиль */
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #500007;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+#qrWrapper {
+  background: #fff;
+  padding: 20px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 20px rgba(150, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#logoOverlay {
+  max-width: 50%;
+  height: auto;
+  pointer-events: none;
+  display: none;
+  position: absolute;
+}
+
+#exportButtons button {
+  width: 100%;
+  margin-bottom: 10px;
+  background: #ffcbcf;
+  border-radius: 20px;
+  border: none;
+  color: #500007;
+  font-size: 1.1rem;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(204, 87, 101, 0.3);
+  transition: background 0.3s ease;
+}
+
+#exportButtons button:hover {
+  background: #e999a1;
+}
+
+#seedArea {
+  width: 100%;
+  min-height: 120px;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  font-size: 1rem;
+  font-family: "Segoe UI", Arial, sans-serif;
+  resize: vertical;
+}
+
+#copySettings,
+#loadSettingsBtn {
+  margin-top: 15px;
+  width: 48%;
+}
+
+.seed-block {
+  display: flex;
+  justify-content: space-between;
+}
+
+#messageBox {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #a10015;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(161, 0, 21, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+  min-width: 220px;
+}
