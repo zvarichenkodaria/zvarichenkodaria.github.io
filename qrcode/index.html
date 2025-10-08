@@ -62,16 +62,7 @@
           <p class="name_one">Генератор QR-кодов</p>
         </div>
 
-        <div class="circle-tg"><a target="_blank" href="https://t.me/zvarichenkodaria">
-          <div class="button-circle-telergam-menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="button-circle-telergam-svg-menu" viewBox="0 0 256 256">
-              <path fill="currentColor" d="M228.88 26.19a9 9 0 0 0-9.16-1.57L17.06 103.93a14.22
-               14.22 0 0 0 2.43 27.21L72 141.45V200a15.92 15.92 0 0 0 10 14.83a15.91 15.91
-               0 0 0 17.51-3.73l25.32-26.26L165 220a15.88 15.88 0 0 0 10.51 4a16.3 16.3 0 0 0
-               5-.79a15.85 15.85 0 0 0 10.67-11.63L231.77 35a9 9 0 0 0-2.89-8.81M175.53
-               208l-82.68-72.5l119-85.29Z" />
-            </svg>
-          </div></a></div>
+
       </nav>
     </header>
 
@@ -152,16 +143,18 @@
 
         </div>
       </div>
+      <div class="download">Скачать QR-код в формате:</div>
       <div class="export-block" id="exportButtons" style="display:none;">
         <button class="button2" data-type="svg">SVG</button>
         <button class="button2" data-type="png">PNG</button>
         <button class="button2" data-type="jpg">JPG</button>
         <button class="button2" data-type="pdf">PDF</button>
       </div>
-      <div class="seed-block">
+      <div class="seed-block" style="display:block;">
         <textarea id="seedArea" placeholder="base64"></textarea>
-        <button class="button2" id="copySettings">Скопировать код настроек</button>
-        <button class="button2" id="loadSettingsBtn">Загрузить свои настройки</button>
+        <div class="seed-block">
+        <button class="button3" id="copySettings">Скопировать код </button>
+        <button class="button3" id="loadSettingsBtn">Загрузить код</button></div>
       </div>
     </div>
   </div>
