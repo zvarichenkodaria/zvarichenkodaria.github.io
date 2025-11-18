@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CubeKey: Генератор и Анализатор паролей</title>
+<link rel="icon" href="https://zvarichenkodaria.ru/img/logo.png" type="image/png">
+<style>
+  :root {
+    --color-bg-light: #f4f6f9;
+    --color-bg-dark: #121217;
+    --color-primary-light: #5a4fcf;
+    --color-primary-dark: #4865d6;
+    --color-text-light: #333;
+    --color-text-dark: #ddd;
+    --shadow-subtle: rgba(90, 79, 207, 0.15);
+    --shadow-dark: rgba(30, 30, 70, 0.6);
+    --color-success: #27ae60;
+    --color-fail: #e74c3c;
+    --color-divider-light: #e0e0e0;
+    --color-divider-dark: #2a2b35;
+    --anim-curve: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    line-height: 1.6;
+    padding: 24px;
+    margin: 0;
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+  }
+  .dark-theme {
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  header {
+    color: white;
+    padding: 20px 16px 20px 16px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-subtle);
+    transition: background 0.3s;
+    position: relative;
+    background-color: var(--color-primary-light);
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 25px,
+        rgba(72, 101, 214, 0.4) 25px,
+        rgba(72, 101, 214, 0.4) 50px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 25px,
+        rgba(72, 101, 214, 0.4) 25px,
+        rgba(72, 101, 214, 0.4) 50px
+      );
+  }
+  .dark-theme header {
+    background-color: var(--color-primary-dark);
+     background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 25px,
+        rgba(90, 79, 207, 0.4) 25px,
+        rgba(90, 79, 207, 0.4) 50px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 25px,
+        rgba(90, 79, 207, 0.4) 25px,
+        rgba(90, 79, 207, 0.4) 50px
+      );
+  }
+  .header-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 15px;
+  }
+  .header-title img {
+      width: 40px;
+      height: 40px;
+  }
+  header h1 {
+    font-size: 26px;
+    margin: 0;
+  }
+  .tab-switcher {
+    display: inline-flex;
+    background: rgba(0,0,0,0.15);
+    border-radius: 25px;
+    padding: 5px;
+    z-index: 10;
+    position: relative;
+  }
+  .tab-switcher .slider, .view-toggle .slider {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      height: calc(100% - 10px);
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.35s var(--anim-curve);
+  }
+  .tab-switcher button {
+    border: none;
+    background: transparent;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: color 0.35s ease;
+  }
+  .tab-switcher button:not(.active) {
+      color: white;
+  }
+  .tab-switcher button.active {
+    color: var(--color-primary-light);
+  }
+  .dark-theme .tab-switcher button.active {
+      color: var(--color-primary-dark);
+  }
+  .content-area {
+    margin-top: 30px;
+    position: relative;
+  }
+  .view-container {
+    transition: opacity 0.3s var(--anim-curve);
+  }
+  .view-container:not(.active) {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  .view-container h2 {
+      text-align: center;
+      font-size: 22px;
+      color: var(--color-primary-light);
+      margin-top: 0;
+      margin-bottom: 30px;
+  }
+  .dark-theme .view-container h2 {
+      color: var(--color-primary-dark);
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 38px 40px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+  }
+  .analyzer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: stretch;
+  }
+  .params-block, .checkboxes-block, .preview-block, .strength-block, .analyzer-input-block, .analyzer-results-block, .faq-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px var(--shadow-subtle);
+    transition: background 0.3s, box-shadow 0.3s;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+  .dark-theme .params-block,
+  .dark-theme .checkboxes-block,
+  .dark-theme .preview-block,
+  .dark-theme .strength-block,
+  .dark-theme .analyzer-input-block,
+  .dark-theme .analyzer-results-block,
+  .dark-theme .faq-section {
+    background: #1d1e27;
+    box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
+  }
+  .analyzer-left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 38px;
+  }
+  .analyzer-left-column > .strength-block {
+      flex-grow: 1;
+  }
+  .form-group {
+    margin-bottom: 17px;
+    box-shadow: none;
+  }
+  .form-inline {
+    display: flex;
+    gap: 18px;
+  }
+  .form-inline .form-group {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: inherit;
+  }
+  input[type="number"],
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    box-shadow: 0 0 6px rgb(90 79 207 / 0.1);
+    transition: background 0.3s, color 0.3s;
+  }
+  .dark-theme input[type="number"],
+  .dark-theme input[type="text"],
+  .dark-theme select {
+    background: #2a2b35;
+    color: var(--color-text-dark);
+    box-shadow: 0 0 6px rgba(90, 79, 207, 0.15);
+  }
+  .required-input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .required-input-group input[type="text"] {
+    flex: 1;
+  }
+  .required-input-group .inline-checkbox {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    margin: 0;
+    font-weight: 400;
+    font-size: 15px;
+  }
+  .char-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 20px;
+      align-items: end;
+  }
+  .char-option-group label {
+      font-size: 15px;
+      font-weight: 500;
+  }
+  .char-option-group select {
+      padding: 8px;
+      font-size: 15px;
+  }
+  input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  .memorable-group {
+      text-align: center; 
+      margin-top: 20px; 
+      border-top: 1px solid var(--color-bg-light); 
+      padding-top: 18px;
+  }
+  .dark-theme .memorable-group {
+      border-top-color: #2a2b35;
+  }
+  .memorable-group label {
+      display: inline-flex; 
+      align-items: center; 
+      font-weight: 600; 
+      color: var(--color-primary-light); 
+      cursor: pointer;
+  }
+   .dark-theme .memorable-group label {
+       color: var(--color-primary-dark);
+   }
+  .preview-block > .title,
+  .strength-block .strength-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--color-primary-light);
+    transition: color 0.3s;
+    text-align: center;
+    margin-top: 0;
+  }
+  .preview-block {
+      justify-content: flex-start;
+  }
+  .preview-wrapper {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .dark-theme .preview-block > .title,
+  .dark-theme .strength-block .strength-title {
+    color: var(--color-primary-dark);
+  }
+  .preview-value {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-light);
+    word-break: break-all;
+    text-align: center;
+  }
+  .dark-theme .preview-value {
+    color: var(--color-text-dark);
+  }
+  .strength-text, .faq-item p {
+    font-size: 15px;
+    color: #777;
+    word-break: break-word;
+    transition: color 0.3s;
+  }
+  .strength-text strong {
+      display: block;
+      margin-top: 10px;
+  }
+  .dark-theme .strength-text, .dark-theme .faq-item p {
+    color: #ccc;
+  }
+  .strength-good { color: var(--color-success) !important; }
+  .strength-medium { color: #f39c12 !important; }
+  .strength-weak { color: var(--color-fail) !important; }
+  .centered-btn-wrap {
+    margin: 30px 0 0 0;
+    max-width: 1200px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .generate-btn {
+    background: var(--color-primary-light);
+    color: white;
+    border: none;
+    padding: 12px 34px;
+    border-radius: 7px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-shadow: 0 4px 15px rgb(90 79 207 / 0.4);
+    min-width: 160px;
+  }
+  .generate-btn:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 0 6px 18px rgb(72 101 214 / 0.6);
+  }
+  .dark-theme .generate-btn {
+    background: var(--color-primary-dark);
+    box-shadow: 0 4px 15px rgb(72 101 214 / 0.6);
+  }
+  .dark-theme .generate-btn:hover {
+    background: var(--color-primary-light);
+    box-shadow: 0 6px 18px rgb(90 79 207 / 0.45);
+  }
+  .row-flex-controls {
+    margin: 30px 0 0 0;
+    max-width: 1200px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .copy-all {
+    background: var(--color-primary-light);
+    color: white;
+    border: none;
+    padding: 10px 23px;
+    border-radius: 7px;
+    font-size: 15px;
+    min-width: 158px;
+    max-width: 230px;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 4px 14px rgb(90 79 207 / 0.4);
+    transition: background 0.25s;
+  }
+  .copy-all:hover { background: var(--color-primary-dark); }
+  .dark-theme .copy-all { background: var(--color-primary-dark); }
+  .dark-theme .copy-all:hover { background: var(--color-primary-light); }
+  .view-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    background: #ddd;
+    border-radius: 25px;
+    padding: 5px;
+  }
+  .dark-theme .view-toggle {
+      background: #44475a;
+  }
+  .view-toggle button {
+    font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 600;
+    transition: color 0.35s ease;
+    cursor: pointer;
+    min-width: 95px;
+    margin: 0;
+    background: transparent;
+    position: relative;
+    z-index: 1;
+  }
+   .view-toggle button.active {
+    color: var(--color-primary-light);
+  }
+   .dark-theme .view-toggle button.active {
+    color: var(--color-primary-dark);
+  }
+  .view-toggle button:not(.active) {
+    color: #333;
+  }
+   .dark-theme .view-toggle button:not(.active) {
+    color: #eee;
+  }
+   .view-toggle .slider {
+      background: white;
+   }
+   .dark-theme .view-toggle .slider {
+      background: var(--color-bg-dark);
+   }
+
+  #passwords-container { margin-top: 22px; position: relative; }
+  .password-grid, .password-list {
+      transition: opacity 0.25s var(--anim-curve);
+  }
+  .password-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .password-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgb(90 79 207 / 0.15);
+    transition: color 0.3s;
+    text-align: center;
+    cursor: pointer;
+    white-space: normal;
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+  .dark-theme .password-card {
+    background: #252533;
+    color: var(--color-text-dark);
+  }
+  .password-card:hover { color: var(--color-primary-light); }
+  .dark-theme .password-card:hover { color: var(--color-primary-dark); }
+  .password-list {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 16px;
+    margin: 0;
+    white-space: pre-line;
+    line-height: 1.7;
+    box-shadow: 0 4px 12px rgb(90 79 207 / 0.2);
+    max-width: 1200px;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: left;
+    color: var(--color-text-light);
+  }
+  .dark-theme .password-list {
+    background: #22222f;
+    box-shadow: 0 4px 12px rgba(90, 79, 207, 0.15);
+    color: var(--color-text-dark);
+  }
+  /* Analyzer Styles */
+  #password-to-analyze {
+      font-size: 16px;
+  }
+  .analyzer-results-block ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      font-size: 15px;
+  }
+  .analyzer-results-block li {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--color-bg-light);
+  }
+   .dark-theme .analyzer-results-block li {
+      border-bottom-color: #2a2b35;
+   }
+   .analyzer-results-block li:last-child {
+       border-bottom: none;
+   }
+   .analyzer-results-block li span {
+       font-weight: 500;
+   }
+   .analyzer-results-block strong {
+       font-weight: 600;
+   }
+   .analyzer-results-block .found {
+       color: var(--color-success);
+   }
+   .analyzer-results-block .not-found {
+       color: var(--color-fail);
+   }
+   .divider {
+       border: none;
+       height: 1px;
+       background-color: var(--color-divider-light);
+       margin: 40px 0;
+   }
+    .dark-theme .divider {
+       background-color: var(--color-divider-dark);
+    }
+   .faq-section {
+       background: transparent;
+       padding: 22px;
+       border-radius: 12px;
+       box-shadow: 0 2px 8px var(--shadow-subtle);
+   }
+    .dark-theme .faq-section {
+       box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
+    }
+   .faq-item {
+       margin-bottom: 15px;
+   }
+   .faq-item:last-child {
+       margin-bottom: 0;
+   }
+   .faq-item h3 {
+       font-size: 18px;
+       color: var(--color-primary-light);
+       margin: 0 0 8px 0;
+   }
+    .dark-theme .faq-item h3 {
+       color: var(--color-primary-dark);
+    }
+   .faq-item p {
+       margin: 0;
+   }
+
+  footer {
+    text-align: center;
+    padding: 0 10px;
+    color: #777;
+    font-size: 14px;
+  }
+  .theme-toggle {
+    position: fixed; bottom: 20px; right: 20px;
+    background: var(--color-primary-light);
+    border-radius: 50%;
+    width: 41px;
+    height: 41px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; user-select: none;
+    font-size: 19px;
+    box-shadow: 0 3px 10px rgb(90 79 207 / 0.6);
+    transition: background 0.3s, opacity 0.3s;
+    z-index: 1000;
+    opacity: 0.7;
+  }
+  .dark-theme .theme-toggle { background: var(--color-primary-dark); }
+  .theme-toggle:hover { opacity: 1; }
+
+  .hidden { display: none; }
+  #notification-container {
+    position: fixed; bottom: 20px; right: 75px;
+    display: flex; flex-direction: column;
+    gap: 10px; z-index: 2000;
+  }
+  .notification {
+    color: white;
+    padding: 15px 20px; border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex; align-items: center;
+    gap: 15px; opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.5s forwards;
+  }
+  .notification.error { background: var(--color-fail); }
+  .notification.success { background: var(--color-success); }
+  .notification .close-btn {
+    background: none; border: none;
+    color: white; font-size: 20px;
+    cursor: pointer; line-height: 1;
+  }
+  @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+  @keyframes slideOut { to { opacity: 0; transform: translateX(110%); } }
+  @media (max-width: 990px) {
+    .main-grid, .analyzer-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      gap: 20px;
+    }
+  }
+  @media (max-width: 650px) {
+    .main-grid { padding: 0 14px; }
+    .row-flex-controls, #passwords-grid-container {
+      margin-left: auto; margin-right: auto;
+    }
+    .password-grid { grid-template-columns: 1fr; }
+    .char-options-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="theme-toggle" id="theme-toggle">💡</div>
+  <div class="container">
+    <header>
+      <div class="header-title">
+          <img src="https://zvarichenkodaria.ru/img/logo.png" alt="CubeKey Logo">
+          <h1>CubeKey</h1>
+      </div>
+      <div class="tab-switcher">
+          <div class="slider"></div>
+          <button id="tab-generator" class="active">Генератор</button>
+          <button id="tab-analyzer">Анализатор</button>
+      </div>
+    </header>
+    
+    <div class="content-area">
+        <div id="generator-view" class="view-container active">
+            <h2>Генератор паролей</h2>
+            <div class="main-grid">
+              <div class="params-block">
+                <div class="form-inline">
+                  <div class="form-group">
+                    <label for="length">Длина пароля</label>
+                    <input type="number" id="length" value="14" min="4" max="64">
+                  </div>
+                  <div class="form-group">
+                    <label for="count">Количество</label>
+                    <input type="number" id="count" value="5" min="1" max="50">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:18px;">
+                  <label for="required">Обязательные символы</label>
+                  <div class="required-input-group">
+                    <input type="text" id="required" placeholder="Например: @, 123">
+                    <label class="inline-checkbox">
+                      <input type="checkbox" id="required-sequential" checked> По порядку
+                    </label>
+                  </div>
+                </div>
+                <div class="memorable-group">
+                    <label><input type="checkbox" id="memorable"> Легко запоминающиеся пароли</label>
+                </div>
+              </div>
+              <div class="checkboxes-block">
+                <div class="char-options-grid">
+                    <div class="char-option-group">
+                        <label for="lowercase-mode">Строчные (a-z)</label>
+                        <select id="lowercase-mode">
+                            <option value="required" selected>Обязательно</option>
+                            <option value="optional">По возможности</option>
+                            <option value="none">Не использовать</option>
+                        </select>
+                    </div>
+                    <div class="char-option-group">
+                        <label for="uppercase-mode">Прописные (A-Z)</label>
+                        <select id="uppercase-mode">
+                            <option value="required" selected>Обязательно</option>
+                            <option value="optional">По возможности</option>
+                            <option value="none">Не использовать</option>
+                        </select>
+                    </div>
+                    <div class="char-option-group">
+                        <label for="numbers-mode">Цифры (0-9)</label>
+                        <select id="numbers-mode">
+                            <option value="required" selected>Обязательно</option>
+                            <option value="optional">По возможности</option>
+                            <option value="none">Не использовать</option>
+                        </select>
+                    </div>
+                    <div class="char-option-group">
+                        <label for="symbols-mode">Спецсимволы (!@#)</label>
+                        <select id="symbols-mode">
+                            <option value="required" selected>Обязательно</option>
+                            <option value="optional">По возможности</option>
+                            <option value="none">Не использовать</option>
+                        </select>
+                    </div>
+                     <div class="char-option-group">
+                        <label for="separators-mode">Разделители (_-)</label>
+                        <select id="separators-mode">
+                            <option value="optional" selected>По возможности</option>
+                            <option value="required">Обязательно</option>
+                            <option value="none">Не использовать</option>
+                        </select>
+                    </div>
+                    <div class="char-option-group">
+                        <label for="ambiguous-mode">Неоднозначные (0O, 1lI)</label>
+                        <select id="ambiguous-mode">
+                            <option value="include" selected>Не исключать</option>
+                            <option value="exclude">Исключить</option>
+                        </select>
+                    </div>
+                </div>
+              </div>
+              <div class="preview-block">
+                <div class="title">Пример пароля</div>
+                <div class="preview-wrapper">
+                    <div class="preview-value" id="preview-value"></div>
+                </div>
+              </div>
+              <div class="strength-block">
+                <div class="strength-title" id="strength-title">Оценка пароля</div>
+                <div class="strength-text" id="strength-text">Настройте параметры и нажмите «Сгенерировать».</div>
+              </div>
+            </div>
+            <div class="centered-btn-wrap">
+              <button id="generate" class="generate-btn">Сгенерировать</button>
+            </div>
+            <div class="row-flex-controls hidden" id="controls-row">
+              <button id="copy-all" class="copy-all">Копировать все</button>
+              <div class="view-toggle">
+                <div class="slider"></div>
+                <button id="view-cards" class="active">Карточки</button>
+                <button id="view-list">Список</button>
+              </div>
+            </div>
+            <div id="passwords-container"></div>
+        </div>
+
+        <div id="analyzer-view" class="view-container">
+            <h2>Анализатор паролей</h2>
+            <div class="analyzer-grid">
+                <div class="analyzer-left-column">
+                    <div class="analyzer-input-block">
+                        <label for="password-to-analyze">Введите пароль для анализа</label>
+                        <input type="text" id="password-to-analyze" placeholder="Ваш пароль...">
+                    </div>
+                    <div class="strength-block">
+                        <div id="analyzer-strength-title" class="strength-title">Оценка пароля</div>
+                        <div id="analyzer-strength-text" class="strength-text">Введите пароль для анализа.</div>
+                    </div>
+                </div>
+                <div class="analyzer-results-block">
+                    <ul>
+                        <li id="analysis-length"><span>Длина:</span> <strong>0</strong></li>
+                        <li id="analysis-lowercase"><span>Строчные (a-z):</span> <strong></strong></li>
+                        <li id="analysis-uppercase"><span>Прописные (A-Z):</span> <strong></strong></li>
+                        <li id="analysis-numbers"><span>Цифры (0-9):</span> <strong></strong></li>
+                        <li id="analysis-symbols"><span>Спецсимволы (!@#):</span> <strong></strong></li>
+                        <li id="analysis-separators"><span>Разделители (_-):</span> <strong></strong></li>
+                        <li id="analysis-ambiguous"><span>Неоднозначные (0O, 1lI):</span> <strong></strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <hr class="divider">
+    <div class="faq-section">
+        <div class="faq-item">
+            <h3>Безопасен ли сервис CubeKey для генерации и анализа паролей?</h3>
+            <p>Абсолютно. CubeKey работает <strong>полностью в вашем браузере</strong>. Никакие данные, включая ваши пароли, никогда не отправляются на сервер. Вся логика генерации и анализа выполняется на вашем устройстве, что гарантирует 100% конфиденциальность.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Для чего нужен генератор паролей?</h3>
+            <p>Для создания сложных и непредсказуемых паролей, которые практически невозможно подобрать. Использование случайных комбинаций символов, цифр и букв — лучшая защита от взлома методом перебора.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Для чего нужен анализатор паролей?</h3>
+            <p>Для быстрой оценки надежности уже существующего пароля. Он показывает, какие типы символов в нем есть, какой он длины, и дает рекомендации, как его можно усилить, чтобы соответствовать современным стандартам безопасности.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Какой пароль считается надежным?</h3>
+            <p>Надежный пароль — это длинный пароль (от 12-14 символов) с комбинацией <strong>всех типов символов</strong>: строчных и прописных букв, цифр и спецсимволов. Он не должен содержать личной информации или словарных слов.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Опасно ли использовать слабые ключевые фразы?</h3>
+            <p>Да, очень опасно. Простые и короткие пароли (например, "password123" или "qwerty") могут быть взломаны за считанные секунды с помощью автоматизированных программ. Это открывает злоумышленникам доступ к вашим личным данным, финансам и аккаунтам.</p>
+        </div>
+    </div>
+    <hr class="divider">
+    <footer>
+        &copy; 2025 CubeKey. Работает полностью в браузере.
+    </footer>
+  </div>
+  <div id="notification-container"></div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const body = document.body;
+      const themeToggle = document.getElementById('theme-toggle');
+      let isDark = false;
+      themeToggle.addEventListener('click', () => {
+        isDark = !isDark;
+        body.classList.toggle('dark-theme');
+        themeToggle.textContent = isDark ? '💡' : '💡';
+      });
+
+      // --- SLIDER LOGIC ---
+      function setupSlider(containerSelector) {
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        const slider = container.querySelector('.slider');
+        const buttons = container.querySelectorAll('button');
+
+        function moveSlider(button) {
+          if (!slider || !button) return;
+          slider.style.width = `${button.offsetWidth}px`;
+          slider.style.left = `${button.offsetLeft}px`;
+          buttons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+        }
+
+        buttons.forEach(button => {
+          button.addEventListener('click', () => moveSlider(button));
+        });
+        
+        window.addEventListener('resize', () => {
+            const activeButton = container.querySelector('button.active');
+            if (activeButton) moveSlider(activeButton);
+        });
+
+        const activeButton = container.querySelector('button.active');
+        if (activeButton) {
+            setTimeout(() => moveSlider(activeButton), 50);
+        }
+      }
+
+      setupSlider('.tab-switcher');
+      let viewToggleSliderInitialized = false;
+
+      // --- TAB SWITCHING ---
+      const tabGenerator = document.getElementById('tab-generator');
+      const tabAnalyzer = document.getElementById('tab-analyzer');
+      const generatorView = document.getElementById('generator-view');
+      const analyzerView = document.getElementById('analyzer-view');
+      let activeView = generatorView;
+
+      function switchView(newView) {
+          if (newView === activeView) return;
+          const oldView = activeView;
+          oldView.classList.remove('active');
+          newView.classList.add('active');
+          activeView = newView;
+      }
+
+      tabGenerator.addEventListener('click', () => switchView(generatorView));
+      tabAnalyzer.addEventListener('click', () => switchView(analyzerView));
+
+
+      // --- GENERATOR ---
+      const lengthInput = document.getElementById('length');
+      const countInput = document.getElementById('count');
+      const requiredInput = document.getElementById('required');
+      const requiredSequentialCheck = document.getElementById('required-sequential');
+      const memorableCheck = document.getElementById('memorable');
+      const generateBtn = document.getElementById('generate');
+      const previewValue = document.getElementById('preview-value');
+      const strengthTitle = document.getElementById('strength-title');
+      const strengthText = document.getElementById('strength-text');
+      const passwordsContainer = document.getElementById('passwords-container');
+      let currentView = 'cards';
+
+      const viewCardsBtn = document.getElementById('view-cards');
+      const viewListBtn = document.getElementById('view-list');
+      const copyAllBtn = document.getElementById('copy-all');
+      const controlsRow = document.getElementById('controls-row');
+      
+      let currentPasswords = [];
+
+      const words = [ 'Sun','Moon','Star','Sky','Fire','Water','Wind','Storm','Rain','Snow',
+        'Dragon','Lion','Tiger','Wolf','Bear','Eagle','Shark','Knight','Shadow','Light',
+        'Power','Speed','Flash','Blaze','Frost','Thunder','Nova','Cosmos','Galaxy','Orion' ];
+      const lower = 'abcdefghijklmnopqrstuvwxyz';
+      const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const digits = '0123456789';
+      const special = '!@#$%^&*()+=[]{}|;:,.<>?';
+      const separators = '_-';
+
+      function showNotification(message, type = 'info') {
+          const container = document.getElementById('notification-container');
+          const notification = document.createElement('div');
+          notification.className = `notification ${type}`;
+          notification.innerHTML = `<span>${message}</span><button class="close-btn">&times;</button>`;
+          container.appendChild(notification);
+          const closeBtn = notification.querySelector('.close-btn');
+          const removeNotification = () => {
+              notification.style.animation = 'slideOut 0.5s forwards';
+              setTimeout(() => notification.remove(), 500);
+          };
+          closeBtn.addEventListener('click', removeNotification);
+          setTimeout(removeNotification, 5000);
+      }
+
+      function getSettings() {
+        return {
+          length: parseInt(lengthInput.value) || 14,
+          count: parseInt(countInput.value) || 5,
+          lowercase: document.getElementById('lowercase-mode').value,
+          uppercase: document.getElementById('uppercase-mode').value,
+          numbers: document.getElementById('numbers-mode').value,
+          symbols: document.getElementById('symbols-mode').value,
+          separators: document.getElementById('separators-mode').value,
+          ambiguous: document.getElementById('ambiguous-mode').value,
+          required: requiredInput.value,
+          requiredSequential: requiredSequentialCheck.checked,
+          memorable: memorableCheck.checked
+        };
+      }
+      
+      function shuffleString(str) {
+        const arr = str.split('');
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr.join('');
+      }
+
+      function getRandomChar(str) {
+        return str[Math.floor(Math.random() * str.length)];
+      }
+
+      function buildCharPool(settings) {
+        let pool = '';
+        if (settings.lowercase !== 'none') pool += lower;
+        if (settings.uppercase !== 'none') pool += upper;
+        if (settings.numbers !== 'none') pool += digits;
+        if (settings.symbols !== 'none') pool += special;
+        if (settings.separators !== 'none') pool += separators;
+        if (settings.ambiguous === 'exclude') {
+            const requiredChars = settings.required ? settings.required.split('') : [];
+            let tempPool = pool;
+            pool = '';
+            for(let char of tempPool) {
+                if(!/[0O1lI]/.test(char) || requiredChars.includes(char)) {
+                    pool += char;
+                }
+            }
+        }
+        return pool || lower;
+      }
+      
+     function getGuaranteedPassword(settings) {
+        let attempts = 0;
+        const maxAttempts = 10000;
+        while(attempts < maxAttempts) {
+            const password = createPasswordOnce(settings);
+            if(password) {
+                return password;
+            }
+            attempts++;
+        }
+        showNotification('Невыполнимые требования к длине. Упростите настройки.', 'error');
+        return "Ошибка";
+    }
+
+    function createPasswordOnce(settings) {
+        const pool = buildCharPool(settings);
+        if (!pool && !settings.required && !settings.memorable) return null;
+
+        let mustHave = [];
+        let baseStr = '';
+        let tempSettings = { ...settings };
+
+        if(tempSettings.required && tempSettings.requiredSequential) {
+            baseStr += tempSettings.required;
+        }
+        if(tempSettings.memorable) {
+            let memWord = getRandomChar(words);
+            if (tempSettings.length > baseStr.length + memWord.length + 6 && tempSettings.separators !== 'none') {
+                 memWord += getRandomChar(separators) + getRandomChar(words);
+            }
+            baseStr += memWord;
+        }
+
+        const combinedBase = (baseStr + (tempSettings.required && !tempSettings.requiredSequential ? tempSettings.required : '')).split('');
+        
+        if (tempSettings.lowercase === 'required' && !combinedBase.some(c => lower.includes(c))) mustHave.push(getRandomChar(lower));
+        if (tempSettings.uppercase === 'required' && !combinedBase.some(c => upper.includes(c))) mustHave.push(getRandomChar(upper));
+        if (tempSettings.numbers === 'required' && !combinedBase.some(c => digits.includes(c))) mustHave.push(getRandomChar(digits));
+        if (tempSettings.symbols === 'required' && !combinedBase.some(c => special.includes(c))) mustHave.push(getRandomChar(special));
+        if (tempSettings.separators === 'required' && !combinedBase.some(c => separators.includes(c))) mustHave.push(getRandomChar(separators));
+        if(tempSettings.required && !tempSettings.requiredSequential) {
+            mustHave.push(...tempSettings.required.replace(/\s/g, '').split(''));
+        }
+
+        if (mustHave.length + baseStr.length > settings.length) {
+            return null; // Signal a retry
+        }
+
+        let restChars = [];
+        const remainingLength = settings.length - mustHave.length - baseStr.length;
+        for (let i = 0; i < remainingLength; i++) {
+            restChars.push(getRandomChar(pool));
+        }
+        
+        let password = shuffleString(mustHave.concat(restChars).join(''));
+        
+        const pos = Math.floor(Math.random() * (password.length + 1));
+        password = password.slice(0, pos) + baseStr + password.slice(pos);
+        
+        return password;
+    }
+
+      function generatePasswords() {
+        const settings = getSettings();
+        if (buildCharPool(settings).length === 0 && !settings.required && !settings.memorable) {
+            showNotification('Выберите хотя бы один тип символов', 'error');
+            return;
+        }
+        currentPasswords = [];
+        for (let i = 0; i < settings.count; i++) {
+            const newPassword = getGuaranteedPassword(settings);
+            if (newPassword.includes('Ошибка')) {
+                currentPasswords = [newPassword];
+                break;
+            }
+            currentPasswords.push(newPassword);
+        }
+        displayPasswords(false); // NO animation on generate
+        updateStrength(currentPasswords[0], strengthTitle, strengthText);
+        controlsRow.classList.remove('hidden');
+
+        if (!viewToggleSliderInitialized) {
+            setupSlider('.view-toggle');
+            viewToggleSliderInitialized = true;
+        }
+      }
+
+      function updatePreview() {
+        const settings = getSettings();
+        if (buildCharPool(settings).length === 0 && !settings.required && !settings.memorable) {
+            previewValue.textContent = '';
+            updateStrength('', strengthTitle, strengthText);
+            return;
+        }
+        const password = getGuaranteedPassword(settings);
+        previewValue.textContent = password;
+        updateStrength(password, strengthTitle, strengthText);
+      }
+
+      function updateStrength(password, titleEl, textEl) {
+        if (!password || password.includes('Ошибка') || password.length === 0) {
+            titleEl.textContent = 'Оценка пароля';
+            textEl.innerHTML = textEl === analyzerStrengthText ? 'Введите пароль для анализа.' : 'Настройте параметры и нажмите «Сгенерировать».';
+            titleEl.className = 'strength-title';
+            return;
+        }
+        let score = 0;
+        if (password.length >= 8) score++;
+        if (password.length >= 12) score++;
+        if (/[a-z]/.test(password)) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/\d/.test(password)) score++;
+        if (/[^a-zA-Z0-9]/.test(password)) score++;
+
+        if (score >= 6) {
+            titleEl.textContent = 'Пароль отличный';
+            titleEl.className = 'strength-title strength-good';
+            textEl.innerHTML = 'Очень надёжный пароль. Подходит для банков, почты и других защищённых систем.<strong>Сочетание большой длины и разных типов символов делает его исключительно устойчивым к подбору.</strong>';
+        } else if (score >= 4) {
+            titleEl.textContent = 'Пароль хороший';
+            titleEl.className = 'strength-title strength-medium';
+            textEl.innerHTML = 'Такой пароль подойдёт для большинства сайтов, включая почту и социальные сети.<strong>Для максимальной защиты добавьте больше разнообразных символов или увеличьте длину.</strong>';
+        } else {
+            titleEl.textContent = 'Пароль слабый';
+            titleEl.className = 'strength-title strength-weak';
+            textEl.innerHTML = 'Пароль слишком простой и легко подбирается.<strong>Увеличьте его длину до 12+ символов и добавьте разные типы символов.</strong>';
+        }
+    }
+      
+      function displayPasswords(withAnimation = false) {
+          const container = passwordsContainer;
+          const oldContent = container.firstChild;
+
+          const render = () => {
+            container.innerHTML = '';
+            let newContent;
+            if (currentView === 'list') {
+              newContent = document.createElement('div');
+              newContent.className = 'password-list';
+              newContent.textContent = currentPasswords.join('\n');
+            } else {
+              newContent = document.createElement('div');
+              newContent.id = 'passwords-grid-container';
+              newContent.className = 'password-grid';
+              currentPasswords.forEach(pwd => {
+                const card = document.createElement('div');
+                card.className = 'password-card';
+                card.textContent = pwd;
+                card.addEventListener('click', () => copyToClipboard(pwd));
+                newContent.appendChild(card);
+              });
+            }
+            if (withAnimation) {
+                newContent.style.opacity = 0;
+                container.appendChild(newContent);
+                requestAnimationFrame(() => { newContent.style.opacity = 1; });
+            } else {
+                 container.appendChild(newContent);
+            }
+          };
+
+          if(withAnimation && oldContent) {
+              oldContent.style.opacity = 0;
+              setTimeout(render, 250);
+          } else {
+              render();
+          }
+      }
+      
+      function copyToClipboard(text) {
+        if (!text || text.includes('Ошибка')) return;
+        navigator.clipboard.writeText(text).then(() => {
+          showNotification('Скопировано в буфер обмена', 'success');
+        }).catch(err => showNotification('Не удалось скопировать', 'error'));
+      }
+
+      copyAllBtn.addEventListener('click', () => {
+        if (currentPasswords.length === 0 || currentPasswords[0].includes('Ошибка')) {
+          showNotification('Сначала сгенерируйте пароли', 'error'); return;
+        }
+        copyToClipboard(currentPasswords.join('\n'));
+      });
+      
+      viewCardsBtn.addEventListener('click', () => {
+        if(currentView === 'cards') return;
+        currentView = 'cards';
+        displayPasswords(true);
+      });
+
+      viewListBtn.addEventListener('click', () => {
+        if(currentView === 'list') return;
+        currentView = 'list';
+        displayPasswords(true);
+      });
+
+      document.querySelectorAll('#generator-view input, #generator-view select').forEach(input => {
+        input.addEventListener('input', updatePreview);
+      });
+       document.querySelectorAll('#generator-view input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', updatePreview);
+      });
+
+      generateBtn.addEventListener('click', generatePasswords);
+      
+      // --- ANALYZER ---
+      const passwordToAnalyzeInput = document.getElementById('password-to-analyze');
+      const analysisLength = document.getElementById('analysis-length').querySelector('strong');
+      const analysisLowercase = document.getElementById('analysis-lowercase').querySelector('strong');
+      const analysisUppercase = document.getElementById('analysis-uppercase').querySelector('strong');
+      const analysisNumbers = document.getElementById('analysis-numbers').querySelector('strong');
+      const analysisSymbols = document.getElementById('analysis-symbols').querySelector('strong');
+      const analysisSeparators = document.getElementById('analysis-separators').querySelector('strong');
+      const analysisAmbiguous = document.getElementById('analysis-ambiguous').querySelector('strong');
+      const analyzerStrengthTitle = document.getElementById('analyzer-strength-title');
+      const analyzerStrengthText = document.getElementById('analyzer-strength-text');
+
+      function analyzeAndUpdateUI() {
+          const password = passwordToAnalyzeInput.value;
+          
+          analysisLength.textContent = password.length;
+
+          const updateCheck = (element, condition) => {
+              if (condition) {
+                  element.textContent = 'Найден';
+                  element.className = 'found';
+              } else {
+                  element.textContent = 'Не найден';
+                  element.className = 'not-found';
+              }
+          };
+
+          updateCheck(analysisLowercase, /[a-z]/.test(password));
+          updateCheck(analysisUppercase, /[A-Z]/.test(password));
+          updateCheck(analysisNumbers, /\d/.test(password));
+          updateCheck(analysisSymbols, new RegExp(`[${special.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}]`).test(password));
+          updateCheck(analysisSeparators, /[_-]/.test(password));
+          updateCheck(analysisAmbiguous, /[0O1lI]/.test(password));
+          
+          updateStrength(password, analyzerStrengthTitle, analyzerStrengthText);
+      }
+
+      passwordToAnalyzeInput.addEventListener('input', analyzeAndUpdateUI);
+
+      // Initial calls
+      updatePreview();
+      analyzeAndUpdateUI();
+  });
+</script>
+</body>
+</html>
