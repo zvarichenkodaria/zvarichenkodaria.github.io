@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>QR Generator | Звариченко Дарья</title>
+<title>CubeKey: Генератор QR-кодов</title>
 <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
 
 <!-- Шрифты как в CubeKey -->
@@ -11,13 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
 
-<!-- Скрипты для QR (логика) -->
-<script src="../../js/script.js" defer></script>
-<script src="../../js/qrcode.js" defer></script>
+<!-- Библиотека QR -->
 <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 
 <style>
-  /* === ПОЛНАЯ КОПИЯ CSS CUBEKEY === */
+  /* === ПОЛНАЯ КОПИЯ СТИЛЕЙ CUBEKEY === */
   :root {
     --color-bg-light: #f4f6f9;
     --color-bg-dark: #121217;
@@ -42,7 +40,6 @@
     margin: 0;
     transition: background 0.3s, color 0.3s;
     overflow-x: hidden;
-    padding-bottom: 80px; /* место для лампочки */
   }
   .dark-theme {
     background: var(--color-bg-dark);
@@ -57,7 +54,7 @@
     align-items: stretch;
   }
   
-  /* ИЗМЕНЕНИЕ 1: Фон шапки под QR (строгий темный паттерн) */
+  /* ШАПКА (Фон под QR) */
   header {
     color: white;
     padding: 20px 16px 20px 16px;
@@ -82,12 +79,23 @@
       align-items: center;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 15px;
+      margin-bottom: 0;
   }
   .header-title img { width: 40px; height: 40px; }
   header h1 { font-size: 26px; margin: 0; }
-  
-  /* Стили блоков CubeKey */
+
+  /* Заголовок страницы (как "Генератор паролей") */
+  .view-container h2 {
+      text-align: center;
+      font-size: 22px;
+      color: var(--color-primary-light);
+      margin-top: 30px;
+      margin-bottom: 30px;
+  }
+  .dark-theme .view-container h2 {
+      color: var(--color-primary-dark);
+  }
+
   .main-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -95,10 +103,10 @@
     width: 100%;
     box-sizing: border-box;
     padding: 0;
-    margin-top: 30px;
   }
   
-  .params-block, .checkboxes-block, .preview-block, .strength-block {
+  /* Блоки */
+  .params-block, .preview-block, .faq-section {
     background: #fff;
     border-radius: 12px;
     padding: 22px;
@@ -110,9 +118,8 @@
     flex-direction: column;
   }
   .dark-theme .params-block,
-  .dark-theme .checkboxes-block,
   .dark-theme .preview-block,
-  .dark-theme .strength-block {
+  .dark-theme .faq-section {
     background: #1d1e27;
     box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
   }
@@ -120,73 +127,93 @@
   .form-group { margin-bottom: 17px; }
   label { display: block; margin-bottom: 6px; font-weight: 600; color: inherit; }
   
-  /* Инпуты как в CubeKey */
-  input[type="number"],
+  /* Инпуты */
   input[type="text"],
   input[type="url"],
-  select {
+  select, textarea {
     width: 100%; padding: 10px; border: none; border-radius: 6px; font-size: 16px;
     box-sizing: border-box; background: var(--color-bg-light); color: var(--color-text-light);
     box-shadow: 0 0 6px rgb(90 79 207 / 0.1);
     transition: background 0.3s, color 0.3s;
   }
-  .dark-theme input[type="number"],
   .dark-theme input[type="text"],
   .dark-theme input[type="url"],
-  .dark-theme select {
+  .dark-theme select, .dark-theme textarea {
     background: #2a2b35; color: var(--color-text-dark);
     box-shadow: 0 0 6px rgba(90, 79, 207, 0.15);
   }
 
-  /* Для превью QR (правая колонка) */
-  .preview-block { align-items: center; text-align: center; }
+  /* Цвета */
+  .color-row { display: flex; gap: 15px; margin-bottom: 10px; }
+  .color-wrap { 
+    display: flex; align-items: center; gap: 10px; flex: 1;
+    background: var(--color-bg-light); padding: 8px; border-radius: 6px; 
+  }
+  .dark-theme .color-wrap { background: #2a2b35; }
+  input[type="color"] { border: none; width: 30px; height: 30px; background: none; cursor: pointer; padding: 0; }
+
+  /* Превью QR */
+  .preview-block { align-items: center; }
   .preview-wrapper {
     display: flex; justify-content: center; align-items: center;
-    margin-bottom: 20px; width: 100%;
+    margin-bottom: 20px; width: 100%; min-height: 300px;
   }
   #qrWrapper {
     background: #fff; padding: 15px; border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   }
   
-  /* Кнопки (стиль generate-btn и copy-all) */
+  /* Кнопки */
   .generate-btn {
     background: var(--color-primary-light); color: white; border: none;
-    padding: 12px 34px; border-radius: 7px; font-size: 16px; font-weight: 600;
-    cursor: pointer; transition: background 0.3s; box-shadow: 0 4px 15px rgb(90 79 207 / 0.4);
-    width: 100%; margin-bottom: 10px;
+    padding: 10px; border-radius: 7px; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: background 0.3s; width: 100%;
+    box-shadow: 0 4px 10px rgb(90 79 207 / 0.2);
   }
   .generate-btn:hover { background: var(--color-primary-dark); }
   .dark-theme .generate-btn { background: var(--color-primary-dark); }
   
   .copy-all {
     background: var(--color-primary-light); color: white; border: none;
-    padding: 10px 23px; border-radius: 7px; font-size: 15px; cursor: pointer;
-    font-weight: 500; box-shadow: 0 4px 14px rgb(90 79 207 / 0.4);
-    width: 100%;
+    padding: 8px 15px; border-radius: 7px; font-size: 14px; cursor: pointer;
+    font-weight: 500; box-shadow: 0 4px 10px rgb(90 79 207 / 0.2);
   }
 
-  /* Лампочка (Theme Toggle) - стиль CubeKey */
+  /* FAQ и Footer */
+  .divider { border: none; height: 1px; background-color: var(--color-divider-light); margin: 40px 0; }
+  .dark-theme .divider { background-color: var(--color-divider-dark); }
+  
+  .faq-section { margin-top: 0; }
+  .faq-item { margin-bottom: 15px; }
+  .faq-item h3 { font-size: 18px; color: var(--color-primary-light); margin: 0 0 8px 0; }
+  .dark-theme .faq-item h3 { color: var(--color-primary-dark); }
+  .faq-item p { margin: 0; font-size: 15px; color: #777; }
+  .dark-theme .faq-item p { color: #ccc; }
+
+  footer { text-align: center; padding: 0 10px; color: #777; font-size: 14px; }
+  
+  /* Лампочка */
   .theme-toggle {
     position: fixed; bottom: 20px; right: 20px;
     background: var(--color-primary-light); border-radius: 50%;
     width: 41px; height: 41px; display: flex; justify-content: center; align-items: center;
     cursor: pointer; user-select: none; font-size: 19px;
     box-shadow: 0 3px 10px rgb(90 79 207 / 0.6);
-    transition: background 0.3s, opacity 0.3s; z-index: 1000; opacity: 0.7;
+    transition: background 0.3s, opacity 0.3s; z-index: 1000; opacity: 0.8; color: #fff;
   }
   .dark-theme .theme-toggle { background: var(--color-primary-dark); }
   .theme-toggle:hover { opacity: 1; }
 
-  /* Доп. стили для QR инпутов, чтобы вписались в CubeKey */
-  .color-row { display: flex; gap: 15px; }
-  .color-wrap { 
-    display: flex; align-items: center; gap: 10px; 
-    background: var(--color-bg-light); padding: 5px 10px; border-radius: 6px; 
+  /* Range slider */
+  input[type=range] { width: 100%; -webkit-appearance: none; background: transparent; }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
+    background: var(--color-primary-light); margin-top: -6px; cursor: pointer;
   }
-  .dark-theme .color-wrap { background: #2a2b35; }
-  input[type="color"] { border: none; width: 30px; height: 30px; background: none; cursor: pointer; padding: 0; }
-  
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%; height: 4px; background: #ccc; border-radius: 2px;
+  }
+
   @media (max-width: 990px) {
     .main-grid { grid-template-columns: 1fr; }
   }
@@ -194,7 +221,7 @@
 </head>
 <body>
 
-  <!-- ЛАМПОЧКА (КАК В CUBEKEY) -->
+  <!-- Лампочка -->
   <div class="theme-toggle" id="theme-toggle">💡</div>
 
   <div class="container">
@@ -203,46 +230,41 @@
           <img src="../../img/logo.png" alt="Logo">
           <h1>Звариченко Дарья</h1>
       </div>
-      <!-- Табы удалены, так как это только генератор, но стиль шапки сохранен -->
     </header>
     
-    <div class="content-area">
-        <!-- СЕТКА 1-в-1 КАК В CUBEKEY -->
+    <div class="view-container active">
+        <h2>Генератор QR-кодов</h2>
+        
         <div class="main-grid">
           
-          <!-- ЛЕВЫЙ БЛОК (PARAMS-BLOCK) - НАСТРОЙКИ -->
+          <!-- Левая колонка: Настройки -->
           <div class="params-block">
-            <h2 style="margin-top:0; color:var(--color-primary-light);">Настройки QR</h2>
-            
-            <!-- URL -->
             <div class="form-group">
               <label>Ссылка (URL)</label>
               <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com">
             </div>
 
-            <!-- ЦВЕТА -->
             <div class="form-group">
               <label>Цвета</label>
               <div class="color-row">
-                <div class="color-wrap" style="flex:1;">
-                   <span>Фон:</span>
-                   <input type="color" id="bgColor" value="#ffffff">
+                <div class="color-wrap">
+                  <span>Фон</span>
+                  <input type="color" id="bgColor" value="#ffffff">
+                  <input type="text" id="bgColorHex" value="#ffffff" style="width:80px; padding:5px; font-size:14px;">
                 </div>
-                <div class="color-wrap" style="flex:1;">
-                   <span>QR:</span>
-                   <input type="color" id="dotColor" value="#000000">
+                <div class="color-wrap">
+                  <span>QR</span>
+                  <input type="color" id="dotColor" value="#000000">
+                  <input type="text" id="dotColorHex" value="#000000" style="width:80px; padding:5px; font-size:14px;">
                 </div>
               </div>
-              <div style="margin-top:10px;">
-                 <label style="font-weight:normal; display:flex; align-items:center;">
-                   <input type="checkbox" id="bgTransparency" style="margin-right:8px;"> Прозрачный фон
-                 </label>
-              </div>
+              <label style="font-weight:normal; display:flex; align-items:center;">
+                <input type="checkbox" id="bgTransparency" style="margin-right:8px;"> Прозрачный фон
+              </label>
             </div>
 
-            <!-- ФОРМЫ -->
             <div class="form-group">
-               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                  <div>
                    <label>Форма точек</label>
                    <select id="dotShape">
@@ -262,10 +284,19 @@
                </div>
             </div>
             
-            <!-- ЛОГОТИП -->
+            <div class="form-group">
+               <label>Коррекция ошибок</label>
+               <select id="errorLevel">
+                  <option value="L">Low (7%)</option>
+                  <option value="M" selected>Medium (15%)</option>
+                  <option value="Q">Quartile (25%)</option>
+                  <option value="H">High (30%)</option>
+               </select>
+            </div>
+
             <div class="form-group">
               <label>Логотип</label>
-              <input type="text" id="logoInput" placeholder="URL логотипа" style="margin-bottom:8px;">
+              <input type="text" id="logoInput" placeholder="URL логотипа" style="margin-bottom:10px;">
               
               <div style="position:relative; height:40px;">
                  <input type="file" id="logoFile" accept="image/*" style="position:absolute; width:100%; height:100%; opacity:0; cursor:pointer; z-index:2;">
@@ -274,63 +305,77 @@
 
               <div id="logoPreviewBlock" style="display:none; margin-top:10px; position:relative; width:max-content;">
                 <img id="logoPreview" style="height:50px; border-radius:4px; border:1px solid #ddd;">
-                <button id="removeLogo" style="position:absolute; top:-5px; right:-5px; background:red; color:fff; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;">×</button>
+                <button id="removeLogo" style="position:absolute; top:-8px; right:-8px; background:red; color:fff; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;">×</button>
               </div>
+              
+              <!-- Скрытая картинка для оверлея в библиотеке -->
+              <img id="logoOverlay" style="display:none;">
 
               <div style="margin-top:15px;">
                 <label style="font-weight:normal; font-size:14px;">Размер логотипа</label>
-                <input type="range" id="logoSize" min="1" max="25" value="15" style="width:100%;">
+                <input type="range" id="logoSize" min="1" max="25" value="15">
               </div>
             </div>
-
           </div>
-          
-          <!-- ПРАВЫЙ БЛОК (PREVIEW-BLOCK + STRENGTH) -->
-          <div style="display:flex; flex-direction:column; gap:38px;">
+
+          <!-- Правая колонка: Превью -->
+          <div class="preview-block">
+             <div style="color:var(--color-primary-light); font-weight:600; margin-bottom:20px; font-size:18px;">Предпросмотр</div>
              
-             <div class="preview-block">
-                <div class="title" style="color:var(--color-primary-light); font-weight:600; margin-bottom:20px;">Предпросмотр</div>
-                <div class="preview-wrapper">
-                    <div id="qrWrapper">
-                      <div id="qr-code"></div>
-                    </div>
-                </div>
+             <div class="preview-wrapper">
+                 <div id="qrWrapper">
+                   <div id="qr-code"></div>
+                 </div>
              </div>
 
-             <div class="checkboxes-block"> <!-- Использую этот класс для кнопок, т.к. он подходит по стилю -->
-                <label style="margin-bottom:15px; text-align:center;">Скачать QR-код</label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                   <button class="generate-btn" data-type="png">PNG</button>
-                   <button class="generate-btn" data-type="svg">SVG</button>
-                   <button class="generate-btn" data-type="jpg">JPG</button>
-                   <button class="generate-btn" data-type="pdf">PDF</button>
-                </div>
-                
-                <div style="margin-top:20px; border-top:1px solid #eee; padding-top:10px;">
-                   <textarea id="seedArea" style="width:100%; height:60px; border:none; background:var(--color-bg-light); color:inherit; resize:none; border-radius:6px; padding:10px; font-size:12px; font-family:monospace;" placeholder="Base64 код настроек"></textarea>
-                   <div style="display:flex; gap:10px; margin-top:10px;">
-                     <button class="copy-all" id="copySettings" style="padding:8px;">Копировать</button>
-                     <button class="copy-all" id="loadSettingsBtn" style="padding:8px;">Вставить</button>
-                   </div>
+             <div id="exportButtons" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width:100%; margin-bottom:20px;">
+                <button class="generate-btn" data-type="png">Скачать PNG</button>
+                <button class="generate-btn" data-type="svg">Скачать SVG</button>
+                <button class="generate-btn" data-type="jpg">Скачать JPG</button>
+                <button class="generate-btn" data-type="pdf">Скачать PDF</button>
+             </div>
+             
+             <div style="width:100%; border-top:1px solid #eee; padding-top:15px;">
+                <textarea id="seedArea" style="width:100%; height:60px; border:none; background:var(--color-bg-light); color:inherit; resize:none; border-radius:6px; padding:10px; font-size:12px; font-family:monospace;" placeholder="Base64 код настроек"></textarea>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                  <button class="copy-all" id="copySettings">Копировать</button>
+                  <button class="copy-all" id="loadSettingsBtn">Вставить</button>
                 </div>
              </div>
-
           </div>
 
         </div>
     </div>
+    
+    <hr class="divider">
+    
+    <div class="faq-section">
+        <div class="faq-item">
+            <h3>Для чего нужен генератор QR-кодов?</h3>
+            <p>Он позволяет создавать QR-коды для ссылок, текста или визиток. Вы можете настроить цвет, форму точек и добавить свой логотип.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Безопасно ли это?</h3>
+            <p>Абсолютно. Генерация происходит <strong>полностью в вашем браузере</strong>. Никакие данные не отправляются на сервер.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Как считать QR-код?</h3>
+            <p>Просто наведите камеру вашего смартфона. Современные телефоны (iOS и Android) распознают коды автоматически.</p>
+        </div>
+    </div>
 
-    <hr class="divider" style="border:none; height:1px; background:#e0e0e0; margin:40px 0;">
+    <hr class="divider">
     
     <footer>
-        &copy; 2025 Генератор QR-кодов.
+        &copy; 2025 CubeKey QR. Работает полностью в браузере.
     </footer>
   </div>
 
   <div id="messageBox" style="position:fixed; bottom:20px; left:20px; background:#333; color:#fff; padding:10px 20px; border-radius:20px; opacity:0; pointer-events:none; transition:0.3s; z-index:2000;"></div>
 
-  <!-- Скрипт переключения темы (из CubeKey) -->
+  <!-- СКРИПТЫ -->
   <script>
+    // Тема (Лампочка)
     const toggleBtn = document.getElementById('theme-toggle');
     const bodyEl = document.body;
     
@@ -342,6 +387,202 @@
       bodyEl.classList.toggle('dark-theme');
       localStorage.setItem('theme', bodyEl.classList.contains('dark-theme') ? 'dark' : 'light');
     });
+
+    // Основной скрипт QR
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // Инициализация QR
+      const qrCode = new QRCodeStyling({
+        width: 300,
+        height: 300,
+        type: "svg",
+        data: "https://example.com",
+        dotsOptions: { color: "#000000", type: "square" },
+        cornersSquareOptions: { type: "square", color: "#000000" },
+        cornersDotOptions: { type: "dot", color: "#000000" },
+        backgroundOptions: { color: "#ffffff" },
+        margin: 5,
+        qrOptions: { errorCorrectionLevel: "M" }
+      });
+      const container = document.getElementById("qr-code");
+      qrCode.append(container);
+
+      // Элементы
+      const urlInput = document.getElementById("urlInput");
+      const dotColor = document.getElementById("dotColor");
+      const dotColorHex = document.getElementById("dotColorHex");
+      const bgColor = document.getElementById("bgColor");
+      const bgColorHex = document.getElementById("bgColorHex");
+      const bgTransparency = document.getElementById("bgTransparency");
+      const dotShape = document.getElementById("dotShape");
+      const markerShape = document.getElementById("markerShape");
+      const logoInput = document.getElementById("logoInput");
+      const logoFile = document.getElementById("logoFile");
+      const logoPreview = document.getElementById("logoPreview");
+      const removeLogoBtn = document.getElementById("removeLogo");
+      const logoSize = document.getElementById("logoSize");
+      const errorLevel = document.getElementById("errorLevel");
+      const logoOverlay = document.getElementById("logoOverlay");
+      const exportButtons = document.getElementById("exportButtons");
+      const seedArea = document.getElementById("seedArea");
+      const copySettingsBtn = document.getElementById("copySettings");
+      const loadSettingsBtn = document.getElementById("loadSettingsBtn");
+      const messageBox = document.getElementById("messageBox");
+
+      let logoData = "";
+      let updateTimer;
+
+      function showMessage(message, isError = false) {
+        messageBox.textContent = message;
+        messageBox.style.opacity = "1";
+        setTimeout(() => {
+          messageBox.style.opacity = "0";
+        }, 2500);
+      }
+
+      // Синхронизация цветов
+      function syncColorInputs(colorInput, hexInput) {
+        colorInput.addEventListener("input", () => {
+          hexInput.value = colorInput.value;
+          delayedUpdateQR();
+        });
+        hexInput.addEventListener("input", () => {
+          const val = hexInput.value.trim();
+          if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
+            colorInput.value = val;
+            delayedUpdateQR();
+          }
+        });
+      }
+      syncColorInputs(dotColor, dotColorHex);
+      syncColorInputs(bgColor, bgColorHex);
+
+      function updateLogoDisplay() {
+        if (logoData) {
+          logoPreview.src = logoData;
+          document.getElementById("logoPreviewBlock").style.display = "block";
+          logoInput.style.display = "none";
+          // logoFile кнопки скрывать не обязательно, пусть будут доступны
+        } else {
+          document.getElementById("logoPreviewBlock").style.display = "none";
+          logoInput.style.display = "block";
+        }
+      }
+
+      function updateQR() {
+        const data = urlInput.value.trim();
+        const sizePercent = Math.min(Math.max(parseFloat(logoSize.value) || 15, 1), 25);
+        
+        // Вычисляем размеры логотипа для библиотеки
+        const qrWidth = 300;
+        // Примерная логика
+        const logoWidth = Math.round(qrWidth * (sizePercent / 70)); 
+        
+        qrCode.update({
+          data: data || "",
+          dotsOptions: { color: dotColor.value, type: dotShape.value },
+          cornersSquareOptions: { type: markerShape.value, color: dotColor.value },
+          cornersDotOptions: { type: markerShape.value, color: dotColor.value },
+          backgroundOptions: { color: bgTransparency.checked ? "transparent" : bgColor.value },
+          qrOptions: { errorCorrectionLevel: errorLevel.value },
+          image: logoData,
+          imageOptions: { hideBackgroundDots: true, imageSize: sizePercent / 25, margin: 0 }
+        });
+
+        updateLogoDisplay();
+
+        const settings = {
+          data: data || "",
+          dotColor: dotColor.value,
+          dotColorHex: dotColorHex.value,
+          bgColor: bgColor.value,
+          bgColorHex: bgColorHex.value,
+          bgTransparency: bgTransparency.checked,
+          dotShape: dotShape.value,
+          markerShape: markerShape.value,
+          logoUrl: logoInput.value,
+          logoBase64: logoData,
+          logoSize: logoSize.value,
+          errorLevel: errorLevel.value
+        };
+        seedArea.value = btoa(JSON.stringify(settings));
+      }
+
+      function delayedUpdateQR() {
+        clearTimeout(updateTimer);
+        updateTimer = setTimeout(() => {
+          updateQR();
+        }, 300);
+      }
+
+      // Event Listeners
+      urlInput.addEventListener("input", delayedUpdateQR);
+      logoInput.addEventListener("input", delayedUpdateQR);
+      
+      logoFile.addEventListener("change", () => {
+        const file = logoFile.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          logoData = e.target.result || "";
+          logoInput.value = "";
+          delayedUpdateQR();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      removeLogoBtn.addEventListener("click", () => {
+        logoData = "";
+        logoInput.value = "";
+        logoFile.value = "";
+        delayedUpdateQR();
+      });
+
+      logoSize.addEventListener("input", delayedUpdateQR);
+      bgTransparency.addEventListener("change", delayedUpdateQR);
+      dotShape.addEventListener("change", delayedUpdateQR);
+      markerShape.addEventListener("change", delayedUpdateQR);
+      errorLevel.addEventListener("change", delayedUpdateQR);
+
+      copySettingsBtn.addEventListener("click", () => {
+        seedArea.select();
+        document.execCommand("copy");
+        showMessage("Настройки скопированы");
+      });
+
+      loadSettingsBtn.addEventListener("click", () => {
+        try {
+          const settings = JSON.parse(atob(seedArea.value));
+          urlInput.value = settings.data || "";
+          dotColor.value = settings.dotColor || "#000000";
+          dotColorHex.value = settings.dotColorHex || "#000000";
+          bgColor.value = settings.bgColor || "#ffffff";
+          bgColorHex.value = settings.bgColorHex || "#ffffff";
+          bgTransparency.checked = settings.bgTransparency || false;
+          dotShape.value = settings.dotShape || "square";
+          markerShape.value = settings.markerShape || "square";
+          logoData = settings.logoBase64 || "";
+          logoSize.value = settings.logoSize || 15;
+          errorLevel.value = settings.errorLevel || "M";
+          delayedUpdateQR();
+          showMessage("Настройки загружены");
+        } catch {
+          showMessage("Ошибка загрузки настроек");
+        }
+      });
+
+      // Export Buttons
+      exportButtons.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const ext = btn.getAttribute("data-type");
+          qrCode.download({ extension: ext, name: "qr-code" });
+        });
+      });
+
+      // Start
+      delayedUpdateQR();
+    });
   </script>
+
 </body>
 </html>
