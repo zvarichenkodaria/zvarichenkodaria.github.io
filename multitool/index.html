@@ -1,139 +1,191 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multitool - Инструменты</title>
-  <meta name="description" content="Набор веб-инструментов">
-  
-  <!-- Подключение иконок и шрифтов -->
+  <title>QR-код Генератор | CubeKey Style</title>
+  <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+  <!-- Подключаем новый CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
   
-  <!-- Подключение твоего основного файла стилей (на уровень выше) -->
-  <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="../css/multitool.css">
-
+  <!-- Скрипты -->
+  <script src="../../js/script.js" defer></script>
+  <script src="../../js/qrcode.js" defer></script>
+  <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 </head>
-
 <body>
 
-  <!-- ШАПКА (Скопирована из твоего html, добавлены правильные пути ../ и новая кнопка) -->
-  <header>
-    <nav>
-      <!-- Ссылка на главную (на уровень выше) -->
-      <a href="../" class="logo">
-        <div class="logo">
-          <img src="../img/logo.png" alt="Логотип">
+  <header class="main-header">
+    <div class="header-container">
+      <a href="../../" class="logo-link">
+        <img src="../../img/logo.png" alt="Логотип" class="header-logo">
+        <div class="header-text">
+          <span class="brand-name">QR Generator</span>
+          <span class="brand-desc">Профессиональный инструмент</span>
         </div>
       </a>
-
-      <div class="name_zero">
-          <p class="name_one">Звариченко Дарья</p>
-          <p class="name_two">Творческое портфолио дизайнера</p>
-      </div>
-
-      <ul>
-        <li><a href="../"><div class="menu-button">Услуги</div></a></li>
-        <li><a href="../portfolio/">Портфолио</a></li>
-        <li><a href="../contacts/">Контакты</a></li>
-      </ul>
-      
-      <div class="circle-tool">
-        <a href="../multitool/" title="Инструменты">🔧</a>
-      </div>
-
-      <!-- Кнопка ТЕЛЕГРАМ -->
-      <div class="circle-tg">
-        <a target="_blank" href="https://t.me/zvarichenkodaria">
-          <div class="button-circle-telergam-menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="button-circle-telergam-svg-menu" viewBox="0 0 256 256">
-              <path fill="currentColor" d="M228.88 26.19a9 9 0 0 0-9.16-1.57L17.06 103.93a14.22 14.22 0 0 0 2.43 27.21L72 141.45V200a15.92 15.92 0 0 0 10 14.83a15.91 15.91 0 0 0 17.51-3.73l25.32-26.26L165 220a15.88 15.88 0 0 0 10.51 4a16.3 16.3 0 0 0 5-.79a15.85 15.85 0 0 0 10.67-11.63L231.77 35a9 9 0 0 0-2.89-8.81M175.53 208l-82.68-72.5l119-85.29Z"/>
-            </svg>
-          </div>
-        </a>
-      </div>
-    </nav>
+    </div>
   </header>
 
-  <!-- ОСНОВНОЙ КОНТЕНТ -->
-  <main class="tools-page-wrapper">
-    <h1 class="tools-title">Инструменты</h1>
-    
-    <div class="tools-container">
+  <main class="app-container">
+    <div class="grid-wrapper">
       
-      <!-- 1. QRCode -->
-      <a href="qrcode/" class="tool-card card-qr">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M104,40H40A16,16,0,0,0,24,56v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,80H40V56h64V120Zm112-80H152a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,80H152V56h64V120ZM104,152H40a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V168A16,16,0,0,0,104,152Zm0,80H40V168h64V232Zm64-80h-8a8,8,0,0,0-8,8v8H144a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,168,152Zm56,0h-8a8,8,0,0,0-8,8v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,224,152Z"/></svg>
-        <div class="card-content">
-          <h3>QRCode</h3>
-          <p>Создание и стилизация QR-кодов</p>
+      <!-- ЛЕВАЯ КОЛОНКА: НАСТРОЙКИ -->
+      <section class="controls-panel">
+        
+        <div class="panel-header">
+          <h2>Настройки QR</h2>
+          <p>Персонализируйте дизайн вашего кода</p>
         </div>
-      </a>
 
-      <!-- 2. CubeKey -->
-      <a href="cubekey/" class="tool-card card-cubekey">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80Zm-80,84a12,12,0,1,1,12-12A12,12,0,0,1,128,164Zm32-84H96V56a32,32,0,0,1,64,0Z"/></svg>
-        <div class="card-content">
-          <h3>CubeKey</h3>
-          <p>Генератор и анализатор паролей</p>
+        <!-- Группа: Ссылка -->
+        <div class="control-group">
+          <label for="urlInput">Целевой URL</label>
+          <div class="input-wrapper">
+            <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com">
+          </div>
         </div>
-      </a>
 
-      <!-- 3. Palette -->
-      <a href="palette/" class="tool-card card-palette">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224,128c0,53-43,96-96,96S32,181,32,128,75,32,128,32s96,43,96,96Zm-32,0a16,16,0,1,1-16-16A16,16,0,0,1,192,128Zm-48,48a16,16,0,1,1-16-16A16,16,0,0,1,144,176Zm-80-48a16,16,0,1,1,16-16A16,16,0,0,1,64,128Zm48-48a16,16,0,1,1,16-16A16,16,0,0,1,112,80Z"/></svg>
-        <div class="card-content">
-          <h3>Palette</h3>
-          <p>Генератор палитры из изображения</p>
+        <!-- Группа: Цвета -->
+        <div class="control-group">
+          <label>Цветовая схема</label>
+          <div class="color-pickers-row">
+            <div class="color-field">
+              <span>Фон</span>
+              <div class="color-input-wrap">
+                <input type="color" id="bgColor" value="#ffffff">
+                <input type="text" id="bgColorHex" value="#ffffff" maxlength="7">
+              </div>
+            </div>
+            <div class="color-field">
+              <span>Точки</span>
+              <div class="color-input-wrap">
+                <input type="color" id="dotColor" value="#000000">
+                <input type="text" id="dotColorHex" value="#000000" maxlength="7">
+              </div>
+            </div>
+          </div>
+          
+          <div class="checkbox-wrapper">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="bgTransparency">
+              <span class="checkmark"></span>
+              <span class="label-text">Прозрачный фон</span>
+            </label>
+          </div>
         </div>
-      </a>
 
-      <!-- 4. Glitch -->
-      <a href="glitch/" class="tool-card card-glitch">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V72H40V56Zm0,128H40V168H216Zm0-48H40V104H216Z"/></svg>
-        <div class="card-content">
-          <h3>Glitch</h3>
-          <p>Генератор эффекта глитча</p>
+        <!-- Группа: Формы -->
+        <div class="control-group">
+          <div class="row-2-col">
+            <div>
+              <label for="dotShape">Стиль точек</label>
+              <select id="dotShape">
+                <option value="square">Квадрат</option>
+                <option value="dots">Круг</option>
+                <option value="classy">Скругленные</option>
+                <option value="rounded">Мягкие</option>
+                <option value="extra-rounded">Подушка</option>
+              </select>
+            </div>
+            <div>
+              <label for="markerShape">Маркеры углов</label>
+              <select id="markerShape">
+                <option value="square">Квадрат</option>
+                <option value="dot">Круг</option>
+              </select>
+            </div>
+          </div>
         </div>
-      </a>
+
+        <!-- Группа: Логотип -->
+        <div class="control-group">
+          <label>Логотип</label>
+          
+          <!-- Поле URL логотипа -->
+          <input type="text" id="logoInput" placeholder="Ссылка на лого (URL)" class="mb-10">
+          
+          <!-- Кнопка загрузки -->
+          <div class="file-upload-wrapper">
+            <label for="logoFile" class="file-upload-btn">
+              <span>📂 Загрузить файл</span>
+            </label>
+            <input type="file" id="logoFile" accept="image/*">
+          </div>
+
+          <!-- Превью логотипа -->
+          <div class="logo-preview-block" id="logoPreviewBlock" style="display:none;">
+            <div class="preview-img-wrap">
+              <img id="logoPreview" alt="Logo Preview">
+              <button id="removeLogo" title="Удалить логотип">×</button>
+            </div>
+          </div>
+
+          <!-- Слайдер размера -->
+          <div class="range-wrapper mt-15">
+            <div class="range-header">
+              <span>Размер логотипа</span>
+              <span id="logoSizeValue">15%</span>
+            </div>
+            <input type="range" id="logoSize" min="1" max="25" value="15" class="styled-range">
+          </div>
+        </div>
+
+        <!-- Группа: Ошибки -->
+        <div class="control-group">
+          <label for="errorLevel">Коррекция ошибок</label>
+          <div class="select-wrapper">
+            <select id="errorLevel">
+              <option value="L">Low (7%)</option>
+              <option value="M" selected>Medium (15%)</option>
+              <option value="Q">Quartile (25%)</option>
+              <option value="H">High (30%)</option>
+            </select>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ПРАВАЯ КОЛОНКА: ПРЕВЬЮ -->
+      <section class="preview-panel">
+        <div class="sticky-wrapper">
+          
+          <div class="qr-card">
+            <div class="qr-canvas-wrapper">
+              <!-- Сюда рендерится QR -->
+              <div id="qr-code"></div>
+            </div>
+          </div>
+
+          <div class="actions-block">
+            <h3>Экспорт</h3>
+            <div class="buttons-grid" id="exportButtons">
+              <button class="btn-action" data-type="png">PNG</button>
+              <button class="btn-action" data-type="svg">SVG</button>
+              <button class="btn-action" data-type="jpg">JPG</button>
+              <button class="btn-action" data-type="pdf">PDF</button>
+            </div>
+          </div>
+
+          <div class="settings-io-block">
+             <textarea id="seedArea" placeholder="Код настроек (Base64)" readonly></textarea>
+             <div class="io-buttons">
+               <button class="btn-secondary" id="copySettings">Скопировать</button>
+               <button class="btn-secondary" id="loadSettingsBtn">Вставить</button>
+             </div>
+          </div>
+
+        </div>
+      </section>
 
     </div>
   </main>
 
-  <div class="button-container">
-    <button id="theme-toggle">💡</button>
-  </div>
-
-  <footer>
-    <section>
-        <div class="footer-top">
-          <p class="footer-top-text-two">ИП&nbsp;Звариченко&nbsp;Д.В.&nbsp;&nbsp;/ &nbsp;ИНН&nbsp;667340304564&nbsp;/ ОГРНИП&nbsp;319665800011480</p>
-          <p class="footer-top-text-two"><a target="_blank" class="a-privacy" href="../privacy.pdf">Политика&nbsp;конфидециальности</a>&nbsp;&nbsp;/ &nbsp;©&nbsp;Звариченко&nbsp;Дарья,&nbsp;2025</p>
-        </div>
-    </section>
-  </footer>
-
-  <script>
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-
-    if (localStorage.getItem('theme') === 'dark') {
-      body.classList.add('dark-theme');
-    }
-
-    themeToggle.addEventListener('click', () => {
-      body.classList.toggle('dark-theme');
-      
-      if (body.classList.contains('dark-theme')) {
-        localStorage.setItem('theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
-      }
-    });
-  </script>
+  <div id="messageBox"></div>
 
 </body>
 </html>
-
