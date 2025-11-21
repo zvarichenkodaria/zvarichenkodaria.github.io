@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CubeKey: Генератор QR-кодов</title>
+<title>QRCode</title>
 <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,16 +60,20 @@
     box-shadow: 0 4px 12px var(--shadow-subtle);
     transition: background 0.3s;
     position: relative;
-    background-color: var(--color-primary-light);
-    /* Квадратики */
+    
+    /* Светлая тема: Синий градиент + Узор квадратики */
+    background-color: var(--color-primary-light); 
     background-image: 
         linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1)), 
         linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1));
     background-position: 0 0, 10px 10px;
     background-size: 20px 20px;
   }
+  
+  /* Темная тема: Меняем цвет фона шапки (как в CubeKey) */
   .dark-theme header {
-    background-color: var(--color-primary-dark);
+    background-color: #3f3697; /* Более темный фиолетовый */
+    box-shadow: 0 4px 12px var(--shadow-dark);
   }
 
   .header-title {
@@ -82,16 +86,14 @@
   .header-title img { width: 40px; height: 40px; }
   header h1 { font-size: 26px; margin: 0; }
 
-  /* ВКЛАДКА "ГЕНЕРАТОР" - ТОЧЬ В ТОЧЬ КАК АКТИВНАЯ ВКЛАДКА В CUBEKEY */
+  /* КНОПКА "ГЕНЕРАТОР" (В РАМОЧКЕ КАК В CUBEKEY) */
   .tab-switcher {
     display: inline-flex;
     background: rgba(0,0,0,0.15);
     border-radius: 25px;
     padding: 5px;
-    position: relative;
   }
-  /* Белая плашка */
-  .tab-active-bg {
+  .tab-active {
       background: white;
       border-radius: 20px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -100,15 +102,12 @@
       font-size: 16px;
       font-weight: 600;
       line-height: 1.2;
+      cursor: default;
   }
-  .dark-theme .tab-active-bg {
+  /* В темной теме активная вкладка тоже белая (контраст) или светлая */
+  .dark-theme .tab-active {
       color: var(--color-primary-dark);
-      background: var(--color-bg-dark); /* В темной теме активная вкладка темная или светлая? В CubeKey она белая. Оставляю белой для контраста или подстраиваю под тему */
-  }
-  /* В CubeKey в темной теме слайдер становится темным. */
-  .dark-theme .tab-active-bg {
-     background: #2a2b35;
-     color: #ddd;
+      background: #fff; 
   }
 
   .view-container h2 {
@@ -131,7 +130,8 @@
     padding: 0;
   }
   
-  .params-block, .preview-block {
+  /* БЛОКИ (БЕЛАЯ РАМКА) */
+  .params-block, .preview-block, .faq-section {
     background: #fff;
     border-radius: 12px;
     padding: 22px;
@@ -143,13 +143,16 @@
     flex-direction: column;
   }
   .dark-theme .params-block,
-  .dark-theme .preview-block {
+  .dark-theme .preview-block,
+  .dark-theme .faq-section {
     background: #1d1e27;
     box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
   }
   
   .form-group { margin-bottom: 17px; }
-  label { display: block; margin-bottom: 6px; font-weight: 600; color: inherit; }
+  
+  /* Заголовки инпутов - исправил стиль для "Цвета", "Фон", "QR" */
+  label { display: block; margin-bottom: 6px; font-weight: 600; color: inherit; font-size: 16px; }
   
   input[type="text"],
   input[type="url"],
@@ -167,11 +170,13 @@
   }
 
   .color-row { display: flex; gap: 15px; margin-bottom: 10px; }
+  /* Внутри color-wrap текст тоже должен быть жирным, как лейбл */
   .color-wrap { 
     display: flex; align-items: center; gap: 10px; flex: 1;
-    background: var(--color-bg-light); padding: 8px; border-radius: 6px; 
+    background: var(--color-bg-light); padding: 8px; border-radius: 6px; font-weight: 600;
   }
   .dark-theme .color-wrap { background: #2a2b35; }
+  
   input[type="color"] { border: none; width: 30px; height: 30px; background: none; cursor: pointer; padding: 0; }
 
   .preview-block { align-items: center; }
@@ -199,48 +204,21 @@
     font-weight: 500; box-shadow: 0 4px 10px rgb(90 79 207 / 0.2);
   }
 
-  /* FAQ КАК В CUBEKEY */
-  .divider {
-       border: none;
-       height: 1px;
-       background-color: var(--color-divider-light);
-       margin: 40px 0;
-   }
-  .dark-theme .divider {
-       background-color: var(--color-divider-dark);
-  }
+  .divider { border: none; height: 1px; background-color: var(--color-divider-light); margin: 40px 0; }
+  .dark-theme .divider { background-color: var(--color-divider-dark); }
   
-  /* Стили FAQ-секции: убрал фон, как в CubeKey */
+  /* FAQ - БЛОК С РАМКОЙ (ВЕРНУЛ ОБРАТНО) */
   .faq-section {
-    background: transparent;
-    padding: 22px; 
-    /* CubeKey в примере имел прозрачный фон для FAQ */
-    padding-left: 0; padding-right: 0; 
-    box-shadow: none;
+     margin-top: 0;
+     /* Стили уже заданы выше в .params-block, .faq-section */
   }
   
-  .faq-item {
-       margin-bottom: 15px;
-  }
-  .faq-item:last-child {
-       margin-bottom: 0;
-  }
-  .faq-item h3 {
-       font-size: 18px;
-       color: var(--color-primary-light);
-       margin: 0 0 8px 0;
-  }
-  .dark-theme .faq-item h3 {
-       color: var(--color-primary-dark);
-  }
-  .faq-item p {
-       margin: 0;
-       font-size: 15px;
-       color: #777;
-  }
-  .dark-theme .faq-item p {
-    color: #ccc;
-  }
+  .faq-item { margin-bottom: 15px; }
+  .faq-item:last-child { margin-bottom: 0; }
+  .faq-item h3 { font-size: 18px; color: var(--color-primary-light); margin: 0 0 8px 0; }
+  .dark-theme .faq-item h3 { color: var(--color-primary-dark); }
+  .faq-item p { margin: 0; font-size: 15px; color: #777; }
+  .dark-theme .faq-item p { color: #ccc; }
 
   footer { text-align: center; padding: 0 10px; color: #777; font-size: 14px; }
   
@@ -277,11 +255,11 @@
     <header>
       <div class="header-title">
           <img src="../../img/logo.png" alt="Logo">
-          <h1>CubeKey</h1>
+          <h1>QRCode</h1>
       </div>
-      <!-- Вкладка Генератор (Статичная, в рамочке) -->
+      <!-- Вкладка Генератор (Кнопка в рамке) -->
       <div class="tab-switcher">
-         <div class="tab-active-bg">Генератор</div>
+         <div class="tab-active">Генератор</div>
       </div>
     </header>
     
@@ -290,6 +268,7 @@
         
         <div class="main-grid">
           
+          <!-- ЛЕВАЯ КОЛОНКА -->
           <div class="params-block">
             <div class="form-group">
               <label>Ссылка (URL)</label>
@@ -369,6 +348,7 @@
             </div>
           </div>
 
+          <!-- ПРАВАЯ КОЛОНКА -->
           <div class="preview-block">
              <div style="color:var(--color-primary-light); font-weight:600; margin-bottom:20px; font-size:18px;">Предпросмотр</div>
              
@@ -378,15 +358,18 @@
                  </div>
              </div>
 
-             <div id="exportButtons" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width:100%; margin-bottom:20px;">
-                <button class="generate-btn" data-type="png">Скачать PNG</button>
-                <button class="generate-btn" data-type="svg">Скачать SVG</button>
-                <button class="generate-btn" data-type="jpg">Скачать JPG</button>
-                <button class="generate-btn" data-type="pdf">Скачать PDF</button>
+             <!-- Кнопки В ОДНУ ЛИНИЮ -->
+             <div id="exportButtons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width:100%; margin-bottom:20px;">
+                <button class="generate-btn" data-type="png">PNG</button>
+                <button class="generate-btn" data-type="svg">SVG</button>
+                <button class="generate-btn" data-type="jpg">JPG</button>
+                <button class="generate-btn" data-type="pdf">PDF</button>
              </div>
              
              <div style="width:100%; border-top:1px solid #eee; padding-top:15px;">
-                <textarea id="seedArea" style="width:100%; height:60px; border:none; background:var(--color-bg-light); color:inherit; resize:none; border-radius:6px; padding:10px; font-size:12px; font-family:monospace;" placeholder="Base64 код настроек"></textarea>
+                <!-- ПОДПИСЬ КОДА -->
+                <label style="font-size:14px; margin-bottom:5px;">Код настроек для импорта и экспорта</label>
+                <textarea id="seedArea" style="width:100%; height:60px; border:none; background:var(--color-bg-light); color:inherit; resize:none; border-radius:6px; padding:10px; font-size:12px; font-family:monospace;" placeholder="Base64 код"></textarea>
                 <div style="display:flex; gap:10px; margin-top:10px;">
                   <button class="copy-all" id="copySettings">Копировать</button>
                   <button class="copy-all" id="loadSettingsBtn">Вставить</button>
@@ -399,6 +382,7 @@
     
     <hr class="divider">
     
+    <!-- FAQ С РАМКОЙ (КАК БЫЛО В CUBEKEY ИЗНАЧАЛЬНО) -->
     <div class="faq-section">
         <div class="faq-item">
             <h3>Для чего нужен генератор QR-кодов?</h3>
@@ -417,7 +401,7 @@
     <hr class="divider">
     
     <footer>
-        &copy; 2025 CubeKey. Работает полностью в браузере.
+        &copy; 2025 QRCode. Работает полностью в браузере.
     </footer>
   </div>
 
