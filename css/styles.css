@@ -2168,29 +2168,34 @@ iframe
 
     /* === НОВАЯ КНОПКА В ШАПКЕ (КРУГЛАЯ) === */
     .tool-btn-circle {
-      width: 49px; height: 49px;
+      width: 49px; 
+      height: 49px; /* Ровно как у кнопки Telegram */
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
-      display: flex; align-items: center; justify-content: center;
+      background: rgba(255, 255, 255, 0.15); /* Полупрозрачный фон */
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
       transition: all 0.3s ease;
       cursor: pointer;
-      border: 2px solid rgba(255,255,255,0.3);
       text-decoration: none;
+      border: none; /* Убрали границу, чтобы размер был идентичен */
     }
     
     .tool-btn-circle:hover {
-      background: #ffffff;
+      background: #ffffff; /* При наведении становится белой */
       box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.6);
-      transform: rotate(15deg);
+      transform: rotate(15deg); /* Легкий поворот */
     }
 
     .tool-btn-circle svg {
-      width: 24px; height: 24px;
+      width: 24px; 
+      height: 24px;
       color: #ffffff;
       transition: color 0.3s ease;
     }
 
+    /* При наведении на кнопку иконка меняет цвет на бордовый (как в шапке) */
     .tool-btn-circle:hover svg {
       color: #710002;
     }
