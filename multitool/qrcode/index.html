@@ -51,35 +51,32 @@
     align-items: stretch;
   }
   
-  /* ШАПКА */
+  /* ШАПКА (CUBEKEY 1-в-1, ТОЛЬКО УЗОР) */
   header {
     color: white;
     padding: 20px 16px 20px 16px;
     text-align: center;
     border-radius: 12px;
     box-shadow: 0 4px 12px var(--shadow-subtle);
-    transition: background 0.3s, background-image 0.3s;
+    transition: background 0.3s;
     position: relative;
+    background-color: var(--color-primary-light);
     
-    /* Светлая тема: Градиент (синий -> фиолетовый) + Узор */
-    background-color: var(--color-primary-light); 
-    background-image: 
-        linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1)), 
-        linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1)),
-        linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* Градиент подложка */
-    background-position: 0 0, 10px 10px, 0 0;
-    background-size: 20px 20px, 20px 20px, 100% 100%;
-    background-blend-mode: normal, normal, normal;
+    /* Новый узор (точки/квадратики), цвета точек как у полосок в CubeKey */
+    background-image:
+      radial-gradient(circle at 2px 2px, rgba(72, 101, 214, 0.4) 1.5px, transparent 0),
+      radial-gradient(circle at 12px 12px, rgba(72, 101, 214, 0.25) 1.5px, transparent 0);
+    background-size: 20px 20px;
   }
   
-  /* Темная тема: Реверс градиента (фиолетовый -> синий) */
   .dark-theme header {
-    background-color: #3f3697;
-    box-shadow: 0 4px 12px var(--shadow-dark);
-    background-image: 
-        linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1)), 
-        linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1)),
-        linear-gradient(135deg, #764ba2 0%, #667eea 100%); /* Реверс */
+    background-color: var(--color-primary-dark);
+    
+    /* Инверсия цветов точек (как инверсия полосок в CubeKey) */
+    background-image:
+      radial-gradient(circle at 2px 2px, rgba(90, 79, 207, 0.45) 1.5px, transparent 0),
+      radial-gradient(circle at 12px 12px, rgba(90, 79, 207, 0.3) 1.5px, transparent 0);
+    background-size: 20px 20px;
   }
 
   .header-title {
@@ -92,7 +89,7 @@
   .header-title img { width: 40px; height: 40px; }
   header h1 { font-size: 26px; margin: 0; }
 
-  /* Кнопка "Генератор" (Arial) */
+  /* КНОПКА "ГЕНЕРАТОР" (ARIAL, В РАМКЕ КАК В CUBEKEY) */
   .tab-switcher {
     display: inline-flex;
     background: rgba(0,0,0,0.15);
@@ -109,7 +106,7 @@
       font-weight: 600;
       line-height: 1.2;
       cursor: default;
-      font-family: Arial, sans-serif; /* Arial */
+      font-family: Arial, sans-serif;
   }
   .dark-theme .tab-active {
       color: var(--color-primary-dark);
@@ -136,8 +133,8 @@
     padding: 0;
   }
   
-  /* Блоки */
-  .params-block, .preview-block {
+  /* БЛОКИ (БЕЛАЯ РАМКА) */
+  .params-block, .preview-block, .faq-section {
     background: #fff;
     border-radius: 12px;
     padding: 22px;
@@ -149,27 +146,15 @@
     flex-direction: column;
   }
   .dark-theme .params-block,
-  .dark-theme .preview-block {
-    background: #1d1e27;
-    box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
-  }
-
-  /* FAQ SECTION: Светлая тема - СЕРЕНЬКИЙ ФОН (#f4f6f9), Темная - темный (#1d1e27) */
-  .faq-section {
-    background: var(--color-bg-light); /* Серенький, как основной фон */
-    border-radius: 12px;
-    padding: 22px;
-    box-shadow: 0 2px 8px var(--shadow-subtle);
-    transition: background 0.3s, box-shadow 0.3s;
-    width: 100%;
-    box-sizing: border-box;
-  }
+  .dark-theme .preview-block,
   .dark-theme .faq-section {
-    background: #1d1e27; /* В темной теме - как обычный блок */
+    background: #1d1e27;
     box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
   }
   
   .form-group { margin-bottom: 17px; }
+  
+  /* ЗАГОЛОВКИ ИНПУТОВ (ЖИРНЫЕ КАК ОСТАЛЬНЫЕ) */
   label { display: block; margin-bottom: 6px; font-weight: 600; color: inherit; font-size: 16px; }
   
   input[type="text"],
@@ -186,16 +171,10 @@
     background: #2a2b35; color: var(--color-text-dark);
     box-shadow: 0 0 6px rgba(90, 79, 207, 0.15);
   }
-  
-  /* Textarea для кода (явное указание цветов для темной темы) */
-  textarea#seedArea {
-      background: var(--color-bg-light);
-      color: var(--color-text-light);
-  }
-  .dark-theme textarea#seedArea {
-      background: #2a2b35;
-      color: var(--color-text-dark);
-  }
+
+  /* Textarea (ТЕМНЫЙ ФОН В ТЕМНОЙ ТЕМЕ) */
+  textarea#seedArea { background: var(--color-bg-light); color: var(--color-text-light); }
+  .dark-theme textarea#seedArea { background: #2a2b35; color: var(--color-text-dark); }
 
   .color-row { display: flex; gap: 15px; margin-bottom: 10px; }
   .color-wrap { 
@@ -233,6 +212,8 @@
 
   .divider { border: none; height: 1px; background-color: var(--color-divider-light); margin: 40px 0; }
   .dark-theme .divider { background-color: var(--color-divider-dark); }
+  
+  .faq-section { margin-top: 0; }
   
   .faq-item { margin-bottom: 15px; }
   .faq-item:last-child { margin-bottom: 0; }
@@ -278,6 +259,7 @@
           <img src="../../img/logo.png" alt="Logo">
           <h1>QRCode</h1>
       </div>
+      <!-- Вкладка Генератор -->
       <div class="tab-switcher">
          <div class="tab-active">Генератор</div>
       </div>
@@ -288,6 +270,7 @@
         
         <div class="main-grid">
           
+          <!-- Левая колонка -->
           <div class="params-block">
             <div class="form-group">
               <label>Ссылка (URL)</label>
@@ -367,6 +350,7 @@
             </div>
           </div>
 
+          <!-- Правая колонка -->
           <div class="preview-block">
              <div style="color:var(--color-primary-light); font-weight:600; margin-bottom:20px; font-size:18px;">Предпросмотр</div>
              
