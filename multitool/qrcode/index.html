@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR-код с расширенными настройками | Звариченко Дарья</title>
-  <meta name="description" content="Портфолио дизайнера. Дизайн сайтов, цифровые изображения, полиграфия, рассылка. Работа с созданием сайтов и дизайна, полиграфия печатной продукции, баннерная реклама, макеты для печати - Звариченко Дарья.">
-  <link type="image/x-icon" href="../../img/favicon.png" rel="shortcut icon">
-  <link type="Image/x-icon" href="../../img/favicon.png" rel="icon">
-  <link rel="icon" href="../img/favicon.png" type="image/x-icon">
-  <link rel="stylesheet" href="../../css/styles.css">
+  <title>QR-код генератор | Звариченко Дарья</title>
+  <meta name="description" content="Генератор QR-кодов с настройкой дизайна">
+  <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+  
+  <!-- ПОДКЛЮЧАЕМ ТОЛЬКО НОВЫЙ CSS -->
   <link rel="stylesheet" href="../../css/qrcode.css">
+  
+  <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Скрипты (логика генерации остается старой) -->
   <script src="../../js/script.js" defer></script>
   <script src="../../js/qrcode.js" defer></script>
-
-  <!-- Yandex.Metrika counter -->
+  <!-- Библиотека QR -->
+  <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+  
+  <!-- Yandex.Metrika (ваша старая метрика) -->
   <script type="text/javascript">
     (function (m, e, t, r, i, k, a) {
       m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
@@ -34,137 +38,176 @@
       webvisor: true
     });
   </script>
-  <noscript>
-    <div><img src="https://mc.yandex.ru/watch/103335861" style="position:absolute; left:-9999px;" alt="" /></div>
-  </noscript>
-  <!-- /Yandex.Metrika counter -->
-
+  <noscript><div><img src="https://mc.yandex.ru/watch/103335861" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 </head>
 
 <body>
 
-  <div class="title-pad">
+  <!-- Шапка в стиле CubeKey, но с вашим текстом -->
+  <header class="main-header">
+    <div class="header-container">
+      <a href="../../" class="logo-link">
+        <img src="../../img/logo.png" alt="Логотип" class="header-logo">
+        <div class="header-text">
+          <span class="brand-name">Звариченко Дарья</span>
+          <span class="brand-desc">Генератор QR-кодов</span>
+        </div>
+      </a>
+    </div>
+  </header>
 
-    <header>
-      <nav>
-        <a href="../" class="logo">
-          <div class="logo">
-            <img src="../img/logo.png" alt="Логотип">
+  <main class="app-container">
+    <div class="grid-wrapper">
+      
+      <!-- ЛЕВАЯ КОЛОНКА: НАСТРОЙКИ -->
+      <section class="controls-panel">
+        
+        <div class="panel-header">
+          <h2>Настройки</h2>
+          <p>Создайте уникальный дизайн QR-кода</p>
+        </div>
+
+        <!-- URL -->
+        <div class="control-group">
+          <label for="urlInput">Ссылка (URL)</label>
+          <div class="input-wrapper">
+            <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com">
           </div>
-        </a>
-
-        <div class="name_zero">
-          <p class="name_one">Звариченко Дарья</p>
-          <p class="name_two">Творческое портфолио дизайнера</p>
         </div>
 
-        <div class="name_zero">
-          <p class="name_one">Генератор QR-кодов</p>
+        <!-- ЦВЕТА -->
+        <div class="control-group">
+          <label>Цвета</label>
+          <div class="color-pickers-row">
+            <div class="color-field">
+              <span>Фон</span>
+              <div class="color-input-wrap">
+                <input type="color" id="bgColor" value="#ffffff">
+                <input type="text" id="bgColorHex" value="#ffffff" maxlength="7">
+              </div>
+            </div>
+            <div class="color-field">
+              <span>Код</span>
+              <div class="color-input-wrap">
+                <input type="color" id="dotColor" value="#000000">
+                <input type="text" id="dotColorHex" value="#000000" maxlength="7">
+              </div>
+            </div>
+          </div>
+          
+          <div class="checkbox-wrapper">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="bgTransparency">
+              <span class="checkmark"></span>
+              <span class="label-text">Прозрачный фон</span>
+            </label>
+          </div>
         </div>
 
-
-      </nav>
-    </header>
-
-  </div>
-
-  <div class="grid-container">
-
-    <div class="menu-section">
-      <div class="menu-header active">Вставье URL</div>
-      <div class="menu-content active">
-        <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com" />
-      </div>
-
-      <div class="menu-header">Цвет фона и QR-кода</div>
-      <div class="menu-content">
-        <div class="pros">
-          <input type="color" id="bgColor" value="#ffffff" />
-          <input type="text" id="bgColorHex" maxlength="7" style="margin-top:2px;" placeholder="#ffffff" />
+        <!-- ФОРМЫ -->
+        <div class="control-group">
+          <div class="row-2-col">
+            <div>
+              <label for="dotShape">Точки</label>
+              <select id="dotShape">
+                <option value="square">Квадрат</option>
+                <option value="dots">Круг</option>
+                <option value="classy">Скругленные</option>
+                <option value="rounded">Мягкие</option>
+                <option value="extra-rounded">Подушка</option>
+              </select>
+            </div>
+            <div>
+              <label for="markerShape">Углы</label>
+              <select id="markerShape">
+                <option value="square">Квадрат</option>
+                <option value="dot">Круг</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div class="pros">
-          <input type="color" id="dotColor" value="#000000" />
-          <input type="text" id="dotColorHex" maxlength="7" style="margin-top:2px;" placeholder="#000000" />
-        </div><br>
-        <div class="pros"><label><input type="checkbox" id="bgTransparency" /></label></div>
-        <div class="pros">Прозрачный фон</div>
-      </div>
+        <!-- ЛОГОТИП -->
+        <div class="control-group">
+          <label>Логотип</label>
+          <input type="text" id="logoInput" placeholder="Ссылка на лого (URL)" class="mb-10">
+          
+          <div class="file-upload-wrapper">
+            <label for="logoFile" class="file-upload-btn">
+              <span>Загрузить файл</span>
+            </label>
+            <input type="file" id="logoFile" accept="image/*">
+          </div>
 
-      <div class="menu-header">Форма точек и маркеров</div>
-      <div class="menu-content">
-        <label for="dotShape">Форма точек</label>
-        <select id="dotShape">
-          <option value="square">Квадрат</option>
-          <option value="dots">Круг</option>
-          <option value="classy">Закругленные</option>
-        </select>
+          <!-- Контейнер превью (скрыт по умолчанию) -->
+          <div class="logo-preview-container" id="logoPreviewBlock" style="display:none;">
+            <div class="preview-img-wrap">
+              <img id="logoPreview" alt="Logo Preview">
+              <button class="remove-logo-btn" id="removeLogo" title="Удалить">×</button>
+            </div>
+          </div>
 
-        <label for="markerShape">Форма маркеров углов</label>
-        <select id="markerShape">
-          <option value="square">Квадрат</option>
-          <option value="dot">Круг</option>
-        </select>
-      </div>
+          <div class="range-wrapper mt-15">
+            <div class="range-header">
+              <span>Размер логотипа</span>
+              <span id="logoSizeValue">15%</span>
+            </div>
+            <input type="range" id="logoSize" min="1" max="25" value="15" class="styled-range">
+          </div>
+        </div>
 
-     <!--    <div class="menu-header">Загрузка логотипа</div>  -->
-<div class="menu-content">
-  <input type="text" id="logoInput" placeholder="https://example.com/logo.png" />
-  <input type="file" id="logoFile" accept="image/*" />
+        <!-- ОШИБКИ -->
+        <div class="control-group">
+          <label for="errorLevel">Коррекция ошибок</label>
+          <select id="errorLevel">
+            <option value="L">Low (7%)</option>
+            <option value="M" selected>Medium (15%)</option>
+            <option value="Q">Quartile (25%)</option>
+            <option value="H">High (30%)</option>
+          </select>
+        </div>
 
-  <!-- Только предпросмотр и крестик — здесь -->
-  <div class="logo-preview-container">
-    <img id="logoPreview" alt="Предпросмотр логотипа" />
-    <button class="button1" id="removeLogo" title="Удалить логотип">×</button>
-  </div>
+      </section>
 
-  <!-- Всегда снаружи .logo-preview-container! -->
-  <label for="logoSize">Размер логотипа (%)</label>
-  <input type="range" id="logoSize" min="1" max="25" value="15" />
-</div>
+      <!-- ПРАВАЯ КОЛОНКА: ПРЕВЬЮ -->
+      <section class="preview-panel">
+        <div class="sticky-wrapper">
+          
+          <!-- Карточка с QR -->
+          <div class="qr-card">
+            <div class="qr-canvas-wrapper">
+              <div id="qrWrapper">
+                <div id="qr-code"></div>
+              </div>
+            </div>
+          </div>
 
+          <!-- Кнопки экспорта -->
+          <div class="actions-block">
+            <div class="buttons-grid" id="exportButtons">
+              <button class="btn-action" data-type="png">PNG</button>
+              <button class="btn-action" data-type="svg">SVG</button>
+              <button class="btn-action" data-type="jpg">JPG</button>
+              <button class="btn-action" data-type="pdf">PDF</button>
+            </div>
+          </div>
 
-      <div class="menu-header">Коррекция ошибок</div>
-      <div class="menu-content">
-        <label for="errorLevel">Выберите уровень коррекции ошибок</label>
-        <select id="errorLevel">
-          <option value="L">L</option>
-          <option value="M" selected>M</option>
-          <option value="Q">Q</option>
-          <option value="H">H</option>
-        </select>
-      </div>
+          <!-- Код настроек -->
+          <div class="settings-io-block">
+             <textarea id="seedArea" placeholder="Код настроек (Base64)"></textarea>
+             <div class="io-buttons">
+               <button class="btn-secondary" id="copySettings">Скопировать код</button>
+               <button class="btn-secondary" id="loadSettingsBtn">Загрузить код</button>
+             </div>
+          </div>
+
+        </div>
+      </section>
+
     </div>
-
-    <div class="preview-panel">
-      <div class="preview-block">
-        <div id="qrWrapper" style="position: relative;">
-          <div id="qr-code"></div>
-
-        </div>
-      </div>
-      <div class="download">Скачать QR-код в формате:</div>
-      <div class="export-block" id="exportButtons" style="display:none;">
-        <button class="button2" data-type="svg">SVG</button>
-        <button class="button2" data-type="png">PNG</button>
-        <button class="button2" data-type="jpg">JPG</button>
-        <button class="button2" data-type="pdf">PDF</button>
-      </div>
-      <div class="seed-block" style="display:block;">
-        <textarea id="seedArea" placeholder="base64"></textarea>
-        <div class="seed-block">
-        <button class="button3" id="copySettings">Скопировать код </button>
-        <button class="button3" id="loadSettingsBtn">Загрузить код</button></div>
-      </div>
-    </div>
-  </div>
+  </main>
 
   <div id="messageBox"></div>
 
-  <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
-
 </body>
-
-
 </html>
-
