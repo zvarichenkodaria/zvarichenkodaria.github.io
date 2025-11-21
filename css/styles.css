@@ -2166,36 +2166,42 @@ iframe
 
 
 
-    /* === НОВАЯ КНОПКА В ШАПКЕ (КРУГЛАЯ) === */
-    .tool-btn-circle {
-      width: 49px; 
-      height: 49px; /* Ровно как у кнопки Telegram */
+     /* Кнопка ИНСТРУМЕНТЫ (стиль как у Телеграма) */
+    .circle-tool {
+      background: linear-gradient(30deg, #710002 0%, #A7003D 100%); /* Тот же градиент, что у шапки/телеграма */
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15); /* Полупрозрачный фон */
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      border: none; /* Убрали границу, чтобы размер был идентичен */
-    }
-    
-    .tool-btn-circle:hover {
-      background: #ffffff; /* При наведении становится белой */
-      box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.6);
-      transform: rotate(15deg); /* Легкий поворот */
+      height: 49px;
+      width: 49px;
+      margin: 0px 0px 0px 40px; /* Отступ от меню (как было у телеграма) */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.3s ease;
     }
 
-    .tool-btn-circle svg {
-      width: 24px; 
+    /* Ссылка внутри кнопки */
+    .circle-tool a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      color: #ffffff;
+    }
+
+    .circle-tool:hover {
+      box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
+    }
+
+    .circle-tool svg {
+      width: 24px;
       height: 24px;
       color: #ffffff;
       transition: color 0.3s ease;
     }
 
-    /* При наведении на кнопку иконка меняет цвет на бордовый (как в шапке) */
-    .tool-btn-circle:hover svg {
-      color: #710002;
+    /* Уменьшаем отступ у кнопки Телеграма, так как теперь перед ней стоит кнопка инструментов */
+    .circle-tg {
+      margin-left: 15px !important; /* Меньший отступ между иконками */
     }
