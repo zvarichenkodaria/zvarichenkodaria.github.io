@@ -51,36 +51,39 @@
     align-items: stretch;
   }
   
-  /* ШАПКА ИЗ КРУГОВ (BIG CIRCLES) */
+  /* --- ШАПКА --- */
   header {
     color: white;
-    padding: 19.5px 16px 19.5px 16px;
+    padding: 20px 16px 20px 16px;
     text-align: center;
     border-radius: 12px;
     box-shadow: 0 4px 12px var(--shadow-subtle);
     transition: background 0.3s;
     position: relative;
-    overflow: hidden;
-    background-color: #5a4fcf; /* База */
     
-    /* УЗОР ИЗ КРУГОВ */
-    background-image: 
-        radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.1) 10%, transparent 10.5%),
-        radial-gradient(circle at 90% 90%, rgba(255, 255, 255, 0.1) 15%, transparent 15.5%),
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 25%, transparent 25.5%),
-        linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* Градиент подложка */
-    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    /* Цвет фона 1-в-1 как в CubeKey */
+    background-color: var(--color-primary-light);
+    
+    /* Узор: КРУГИ вместо полосок. Цвета те же самые (rgba(72, 101, 214, 0.4)) */
+    background-image: radial-gradient(
+        circle,
+        rgba(72, 101, 214, 0.4) 20%,
+        transparent 21%
+    );
+    background-size: 30px 30px; /* Размер сетки узора */
     background-position: 0 0;
   }
   
   .dark-theme header {
-    background-color: #3f3697;
-    /* Инвертированный градиент подложка */
-    background-image: 
-        radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.08) 10%, transparent 10.5%),
-        radial-gradient(circle at 90% 90%, rgba(255, 255, 255, 0.08) 15%, transparent 15.5%),
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 25%, transparent 25.5%),
-        linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    /* Цвет фона темной темы 1-в-1 как в CubeKey */
+    background-color: var(--color-primary-dark);
+    
+    /* Узор: КРУГИ. Цвета те же самые (rgba(90, 79, 207, 0.4)) */
+    background-image: radial-gradient(
+        circle,
+        rgba(90, 79, 207, 0.4) 20%,
+        transparent 21%
+    );
   }
 
   .header-title {
@@ -89,17 +92,16 @@
       justify-content: center;
       gap: 15px;
       margin-bottom: 15px;
-      position: relative; z-index: 2;
   }
   .header-title img { width: 40px; height: 40px; }
   header h1 { font-size: 26px; margin: 0; }
 
+  /* Кнопка "Генератор" */
   .tab-switcher {
     display: inline-flex;
     background: rgba(0,0,0,0.15);
     border-radius: 25px;
     padding: 5px;
-    position: relative; z-index: 2;
   }
   .tab-active {
       background: white;
@@ -138,6 +140,7 @@
     padding: 0;
   }
   
+  /* БЛОКИ */
   .params-block, .preview-block, .faq-section {
     background: #fff;
     border-radius: 12px;
@@ -156,7 +159,7 @@
     box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
   }
   
-  /* FAQ СЕРЫЙ ФОН */
+  /* FAQ - СЕРЫЙ ФОН */
   .faq-section {
     background: var(--color-bg-light); 
   }
@@ -219,9 +222,16 @@
     font-weight: 500; box-shadow: 0 4px 10px rgb(90 79 207 / 0.2);
   }
 
-  /* ДИВАЙДЕРЫ КАК В CUBEKEY */
-  .divider { border: none; height: 1px; background-color: var(--color-divider-light); margin: 40px 0; }
-  .dark-theme .divider { background-color: var(--color-divider-dark); }
+  /* ДИВАЙДЕРЫ (ПОЛОСКИ) КАК В CUBEKEY */
+  .divider { 
+      border: none; 
+      height: 1px; 
+      background-color: var(--color-divider-light); 
+      margin: 40px 0; 
+  }
+  .dark-theme .divider { 
+      background-color: var(--color-divider-dark); 
+  }
   
   .faq-item { margin-bottom: 15px; }
   .faq-item:last-child { margin-bottom: 0; }
