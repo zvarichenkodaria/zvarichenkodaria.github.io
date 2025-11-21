@@ -2166,21 +2166,34 @@ iframe
 
 
 
-     /* Кнопка ИНСТРУМЕНТЫ (стиль как у Телеграма) */
+    /* Кнопка ИНСТРУМЕНТЫ (стиль как у Телеграма) */
     .circle-tool {
-      background: linear-gradient(30deg, #710002 0%, #A7003D 100%); /* Тот же градиент, что у шапки/телеграма */
+      background: linear-gradient(30deg, #710002 0%, #A7003D 100%);
       border-radius: 50%;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+      
+      /* ФИКСИРОВАННЫЕ РАЗМЕРЫ И ЗАПРЕТ СЖАТИЯ */
       height: 49px;
       width: 49px;
-      margin: 0px 0px 0px 40px; /* Отступ от меню (как было у телеграма) */
+      min-width: 49px; /* Минимальная ширина */
+      min-height: 49px; /* Минимальная высота */
+      flex-shrink: 0;   /* Запрещаем сжиматься внутри flex-контейнера */
+
+      margin: 0px 0px 0px 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: box-shadow 0.3s ease;
     }
 
-    /* Ссылка внутри кнопки */
+    /* То же самое стоит добавить и кнопке Телеграма, чтобы она тоже не ломалась */
+    .circle-tg {
+      flex-shrink: 0;
+      min-width: 49px;
+      min-height: 49px;
+    }
+
+    /* Остальные стили без изменений... */
     .circle-tool a {
       display: flex;
       align-items: center;
@@ -2188,6 +2201,7 @@ iframe
       width: 100%;
       height: 100%;
       color: #ffffff;
+      text-decoration: none; /* Убираем подчеркивание, если есть */
     }
 
     .circle-tool:hover {
@@ -2198,10 +2212,9 @@ iframe
       width: 24px;
       height: 24px;
       color: #ffffff;
-      transition: color 0.3s ease;
     }
 
-    /* Уменьшаем отступ у кнопки Телеграма, так как теперь перед ней стоит кнопка инструментов */
+    /* Отступ для кнопки Телеграма, если они стоят рядом */
     .circle-tg {
-      margin-left: 15px !important; /* Меньший отступ между иконками */
+      margin-left: 15px !important;
     }
