@@ -3,29 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR-код Генератор | CubeKey Style</title>
+  <title>QR-код генератор | Звариченко Дарья</title>
+  <meta name="description" content="Генератор QR-кодов с настройкой дизайна">
   <link rel="icon" href="../../img/favicon.png" type="image/x-icon">
-  <!-- Подключаем новый CSS -->
-  <link rel="stylesheet" href="style.css">
+  
+  <!-- ПОДКЛЮЧАЕМ ТОЛЬКО НОВЫЙ CSS -->
+  <link rel="stylesheet" href="../../css/qrcode.css">
+  
   <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
   
-  <!-- Скрипты -->
+  <!-- Скрипты (логика генерации остается старой) -->
   <script src="../../js/script.js" defer></script>
   <script src="../../js/qrcode.js" defer></script>
+  <!-- Библиотека QR -->
   <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+  
+  <!-- Yandex.Metrika (ваша старая метрика) -->
+  <script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(103335861, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/103335861" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 </head>
+
 <body>
 
+  <!-- Шапка в стиле CubeKey, но с вашим текстом -->
   <header class="main-header">
     <div class="header-container">
       <a href="../../" class="logo-link">
         <img src="../../img/logo.png" alt="Логотип" class="header-logo">
         <div class="header-text">
-          <span class="brand-name">QR Generator</span>
-          <span class="brand-desc">Профессиональный инструмент</span>
+          <span class="brand-name">Звариченко Дарья</span>
+          <span class="brand-desc">Генератор QR-кодов</span>
         </div>
       </a>
     </div>
@@ -38,21 +63,21 @@
       <section class="controls-panel">
         
         <div class="panel-header">
-          <h2>Настройки QR</h2>
-          <p>Персонализируйте дизайн вашего кода</p>
+          <h2>Настройки</h2>
+          <p>Создайте уникальный дизайн QR-кода</p>
         </div>
 
-        <!-- Группа: Ссылка -->
+        <!-- URL -->
         <div class="control-group">
-          <label for="urlInput">Целевой URL</label>
+          <label for="urlInput">Ссылка (URL)</label>
           <div class="input-wrapper">
             <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com">
           </div>
         </div>
 
-        <!-- Группа: Цвета -->
+        <!-- ЦВЕТА -->
         <div class="control-group">
-          <label>Цветовая схема</label>
+          <label>Цвета</label>
           <div class="color-pickers-row">
             <div class="color-field">
               <span>Фон</span>
@@ -62,7 +87,7 @@
               </div>
             </div>
             <div class="color-field">
-              <span>Точки</span>
+              <span>Код</span>
               <div class="color-input-wrap">
                 <input type="color" id="dotColor" value="#000000">
                 <input type="text" id="dotColorHex" value="#000000" maxlength="7">
@@ -79,11 +104,11 @@
           </div>
         </div>
 
-        <!-- Группа: Формы -->
+        <!-- ФОРМЫ -->
         <div class="control-group">
           <div class="row-2-col">
             <div>
-              <label for="dotShape">Стиль точек</label>
+              <label for="dotShape">Точки</label>
               <select id="dotShape">
                 <option value="square">Квадрат</option>
                 <option value="dots">Круг</option>
@@ -93,7 +118,7 @@
               </select>
             </div>
             <div>
-              <label for="markerShape">Маркеры углов</label>
+              <label for="markerShape">Углы</label>
               <select id="markerShape">
                 <option value="square">Квадрат</option>
                 <option value="dot">Круг</option>
@@ -102,30 +127,26 @@
           </div>
         </div>
 
-        <!-- Группа: Логотип -->
+        <!-- ЛОГОТИП -->
         <div class="control-group">
           <label>Логотип</label>
-          
-          <!-- Поле URL логотипа -->
           <input type="text" id="logoInput" placeholder="Ссылка на лого (URL)" class="mb-10">
           
-          <!-- Кнопка загрузки -->
           <div class="file-upload-wrapper">
             <label for="logoFile" class="file-upload-btn">
-              <span>📂 Загрузить файл</span>
+              <span>Загрузить файл</span>
             </label>
             <input type="file" id="logoFile" accept="image/*">
           </div>
 
-          <!-- Превью логотипа -->
-          <div class="logo-preview-block" id="logoPreviewBlock" style="display:none;">
+          <!-- Контейнер превью (скрыт по умолчанию) -->
+          <div class="logo-preview-container" id="logoPreviewBlock" style="display:none;">
             <div class="preview-img-wrap">
               <img id="logoPreview" alt="Logo Preview">
-              <button id="removeLogo" title="Удалить логотип">×</button>
+              <button class="remove-logo-btn" id="removeLogo" title="Удалить">×</button>
             </div>
           </div>
 
-          <!-- Слайдер размера -->
           <div class="range-wrapper mt-15">
             <div class="range-header">
               <span>Размер логотипа</span>
@@ -135,17 +156,15 @@
           </div>
         </div>
 
-        <!-- Группа: Ошибки -->
+        <!-- ОШИБКИ -->
         <div class="control-group">
           <label for="errorLevel">Коррекция ошибок</label>
-          <div class="select-wrapper">
-            <select id="errorLevel">
-              <option value="L">Low (7%)</option>
-              <option value="M" selected>Medium (15%)</option>
-              <option value="Q">Quartile (25%)</option>
-              <option value="H">High (30%)</option>
-            </select>
-          </div>
+          <select id="errorLevel">
+            <option value="L">Low (7%)</option>
+            <option value="M" selected>Medium (15%)</option>
+            <option value="Q">Quartile (25%)</option>
+            <option value="H">High (30%)</option>
+          </select>
         </div>
 
       </section>
@@ -154,15 +173,17 @@
       <section class="preview-panel">
         <div class="sticky-wrapper">
           
+          <!-- Карточка с QR -->
           <div class="qr-card">
             <div class="qr-canvas-wrapper">
-              <!-- Сюда рендерится QR -->
-              <div id="qr-code"></div>
+              <div id="qrWrapper">
+                <div id="qr-code"></div>
+              </div>
             </div>
           </div>
 
+          <!-- Кнопки экспорта -->
           <div class="actions-block">
-            <h3>Экспорт</h3>
             <div class="buttons-grid" id="exportButtons">
               <button class="btn-action" data-type="png">PNG</button>
               <button class="btn-action" data-type="svg">SVG</button>
@@ -171,11 +192,12 @@
             </div>
           </div>
 
+          <!-- Код настроек -->
           <div class="settings-io-block">
-             <textarea id="seedArea" placeholder="Код настроек (Base64)" readonly></textarea>
+             <textarea id="seedArea" placeholder="Код настроек (Base64)"></textarea>
              <div class="io-buttons">
-               <button class="btn-secondary" id="copySettings">Скопировать</button>
-               <button class="btn-secondary" id="loadSettingsBtn">Вставить</button>
+               <button class="btn-secondary" id="copySettings">Скопировать код</button>
+               <button class="btn-secondary" id="loadSettingsBtn">Загрузить код</button>
              </div>
           </div>
 
