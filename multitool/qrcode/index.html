@@ -51,10 +51,11 @@
     align-items: stretch;
   }
   
-  /* ШАПКА (CUBEKEY 1-в-1, ТОЛЬКО УЗОР) */
+  /* ШАПКА (На 1px меньше padding, QR узор с инверсией) */
   header {
     color: white;
-    padding: 20px 16px 20px 16px;
+    /* Было 20px, стало 19px */
+    padding: 19px 16px 19px 16px;
     text-align: center;
     border-radius: 12px;
     box-shadow: 0 4px 12px var(--shadow-subtle);
@@ -62,21 +63,19 @@
     position: relative;
     background-color: var(--color-primary-light);
     
-    /* Новый узор (точки/квадратики), цвета точек как у полосок в CubeKey */
+    /* Узор QR (точки), реагирующий на тему */
     background-image:
-      radial-gradient(circle at 2px 2px, rgba(72, 101, 214, 0.4) 1.5px, transparent 0),
-      radial-gradient(circle at 12px 12px, rgba(72, 101, 214, 0.25) 1.5px, transparent 0);
+      radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.15) 1px, transparent 0),
+      radial-gradient(circle at 12px 12px, rgba(255, 255, 255, 0.1) 1px, transparent 0);
     background-size: 20px 20px;
   }
   
   .dark-theme header {
     background-color: var(--color-primary-dark);
-    
-    /* Инверсия цветов точек (как инверсия полосок в CubeKey) */
+    /* Инверсия узора (чуть прозрачнее точки или другой оттенок, как в CubeKey) */
     background-image:
-      radial-gradient(circle at 2px 2px, rgba(90, 79, 207, 0.45) 1.5px, transparent 0),
-      radial-gradient(circle at 12px 12px, rgba(90, 79, 207, 0.3) 1.5px, transparent 0);
-    background-size: 20px 20px;
+      radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.08) 1px, transparent 0),
+      radial-gradient(circle at 12px 12px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
   }
 
   .header-title {
@@ -89,7 +88,7 @@
   .header-title img { width: 40px; height: 40px; }
   header h1 { font-size: 26px; margin: 0; }
 
-  /* КНОПКА "ГЕНЕРАТОР" (ARIAL, В РАМКЕ КАК В CUBEKEY) */
+  /* КНОПКА "ГЕНЕРАТОР" */
   .tab-switcher {
     display: inline-flex;
     background: rgba(0,0,0,0.15);
@@ -133,8 +132,8 @@
     padding: 0;
   }
   
-  /* БЛОКИ (БЕЛАЯ РАМКА) */
-  .params-block, .preview-block, .faq-section {
+  /* БЛОКИ */
+  .params-block, .preview-block {
     background: #fff;
     border-radius: 12px;
     padding: 22px;
@@ -146,15 +145,27 @@
     flex-direction: column;
   }
   .dark-theme .params-block,
-  .dark-theme .preview-block,
-  .dark-theme .faq-section {
+  .dark-theme .preview-block {
     background: #1d1e27;
     box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
   }
   
-  .form-group { margin-bottom: 17px; }
+  /* FAQ СЕКЦИЯ - СЕРЫЙ ФОН (как общий фон страницы) */
+  .faq-section {
+    background: var(--color-bg-light); /* СЕРЫЙ ФОН */
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px var(--shadow-subtle);
+    transition: background 0.3s, box-shadow 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .dark-theme .faq-section {
+    background: #1d1e27; /* В темной теме - темный блок */
+    box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
+  }
   
-  /* ЗАГОЛОВКИ ИНПУТОВ (ЖИРНЫЕ КАК ОСТАЛЬНЫЕ) */
+  .form-group { margin-bottom: 17px; }
   label { display: block; margin-bottom: 6px; font-weight: 600; color: inherit; font-size: 16px; }
   
   input[type="text"],
@@ -171,8 +182,7 @@
     background: #2a2b35; color: var(--color-text-dark);
     box-shadow: 0 0 6px rgba(90, 79, 207, 0.15);
   }
-
-  /* Textarea (ТЕМНЫЙ ФОН В ТЕМНОЙ ТЕМЕ) */
+  
   textarea#seedArea { background: var(--color-bg-light); color: var(--color-text-light); }
   .dark-theme textarea#seedArea { background: #2a2b35; color: var(--color-text-dark); }
 
@@ -212,8 +222,6 @@
 
   .divider { border: none; height: 1px; background-color: var(--color-divider-light); margin: 40px 0; }
   .dark-theme .divider { background-color: var(--color-divider-dark); }
-  
-  .faq-section { margin-top: 0; }
   
   .faq-item { margin-bottom: 15px; }
   .faq-item:last-child { margin-bottom: 0; }
@@ -259,7 +267,6 @@
           <img src="../../img/logo.png" alt="Logo">
           <h1>QRCode</h1>
       </div>
-      <!-- Вкладка Генератор -->
       <div class="tab-switcher">
          <div class="tab-active">Генератор</div>
       </div>
@@ -270,7 +277,6 @@
         
         <div class="main-grid">
           
-          <!-- Левая колонка -->
           <div class="params-block">
             <div class="form-group">
               <label>Ссылка (URL)</label>
@@ -350,7 +356,6 @@
             </div>
           </div>
 
-          <!-- Правая колонка -->
           <div class="preview-block">
              <div style="color:var(--color-primary-light); font-weight:600; margin-bottom:20px; font-size:18px;">Предпросмотр</div>
              
