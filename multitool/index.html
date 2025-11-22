@@ -77,7 +77,7 @@
     /* === СЕТКА === */
     .tools-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(234px, 1fr));
       gap: 30px;
       max-width: 1400px;
       margin: 0 auto;
@@ -87,7 +87,7 @@
     /* === КАРТОЧКА (ОБЩИЙ СТИЛЬ) === */
     .tool-card {
       position: relative;
-      height: 280px;
+      height: 336px;
       border-radius: 24px;
       overflow: hidden;
       text-decoration: none;
@@ -100,7 +100,8 @@
       padding: 20px;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27), box-shadow 0.4s ease;
       box-shadow: 0 10px 20px var(--card-shadow);
-      background-color: #222;
+      background-color: #0a0a0a;
+      z-index: 1;
     }
 
     .tool-card:hover {
@@ -109,20 +110,36 @@
       z-index: 10;
     }
 
+    /* Базовый слой фона */
     .tool-card .card-bg {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0;
-      transition: opacity 0.3s ease;
+      
+      /* Плавное изменение прозрачности и фильтров при наведении */
+      transition: opacity 0.5s ease, filter 0.5s ease;
+      
       pointer-events: none;
+      opacity: 0.3; /* Темный по умолчанию */
     }
 
+    /* При наведении фон становится светлее */
+    .tool-card:hover .card-bg {
+      opacity: 0.7;
+    }
+
+    /* ИКОНКА */
     .card-icon-center {
       width: 56px; height: 56px;
       z-index: 2;
       margin-bottom: 15px;
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
       color: #fff;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .tool-card:hover .card-icon-center {
+      transform: rotate(15deg) scale(1.1);
     }
 
     .card-content {
@@ -146,135 +163,193 @@
       color: rgba(255, 255, 255, 0.9);
       margin: 0 auto;
       max-width: 90%;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
-    /* === 1. QR Code === */
-    .card-qr { background-color: #1a1a1a; border: 1px solid #333; }
-    .card-qr .card-bg {
-      background-image: radial-gradient(#ffffff 2px, transparent 2.5px);
-      background-size: 14px 14px;
-      background-position: 0 0;
-      opacity: 0.1;
+    /* === 1. QR Code (БЕСШОВНЫЕ ПУЗЫРИ) === */
+    @keyframes seamless-bubbles {
+      0% { background-position: 0 40px; }
+      100% { background-position: 0 0; }
     }
-    .card-qr:hover .card-bg { opacity: 0.2; }
-    .card-qr:hover { box-shadow: 0 20px 50px rgba(255, 255, 255, 0.1); }
 
-    /* === 2. CubeKey === */
-    .card-cubekey {
-      background: linear-gradient(135deg, #16222A 0%, #3A6073 100%);
-    }
-    .card-cubekey .card-bg {
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6z' fill='%23ffffff' opacity='1'/%3E%3C/svg%3E");
-      background-size: 60px 60px;
-      opacity: 0.08;
-      transform: rotate(-10deg);
-    }
-    .card-cubekey:hover { box-shadow: 0 20px 50px rgba(58, 96, 115, 0.5); }
-
-
-    /* === 3. Palette (НОВЫЙ ГРАДИЕНТ) === */
+    .card-qr { background: linear-gradient(135deg, #12051f 0%, #250838 100%); }
     
-    @keyframes rainbow-flow {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
+    .card-qr .card-bg {
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='5' y='5' width='10' height='10' rx='3' fill='%23ffffff' fill-opacity='0.2'/%3E%3Crect x='25' y='20' width='8' height='8' rx='2' fill='%23ffffff' fill-opacity='0.15'/%3E%3Crect x='10' y='28' width='6' height='6' rx='2' fill='%23ffffff' fill-opacity='0.1'/%3E%3C/svg%3E");
+      background-size: 40px 40px;
+      opacity: 0.2;
+    }
+    
+    .card-qr:hover .card-bg {
+      opacity: 0.5;
+      animation: seamless-bubbles 3s linear infinite;
+    }
+    .card-qr:hover { box-shadow: 0 20px 50px rgba(100, 50, 150, 0.2); }
+
+
+    /* === 2. CubeKey (ЦИФРОВАЯ СХЕМА) === */
+    @keyframes circuit-flow {
+      0% { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+
+    .card-cubekey { background: linear-gradient(180deg, #000428 0%, #004e92 100%); }
+    
+    .card-cubekey .card-bg {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background-size: 60px 60px;
+      opacity: 0.15;
+    }
+    
+    .card-cubekey:hover .card-bg {
+      opacity: 0.3;
+      animation: circuit-flow 4s linear infinite;
+    }
+    .card-cubekey:hover { box-shadow: 0 20px 50px rgba(0, 78, 146, 0.5); }
+
+
+    /* === 3. Palette (ОДНОРОДНАЯ СКОРОСТЬ БЕЗ РАЗРЫВА) === */
+    
+    /* 
+       Чтобы не было разрыва, нельзя менять animation-duration при ховере средствами CSS.
+       Поэтому оставляем единую комфортную скорость 7s. 
+       Ускорение без JS невозможно сделать плавно. 
+       Вместо этого делаем акцент на яркости и размытии.
+    */
+    @keyframes soft-spin {
+      0% { transform: scale(2) rotate(0deg); }
+      100% { transform: scale(2) rotate(360deg); }
     }
 
     .card-palette {
-      background-color: #111;
+      background-color: #000;
       overflow: hidden;
     }
     
     .card-palette .card-bg {
-      /* Запрошенный порядок: красный-зеленый-синий-фиолетовый (повтор для плавности) */
-      background: linear-gradient(
-        120deg, 
-        #ff0000, 
-        #00ff00, 
-        #0000ff, 
-        #800080,
-        #ff0000, 
-        #00ff00, 
-        #0000ff, 
-        #800080
+      background: conic-gradient(
+        from 0deg, 
+        #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #8000ff, #ff00ff, #ff0000
       );
-      background-size: 300% 300%;
-      animation: rainbow-flow 10s linear infinite; 
-      opacity: 0.35;
-      filter: blur(35px);
-      transform: scale(1.2);
+      width: 100%; height: 100%;
+      opacity: 0.3; /* Темнее в покое */
+      filter: blur(60px);
+      
+      /* Единая скорость чтобы не сбивать фазу анимации */
+      animation: soft-spin 7s linear infinite;
     }
 
-    .card-palette:hover .card-bg {
-      opacity: 0.55;
+    .card-palette:hover .card-bg { 
+      opacity: 0.8; /* Сильно светлеет */
+      filter: blur(40px); /* Становится чуть четче */
     }
-    .card-palette:hover {
-      box-shadow: 0 20px 50px rgba(138, 43, 226, 0.3);
-    }
+    .card-palette:hover { box-shadow: 0 20px 50px rgba(255, 0, 128, 0.3); }
 
 
-    /* === 4. Glitch (СТАТИЧНЫЙ ЭФФЕКТ КАК НА ФОТО) === */
+    /* === 4. Glitch (ЧИСТАЯ КОНЦОВКА) === */
     
     .card-glitch {
-      background-color: #000; /* Абсолютно черный фон */
+      background-color: #000;
       border: 1px solid #222;
+      position: relative;
       overflow: hidden;
     }
 
+    /* СТАТИКА: Серые линии */
     .card-glitch .card-bg {
-      opacity: 0.9;
-      /* Многослойные градиенты, рисующие статичные полоски разных цветов и длины */
-      background-image: 
-        /* 1. Тонкие зеленые длинные линии */
-        linear-gradient(90deg, transparent 5%, #00ff00 5%, #00ff00 40%, transparent 40%),
-        /* 2. Красные короткие штрихи */
-        linear-gradient(90deg, transparent 60%, #ff0000 60%, #ff0000 75%, transparent 75%),
-        /* 3. Синие полосы */
-        linear-gradient(90deg, transparent 10%, #0000ff 10%, #0000ff 25%, transparent 25%, transparent 80%, #0000ff 80%, #0000ff 90%, transparent 90%),
-        /* 4. Голубые/Бирюзовые полосы */
-        linear-gradient(90deg, transparent 30%, #00ffff 30%, #00ffff 45%, transparent 45%),
-        /* 5. Белые вспышки */
-        linear-gradient(90deg, transparent 50%, #fff 50%, #fff 52%, transparent 52%),
-        /* 6. Еще зеленые внизу */
-        linear-gradient(90deg, transparent 15%, #00ff00 15%, #00ff00 25%, transparent 25%),
-        /* 7. Красный длинный штрих внизу */
-        linear-gradient(90deg, transparent 5%, #ff0000 5%, #ff0000 30%, transparent 30%);
-      
-      /* Высота каждой полоски */
-      background-size: 
-        100% 3px,   /* Зеленая */
-        100% 4px,   /* Красная */
-        100% 2px,   /* Синяя */
-        100% 5px,   /* Голубая */
-        100% 2px,   /* Белая */
-        100% 3px,   /* Зеленая 2 */
-        100% 3px;   /* Красная 2 */
-      
-      /* Позиция по вертикали (Y) */
-      background-position: 
-        0 10%,      /* Зеленая */
-        0 25%,      /* Красная */
-        0 40%,      /* Синяя */
-        0 55%,      /* Голубая */
-        0 65%,      /* Белая */
-        0 80%,      /* Зеленая 2 */
-        0 92%;      /* Красная 2 */
-      
-      background-repeat: no-repeat;
+      opacity: 0.3; 
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        #333 2px,
+        #333 3px
+      );
+      z-index: 0;
+    }
+    
+    .card-glitch:hover .card-bg {
+      opacity: 0.6;
+    }
+
+    /* Псевдоэлементы */
+    .card-glitch::before,
+    .card-glitch::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Слой 1: КРАСНЫЙ и ЖЕЛТЫЙ */
+    .card-glitch::before {
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0%, transparent 30%,
+        #ff0000 30%, #ff0000 33%,
+        transparent 33%, transparent 60%,
+        #ffff00 60%, #ffff00 62%,
+        transparent 62%, transparent 100%
+      );
+      background-size: 100% 20px;
+      mix-blend-mode: screen;
+    }
+
+    /* Слой 2: ЗЕЛЕНЫЙ, СИНИЙ и БЕЛЫЙ */
+    .card-glitch::after {
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0%, transparent 15%,
+        #00ff00 15%, #00ff00 18%,
+        transparent 18%, transparent 45%,
+        #0000ff 45%, #0000ff 48%,
+        transparent 48%, transparent 80%,
+        #ffffff 80%, #ffffff 81%,
+        transparent 81%
+      );
+      background-size: 100% 25px;
+      mix-blend-mode: screen;
+    }
+
+    /* Анимация: начинается и заканчивается НЕВИДИМОСТЬЮ (opacity: 0) */
+    @keyframes quick-glitch {
+      0% { 
+        opacity: 0; clip-path: inset(50% 0 50% 0); transform: translate(0, 0); 
+      }
+      5% {
+        opacity: 1; clip-path: inset(10% 0 80% 0); transform: translate(-5px, 0); 
+      }
+      20% { 
+        clip-path: inset(80% 0 5% 0); transform: translate(5px, 0); 
+      }
+      40% { 
+        clip-path: inset(40% 0 40% 0); transform: translate(-5px, 0); 
+      }
+      60% { 
+        clip-path: inset(5% 0 70% 0); transform: translate(5px, 0); 
+      }
+      80% { 
+        opacity: 1; clip-path: inset(60% 0 10% 0); transform: translate(-2px, 0); 
+      }
+      100% { 
+        opacity: 0; clip-path: inset(50% 0 50% 0); transform: translate(0, 0); 
+      }
+    }
+
+    /* Запуск */
+    .card-glitch:hover::before {
+      animation: quick-glitch 0.3s steps(5) forwards;
+    }
+    
+    .card-glitch:hover::after {
+      animation: quick-glitch 0.3s steps(7) 0.05s forwards;
     }
 
     .card-glitch:hover {
-      border-color: #333;
-      box-shadow: 0 20px 50px rgba(0, 255, 242, 0.1);
-    }
-    
-    /* При наведении немного повышаем яркость полос */
-    .card-glitch:hover .card-bg {
-      filter: brightness(1.2);
+      border-color: #777;
+      box-shadow: 0 20px 50px rgba(255, 255, 255, 0.15);
     }
 
     /* === АДАПТИВНОСТЬ === */
@@ -284,7 +359,7 @@
         max-width: 400px;
       }
       .tool-card {
-        height: 260px;
+        height: 300px; 
       }
       h1.tools-title { font-size: 36px; }
     }
@@ -348,7 +423,7 @@
         <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M104,40H40A16,16,0,0,0,24,56v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,80H40V56h64V120Zm112-80H152a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,80H152V56h64V120ZM104,152H40a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V168A16,16,0,0,0,104,152Zm0,80H40V168h64V232Zm64-80h-8a8,8,0,0,0-8,8v8H144a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,168,152Zm56,0h-8a8,8,0,0,0-8,8v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,224,152Z"/></svg>
         <div class="card-content">
           <h3>QRCode</h3>
-          <p>Генерация и стилизация кодов. Настройка цветов, логотипов и рамок.</p>
+          <p>Генерация QR-кодов<br>со стилизацией цветов и формы.</p>
         </div>
       </a>
 
@@ -358,17 +433,17 @@
         <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80Zm-80,84a12,12,0,1,1,12-12A12,12,0,0,1,128,164Zm32-84H96V56a32,32,0,0,1,64,0Z"/></svg>
         <div class="card-content">
           <h3>CubeKey</h3>
-          <p>Генератор надежных паролей. Проверка стойкости и криптозащита.</p>
+          <p>Генератор надежных паролей<br>и анализатор уже созданных.</p>
         </div>
       </a>
 
       <!-- 3. Palette -->
       <a href="palette/" class="tool-card card-palette">
         <div class="card-bg"></div>
-        <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224,128c0,53-43,96-96,96S32,181,32,128,75,32,128,32s96,43,96,96Zm-32,0a16,16,0,1,1-16-16A16,16,0,0,1,192,128Zm-48,48a16,16,0,1,1-16-16A16,16,0,0,1,144,176Zm-80-48a16,16,0,1,1,16-16A16,16,0,0,1,64,128Zm48-48a16,16,0,1,1,16-16A16,16,0,0,1,112,80Z"/></svg>
+        <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a9 9 0 0 0 0 18c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
         <div class="card-content">
           <h3>Palette</h3>
-          <p>Извлечение цветовой палитры. Анализ оттенков из любого фото.</p>
+          <p>Извлечение цветовой палитры<br>из загруженных изображений.</p>
         </div>
       </a>
 
@@ -378,7 +453,7 @@
         <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V72H40V56Zm0,128H40V168H216Zm0-48H40V104H216Z"/></svg>
         <div class="card-content">
           <h3>Glitch</h3>
-          <p>Эффект цифровых помех. Создание стиля киберпанк для изображений.</p>
+          <p>Эффект цифровых помех<br>на ваших фотографиях.</p>
         </div>
       </a>
 
@@ -398,4 +473,3 @@
 
 </body>
 </html>
-
