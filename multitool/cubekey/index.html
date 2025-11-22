@@ -86,6 +86,30 @@
         rgba(90, 79, 207, 0.4) 50px
       );
   }
+
+  /* Кнопка "Обратно" */
+  .back-btn {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 20;
+  }
+  .back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
   .header-title {
       display: flex;
       align-items: center;
@@ -93,10 +117,22 @@
       gap: 15px;
       margin-bottom: 15px;
   }
-  .header-title img {
+  
+  /* Ссылка на логотипе */
+  .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .logo-link img {
       width: 40px;
       height: 40px;
+      transition: transform 0.3s;
   }
+  .logo-link:hover img {
+    transform: scale(1.05);
+  }
+
   header h1 {
     font-size: 26px;
     margin: 0;
@@ -166,7 +202,6 @@
   .dark-theme .view-container h2 {
       color: var(--color-primary-dark);
   }
-
   .main-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -441,7 +476,7 @@
     position: relative;
     z-index: 1;
   }
-   .view-toggle button.active {
+  .view-toggle button.active {
     color: var(--color-primary-light);
   }
    .dark-theme .view-toggle button.active {
@@ -587,8 +622,10 @@
     color: #777;
     font-size: 14px;
   }
+
+  /* ЛАМПОЧКА СЛЕВА */
   .theme-toggle {
-    position: fixed; bottom: 20px; right: 20px;
+    position: fixed; bottom: 20px; left: 20px;
     background: var(--color-primary-light);
     border-radius: 50%;
     width: 41px;
@@ -607,8 +644,10 @@
   .theme-toggle:hover { opacity: 1; }
 
   .hidden { display: none; }
+
+  /* УВЕДОМЛЕНИЯ СПРАВА ВНИЗУ */
   #notification-container {
-    position: fixed; bottom: 20px; right: 75px;
+    position: fixed; bottom: 20px; right: 20px;
     display: flex; flex-direction: column;
     gap: 10px; z-index: 2000;
   }
@@ -630,11 +669,21 @@
   }
   @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
   @keyframes slideOut { to { opacity: 0; transform: translateX(110%); } }
+  
   @media (max-width: 990px) {
     .main-grid, .analyzer-grid {
       grid-template-columns: 1fr;
       grid-template-rows: auto;
       gap: 20px;
+    }
+    /* Кнопка обратно на мобильных */
+    .back-btn {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        display: inline-block;
+        margin-bottom: 10px;
     }
   }
   @media (max-width: 650px) {
@@ -651,8 +700,14 @@
   <div class="theme-toggle" id="theme-toggle">💡</div>
   <div class="container">
     <header>
+      <!-- ОБНОВЛЕННАЯ КНОПКА ИНСТРУМЕНТЫ -->
+      <a href="https://zvarichenkodaria.ru/multitool" class="back-btn">← Инструменты</a>
+
       <div class="header-title">
-          <img src="https://zvarichenkodaria.ru/img/logo.png" alt="CubeKey Logo">
+          <!-- КЛИКАБЕЛЬНЫЙ ЛОГОТИП -->
+          <a href="https://zvarichenkodaria.ru" class="logo-link" target="_blank">
+            <img src="https://zvarichenkodaria.ru/img/logo.png" alt="CubeKey Logo">
+          </a>
           <h1>CubeKey</h1>
       </div>
       <div class="tab-switcher">
@@ -827,11 +882,15 @@
   document.addEventListener('DOMContentLoaded', () => {
       const body = document.body;
       const themeToggle = document.getElementById('theme-toggle');
-      let isDark = false;
+      
+      // Проверка сохраненной темы
+      if(localStorage.getItem('theme') === 'dark') {
+          body.classList.add('dark-theme');
+      }
+
       themeToggle.addEventListener('click', () => {
-        isDark = !isDark;
         body.classList.toggle('dark-theme');
-        themeToggle.textContent = isDark ? '💡' : '💡';
+        localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
       });
 
       // --- SLIDER LOGIC ---
@@ -884,7 +943,6 @@
 
       tabGenerator.addEventListener('click', () => switchView(generatorView));
       tabAnalyzer.addEventListener('click', () => switchView(analyzerView));
-
 
       // --- GENERATOR ---
       const lengthInput = document.getElementById('length');
@@ -996,7 +1054,7 @@
     function createPasswordOnce(settings) {
         const pool = buildCharPool(settings);
         if (!pool && !settings.required && !settings.memorable) return null;
-
+        
         let mustHave = [];
         let baseStr = '';
         let tempSettings = { ...settings };
