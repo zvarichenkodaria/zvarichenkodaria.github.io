@@ -1,31 +1,30 @@
 <!DOCTYPE html>
-
-<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+<html lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>Multitool - Инструменты</title>
   <meta name="description" content="Набор веб-инструментов">
   <link type="image/x-icon" href="../img/favicon.png" rel="shortcut icon">
   <link rel="icon" href="../img/favicon.png" type="image/png">
-  <link rel="stylesheet" href="../css/styles.css">
+  
+  <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
-  <link href="../css/css2" rel="stylesheet">
+  
+  <!-- Скрипты -->
   <script src="../js/script.js"></script>
   <script src="../js/titles.json"></script>
   <script src="../js/descriptions.json"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- Подключение твоего основного файла стилей (на уровень выше) -->
+  <!-- Подключение основного файла стилей -->
   <link rel="stylesheet" href="../css/styles.css">
 
   <style>
     /* === ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КАРТОЧЕК И СЕТКИ === */
     
-    /* Основные переменные (если они не подтянутся из styles.css) */
     :root {
       --card-shadow: rgba(0, 0, 0, 0.2);
       --text-color: #ffffff;
@@ -48,10 +47,9 @@
       font-size: 50px;
       margin-bottom: 60px;
       font-weight: 700;
-      color: var(--color-h1, #000); /* Фолбек на черный */
+      color: var(--color-h1, #000);
     }
     
-    /* Поддержка темной темы для заголовка, если класс вешается на body */
     body.dark-theme h1.tools-title {
       color: #fff;
     }
@@ -69,7 +67,7 @@
     /* === КАРТОЧКА (ОБЩИЙ СТИЛЬ) === */
     .tool-card {
       position: relative;
-      height: 280px; /* Уменьшенная высота */
+      height: 280px;
       border-radius: 24px;
       overflow: hidden;
       text-decoration: none;
@@ -85,14 +83,12 @@
       background-color: #222;
     }
 
-    /* Эффект всплытия при наведении */
     .tool-card:hover {
       transform: translateY(-10px) scale(1.02);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
       z-index: 10;
     }
 
-    /* Фон карточки (слой для паттернов) */
     .tool-card .card-bg {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -101,7 +97,6 @@
       pointer-events: none;
     }
 
-    /* Иконка по центру */
     .card-icon-center {
       width: 56px; height: 56px;
       z-index: 2;
@@ -110,7 +105,6 @@
       color: #fff;
     }
 
-    /* Контент (текст) */
     .card-content {
       z-index: 2;
       width: 100%;
@@ -132,7 +126,6 @@
       color: rgba(255, 255, 255, 0.9);
       margin: 0 auto;
       max-width: 90%;
-      /* Ограничение текста в 2 строки */
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -155,7 +148,6 @@
     .card-cubekey {
       background: linear-gradient(135deg, #16222A 0%, #3A6073 100%);
     }
-    /* Паттерн замочной скважины */
     .card-cubekey .card-bg {
       background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6z' fill='%23ffffff' opacity='1'/%3E%3C/svg%3E");
       background-size: 60px 60px;
@@ -164,42 +156,75 @@
     }
     .card-cubekey:hover { box-shadow: 0 20px 50px rgba(58, 96, 115, 0.5); }
 
-    /* === 3. Palette (Красивый перелив) === */
+    /* === 3. Palette (Радужный градиент) === */
+    
+    /* Анимация переливания */
+    @keyframes rainbow-shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     .card-palette {
-      background: #000;
+      background: #111; /* Темная подложка */
       overflow: hidden;
     }
+    
     .card-palette .card-bg {
-      opacity: 0.8;
-      background: 
-        radial-gradient(circle at top left, rgba(255, 0, 128, 0.8), transparent 50%),
-        radial-gradient(circle at bottom right, rgba(0, 191, 255, 0.8), transparent 50%),
-        radial-gradient(circle at center, rgba(138, 43, 226, 0.6), transparent 60%);
-      filter: blur(20px);
-      transform: scale(1.2);
+      /* Мягкий радужный градиент */
+      background: linear-gradient(
+        45deg,
+        #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000
+      );
+      background-size: 400% 400%; /* Увеличенный размер для плавности */
+      animation: rainbow-shimmer 15s ease infinite; /* Медленная анимация */
+      opacity: 0.25; /* Низкая прозрачность для "ненавязчивости" */
+      filter: blur(30px); /* Сильное размытие для мягкости */
+      transform: scale(1.2); /* Чтобы края блюра не вылезали */
     }
-    .card-palette:hover { box-shadow: 0 20px 50px rgba(138, 43, 226, 0.5); }
 
-    /* === 4. Glitch (Черный фон + линии) === */
+    /* При наведении чуть ярче */
+    .card-palette:hover .card-bg {
+      opacity: 0.4;
+    }
+    
+    .card-palette:hover {
+      box-shadow: 0 20px 50px rgba(138, 43, 226, 0.3);
+    }
+
+    /* === 4. Glitch (Больше глюков) === */
     .card-glitch {
       background-color: #050505;
       border: 1px solid #222;
     }
+
     .card-glitch .card-bg {
-      /* Ломаные цветные линии */
+      /* Многослойный градиент для эффекта частых помех */
       background: 
-        linear-gradient(90deg, transparent 95%, rgba(0, 255, 242, 0.4) 95.5%, transparent 96%),
-        linear-gradient(90deg, transparent 40%, rgba(255, 0, 85, 0.4) 40.5%, transparent 41%);
+        /* Основная бирюзовая */
+        linear-gradient(90deg, transparent 95%, rgba(0, 255, 242, 0.5) 95.5%, transparent 96%),
+        /* Розовая */
+        linear-gradient(90deg, transparent 40%, rgba(255, 0, 85, 0.5) 40.5%, transparent 41%),
+        /* Желтая тонкая */
+        linear-gradient(90deg, transparent 15%, rgba(255, 255, 0, 0.4) 15.2%, transparent 15.5%),
+        /* Зеленая */
+        linear-gradient(90deg, transparent 70%, rgba(0, 255, 0, 0.3) 70.5%, transparent 71%),
+        /* Фиолетовая широкая */
+        linear-gradient(90deg, transparent 85%, rgba(138, 43, 226, 0.3) 86%, transparent 88%);
+      
       background-size: 200% 100%;
-      opacity: 0.5;
+      opacity: 0.6;
     }
-    /* При наведении просто всплывает, линии чуть сдвигаются */
+
     .card-glitch:hover {
       border-color: rgba(0, 255, 242, 0.3);
       box-shadow: 0 20px 50px rgba(0, 255, 242, 0.15);
     }
+
+    /* При наведении сдвигаем фон для динамики */
     .card-glitch:hover .card-bg {
-      background-position: 10px 0;
+      background-position: 15px 0;
+      transition: background-position 0.2s steps(5);
     }
 
     /* === АДАПТИВНОСТЬ === */
@@ -209,7 +234,7 @@
         max-width: 400px;
       }
       .tool-card {
-        height: 260px; /* Еще чуть меньше на мобильных */
+        height: 260px;
       }
       h1.tools-title { font-size: 36px; }
     }
@@ -323,5 +348,3 @@
 
 </body>
 </html>
-
-
