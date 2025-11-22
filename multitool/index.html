@@ -21,8 +21,210 @@
   
   <!-- Подключение твоего основного файла стилей (на уровень выше) -->
   <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="../css/multitool.css">
 
+  <style>
+    /* === ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ КАРТОЧЕК И СЕТКИ === */
+    
+    /* Основные переменные (если они не подтянутся из styles.css) */
+    :root {
+      --card-shadow: rgba(0, 0, 0, 0.2);
+      --text-color: #ffffff;
+    }
+
+    body {
+      margin: 0; padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    /* Отступы для контента с учетом фиксированной шапки */
+    main.tools-page-wrapper {
+      padding-top: 160px;
+      padding-bottom: 100px;
+      min-height: 100vh;
+    }
+
+    h1.tools-title {
+      text-align: center;
+      font-size: 50px;
+      margin-bottom: 60px;
+      font-weight: 700;
+      color: var(--color-h1, #000); /* Фолбек на черный */
+    }
+    
+    /* Поддержка темной темы для заголовка, если класс вешается на body */
+    body.dark-theme h1.tools-title {
+      color: #fff;
+    }
+
+    /* === СЕТКА === */
+    .tools-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* === КАРТОЧКА (ОБЩИЙ СТИЛЬ) === */
+    .tool-card {
+      position: relative;
+      height: 280px; /* Уменьшенная высота */
+      border-radius: 24px;
+      overflow: hidden;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27), box-shadow 0.4s ease;
+      box-shadow: 0 10px 20px var(--card-shadow);
+      background-color: #222;
+    }
+
+    /* Эффект всплытия при наведении */
+    .tool-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      z-index: 10;
+    }
+
+    /* Фон карточки (слой для паттернов) */
+    .tool-card .card-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    /* Иконка по центру */
+    .card-icon-center {
+      width: 56px; height: 56px;
+      z-index: 2;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      color: #fff;
+    }
+
+    /* Контент (текст) */
+    .card-content {
+      z-index: 2;
+      width: 100%;
+      position: relative;
+    }
+
+    .card-content h3 {
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      margin: 0 0 10px 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      color: #fff;
+    }
+
+    .card-content p {
+      font-size: 15px;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0 auto;
+      max-width: 90%;
+      /* Ограничение текста в 2 строки */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+
+    /* === 1. QR Code (Точки) === */
+    .card-qr { background-color: #1a1a1a; border: 1px solid #333; }
+    .card-qr .card-bg {
+      background-image: radial-gradient(#ffffff 2px, transparent 2.5px);
+      background-size: 14px 14px;
+      background-position: 0 0;
+      opacity: 0.1;
+    }
+    .card-qr:hover .card-bg { opacity: 0.2; }
+    .card-qr:hover { box-shadow: 0 20px 50px rgba(255, 255, 255, 0.1); }
+
+    /* === 2. CubeKey (Ключи/Пароли) === */
+    .card-cubekey {
+      background: linear-gradient(135deg, #16222A 0%, #3A6073 100%);
+    }
+    /* Паттерн замочной скважины */
+    .card-cubekey .card-bg {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6z' fill='%23ffffff' opacity='1'/%3E%3C/svg%3E");
+      background-size: 60px 60px;
+      opacity: 0.08;
+      transform: rotate(-10deg);
+    }
+    .card-cubekey:hover { box-shadow: 0 20px 50px rgba(58, 96, 115, 0.5); }
+
+    /* === 3. Palette (Красивый перелив) === */
+    .card-palette {
+      background: #000;
+      overflow: hidden;
+    }
+    .card-palette .card-bg {
+      opacity: 0.8;
+      background: 
+        radial-gradient(circle at top left, rgba(255, 0, 128, 0.8), transparent 50%),
+        radial-gradient(circle at bottom right, rgba(0, 191, 255, 0.8), transparent 50%),
+        radial-gradient(circle at center, rgba(138, 43, 226, 0.6), transparent 60%);
+      filter: blur(20px);
+      transform: scale(1.2);
+    }
+    .card-palette:hover { box-shadow: 0 20px 50px rgba(138, 43, 226, 0.5); }
+
+    /* === 4. Glitch (Черный фон + линии) === */
+    .card-glitch {
+      background-color: #050505;
+      border: 1px solid #222;
+    }
+    .card-glitch .card-bg {
+      /* Ломаные цветные линии */
+      background: 
+        linear-gradient(90deg, transparent 95%, rgba(0, 255, 242, 0.4) 95.5%, transparent 96%),
+        linear-gradient(90deg, transparent 40%, rgba(255, 0, 85, 0.4) 40.5%, transparent 41%);
+      background-size: 200% 100%;
+      opacity: 0.5;
+    }
+    /* При наведении просто всплывает, линии чуть сдвигаются */
+    .card-glitch:hover {
+      border-color: rgba(0, 255, 242, 0.3);
+      box-shadow: 0 20px 50px rgba(0, 255, 242, 0.15);
+    }
+    .card-glitch:hover .card-bg {
+      background-position: 10px 0;
+    }
+
+    /* === АДАПТИВНОСТЬ === */
+    @media (max-width: 768px) {
+      .tools-container {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+      .tool-card {
+        height: 260px; /* Еще чуть меньше на мобильных */
+      }
+      h1.tools-title { font-size: 36px; }
+    }
+
+    /* Круглые кнопки меню (дублируем стиль если он нужен локально) */
+    .circle-tool a, .circle-tg a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px; height: 40px; /* Примерный размер если нет в styles.css */
+    }
+    .circle-tool svg, .circle-tg svg {
+        display: block;
+    }
+  </style>
 </head>
 
 <body>
@@ -41,29 +243,26 @@
       </div>
 
       <ul>
-        <li><a href="../"><div class="menu-button">Услуги</div></a></li>
+        <li><a href="../">Услуги</a></li>
         <li><a href="../portfolio/">Портфолио</a></li>
         <li><a href="../contacts/">Контакты</a></li>
       </ul>
       
+      <!-- Иконка инструментов (круглая) -->
       <div class="circle-tool">
         <a href="../multitool/" title="Инструменты">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1218 1280" width="24" height="24" fill="#ffffff">
-  <g transform="scale(0.1, -0.1) translate(0, -12800)">
-     <path d="M9020 12775 c-955 -264 -1655 -1028 -1820 -1986 -55 -312 -39 -713 40 -1017 l19 -77 -31 -45 c-155 -221 -602 -750 -998 -1180 -462 -503 -1444 -1500 -1945 -1976 -674 -639 -1234 -1137 -1647 -1462 l-117 -92 -91 0 c-172 0 -423 -39 -625 -97 -738 -212 -1344 -758 -1624 -1461 -76 -191 -126 -379 -162 -617 -17 -105 -17 -484 -1 -605 49 -363 169 -710 352 -1010 60 -98 85 -128 119 -141 34 -13 83 5 103 39 9 15 144 377 298 803 155 425 300 812 322 859 52 109 166 227 273 282 138 72 306 97 447 67 70 -15 1213 -431 1303 -474 178 -86 319 -268 355 -456 15 -80 11 -226 -9 -299 -9 -36 -153 -438 -320 -895 -317 -867 -315 -862 -275 -907 37 -39 79 -35 293 33 824 263 1455 935 1665 1774 68 271 91 556 66 817 -23 240 -84 502 -165 703 l-44 109 87 101 c915 1062 2329 2494 3307 3351 450 393 811 678 1108 873 l97 64 258 2 c280 1 379 12 597 65 460 111 852 329 1186 660 399 396 628 858 720 1455 17 105 17 484 1 605 -39 290 -118 554 -241 805 -64 130 -150 276 -184 314 -53 57 -123 47 -156 -22 -11 -23 -146 -388 -301 -812 -154 -423 -296 -804 -317 -845 -48 -99 -167 -220 -268 -272 -138 -72 -306 -97 -447 -67 -70 15 -1213 431 -1303 474 -140 68 -255 189 -315 332 -38 91 -50 153 -50 259 0 118 10 153 132 489 60 165 200 547 310 849 219 604 218 598 155 636 -40 25 -51 24 -157 -5z" />
-  </g>
-</svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" width="24" height="24">
+             <path d="M2 6C2 5.44772 2.44772 5 3 5H7C7.55228 5 8 5.44772 8 6V10C8 10.5523 7.55228 11 7 11H3C2.44772 11 2 10.5523 2 10V6ZM2 14C2 13.4477 2.44772 13 3 13H7C7.55228 13 8 13.4477 8 14V18C8 18.5523 7.55228 19 7 19H3C2.44772 19 2 18.5523 2 18V14ZM10 6C10 5.44772 10.4477 5 11 5H15C15.5523 5 16 5.44772 16 6V10C16 10.5523 15.5523 11 11 11H11C10.4477 11 10 10.5523 10 10V6ZM18 6C18 5.44772 18.4477 5 19 5H23C23.5523 5 24 5.44772 24 6V10C24 10.5523 23.5523 11 23 11H19C18.4477 11 18 10.5523 18 10V6ZM10 14C10 13.4477 10.4477 13 11 13H15C15.5523 13 16 13.4477 16 14V18C16 18.5523 15.5523 19 11 19H11C10.4477 19 10 18.5523 10 18V14ZM18 14C18 13.4477 18.4477 13 19 13H23C23.5523 13 24 13.4477 24 14V18C24 18.5523 23.5523 19 23 19H19C18.4477 19 18 18.5523 18 18V14Z" />
+          </svg>
         </a>
       </div>
 
       <!-- Кнопка ТЕЛЕГРАМ -->
       <div class="circle-tg">
         <a target="_blank" href="https://t.me/zvarichenkodaria">
-          <div class="button-circle-telergam-menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="button-circle-telergam-svg-menu" viewBox="0 0 256 256">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256">
               <path fill="currentColor" d="M228.88 26.19a9 9 0 0 0-9.16-1.57L17.06 103.93a14.22 14.22 0 0 0 2.43 27.21L72 141.45V200a15.92 15.92 0 0 0 10 14.83a15.91 15.91 0 0 0 17.51-3.73l25.32-26.26L165 220a15.88 15.88 0 0 0 10.51 4a16.3 16.3 0 0 0 5-.79a15.85 15.85 0 0 0 10.67-11.63L231.77 35a9 9 0 0 0-2.89-8.81M175.53 208l-82.68-72.5l119-85.29Z"/>
             </svg>
-          </div>
         </a>
       </div>
     </nav>
@@ -77,44 +276,48 @@
       
       <!-- 1. QRCode -->
       <a href="qrcode/" class="tool-card card-qr">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M104,40H40A16,16,0,0,0,24,56v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,80H40V56h64V120Zm112-80H152a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,80H152V56h64V120ZM104,152H40a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V168A16,16,0,0,0,104,152Zm0,80H40V168h64V232Zm64-80h-8a8,8,0,0,0-8,8v8H144a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,168,152Zm56,0h-8a8,8,0,0,0-8,8v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,224,152Z"/></svg>
+        <div class="card-bg"></div>
+        <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M104,40H40A16,16,0,0,0,24,56v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,80H40V56h64V120Zm112-80H152a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,80H152V56h64V120ZM104,152H40a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V168A16,16,0,0,0,104,152Zm0,80H40V168h64V232Zm64-80h-8a8,8,0,0,0-8,8v8H144a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,168,152Zm56,0h-8a8,8,0,0,0-8,8v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16h-8v-8A8,8,0,0,0,224,152Z"/></svg>
         <div class="card-content">
           <h3>QRCode</h3>
-          <p>Создание и стилизация QR-кодов</p>
+          <p>Генерация и стилизация кодов. Настройка цветов, логотипов и рамок.</p>
         </div>
       </a>
 
       <!-- 2. CubeKey -->
       <a href="cubekey/" class="tool-card card-cubekey">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80Zm-80,84a12,12,0,1,1,12-12A12,12,0,0,1,128,164Zm32-84H96V56a32,32,0,0,1,64,0Z"/></svg>
+        <div class="card-bg"></div>
+        <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80Zm-80,84a12,12,0,1,1,12-12A12,12,0,0,1,128,164Zm32-84H96V56a32,32,0,0,1,64,0Z"/></svg>
         <div class="card-content">
           <h3>CubeKey</h3>
-          <p>Генератор и анализатор паролей</p>
+          <p>Генератор надежных паролей. Проверка стойкости и криптозащита.</p>
         </div>
       </a>
 
       <!-- 3. Palette -->
       <a href="palette/" class="tool-card card-palette">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224,128c0,53-43,96-96,96S32,181,32,128,75,32,128,32s96,43,96,96Zm-32,0a16,16,0,1,1-16-16A16,16,0,0,1,192,128Zm-48,48a16,16,0,1,1-16-16A16,16,0,0,1,144,176Zm-80-48a16,16,0,1,1,16-16A16,16,0,0,1,64,128Zm48-48a16,16,0,1,1,16-16A16,16,0,0,1,112,80Z"/></svg>
+        <div class="card-bg"></div>
+        <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224,128c0,53-43,96-96,96S32,181,32,128,75,32,128,32s96,43,96,96Zm-32,0a16,16,0,1,1-16-16A16,16,0,0,1,192,128Zm-48,48a16,16,0,1,1-16-16A16,16,0,0,1,144,176Zm-80-48a16,16,0,1,1,16-16A16,16,0,0,1,64,128Zm48-48a16,16,0,1,1,16-16A16,16,0,0,1,112,80Z"/></svg>
         <div class="card-content">
           <h3>Palette</h3>
-          <p>Генератор палитры из изображения</p>
+          <p>Извлечение цветовой палитры. Анализ оттенков из любого фото.</p>
         </div>
       </a>
 
       <!-- 4. Glitch -->
       <a href="glitch/" class="tool-card card-glitch">
-        <svg class="card-icon-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V72H40V56Zm0,128H40V168H216Zm0-48H40V104H216Z"/></svg>
+        <div class="card-bg"></div>
+        <svg class="card-icon-center" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V72H40V56Zm0,128H40V168H216Zm0-48H40V104H216Z"/></svg>
         <div class="card-content">
           <h3>Glitch</h3>
-          <p>Генератор эффекта глитча</p>
+          <p>Эффект цифровых помех. Создание стиля киберпанк для изображений.</p>
         </div>
       </a>
 
     </div>
   </main>
 
-  <button id="theme-toggle">&#128161;</button>
+  <button id="theme-toggle">💡</button>
 
   <footer>
     <section>
@@ -127,6 +330,3 @@
 
 </body>
 </html>
-
-
-
