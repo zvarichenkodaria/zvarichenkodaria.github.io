@@ -114,9 +114,7 @@
     </div>
   </main>
 
-  <div class="button-container">
-    <button id="theme-toggle">💡</button>
-  </div>
+  <button id="theme-toggle">&#128161;</button>
 
   <footer>
     <section>
@@ -127,26 +125,8 @@
     </section>
   </footer>
 
-  <script>
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-
-    if (localStorage.getItem('theme') === 'dark') {
-      body.classList.add('dark-theme');
-    }
-
-    themeToggle.addEventListener('click', () => {
-      body.classList.toggle('dark-theme');
-      
-      if (body.classList.contains('dark-theme')) {
-        localStorage.setItem('theme', 'dark');
-      } else {
-        localStorage.setItem('theme', 'light');
-      }
-    });
-  </script>
-
 </body>
 </html>
+
 
 
