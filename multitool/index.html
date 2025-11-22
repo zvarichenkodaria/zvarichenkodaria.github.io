@@ -157,12 +157,11 @@
     .card-cubekey:hover { box-shadow: 0 20px 50px rgba(58, 96, 115, 0.5); }
 
 
-    /* === 3. Palette (РАДУЖНЫЙ ПЕРЕЛИВ) === */
+    /* === 3. Palette (НОВЫЙ ГРАДИЕНТ) === */
     
     @keyframes rainbow-flow {
       0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
     }
 
     .card-palette {
@@ -171,79 +170,91 @@
     }
     
     .card-palette .card-bg {
-      /* Полная радуга: Красный-Оранжевый-Желтый-Зеленый-Голубой-Синий-Фиолетовый и обратно */
+      /* Запрошенный порядок: красный-зеленый-синий-фиолетовый (повтор для плавности) */
       background: linear-gradient(
-        124deg, 
+        120deg, 
         #ff0000, 
-        #ff7300, 
-        #fffb00, 
-        #48ff00, 
-        #00ffd5, 
-        #002bff, 
-        #7a00ff, 
-        #ff00c8, 
-        #ff0000
+        #00ff00, 
+        #0000ff, 
+        #800080,
+        #ff0000, 
+        #00ff00, 
+        #0000ff, 
+        #800080
       );
-      background-size: 400% 400%; /* Увеличиваем размер, чтобы градиент "плыл" */
-      animation: rainbow-flow 8s ease infinite; /* Плавное движение */
-      opacity: 0.3; /* Прозрачность, чтобы текст читался */
-      filter: blur(40px); /* Сильное размытие для мягкости */
-      transform: scale(1.4); /* Масштаб, чтобы края блюра не были видны */
+      background-size: 300% 300%;
+      animation: rainbow-flow 10s linear infinite; 
+      opacity: 0.35;
+      filter: blur(35px);
+      transform: scale(1.2);
     }
 
     .card-palette:hover .card-bg {
-      opacity: 0.5; /* Ярче при наведении */
+      opacity: 0.55;
     }
-    
     .card-palette:hover {
       box-shadow: 0 20px 50px rgba(138, 43, 226, 0.3);
     }
 
 
-    /* === 4. Glitch (МНОГО РВАНЫХ ГОРИЗОНТАЛЬНЫХ ПОЛОС) === */
+    /* === 4. Glitch (СТАТИЧНЫЙ ЭФФЕКТ КАК НА ФОТО) === */
     
-    @keyframes glitch-lines {
-      0% { background-position: 0 0, 0 10%, 0 50%, 0 80%; }
-      20% { background-position: 0 5px, 10px 15%, -10px 55%, 5px 75%; }
-      40% { background-position: 0 -5px, -5px 20%, 5px 45%, -5px 85%; }
-      60% { background-position: 0 2px, 15px 10%, -5px 60%, 10px 82%; }
-      80% { background-position: 0 -2px, -10px 12%, 10px 52%, -10px 78%; }
-      100% { background-position: 0 0, 0 10%, 0 50%, 0 80%; }
-    }
-
     .card-glitch {
-      background-color: #080808;
+      background-color: #000; /* Абсолютно черный фон */
       border: 1px solid #222;
       overflow: hidden;
     }
 
     .card-glitch .card-bg {
-      /* 1 слой: Тонкая сетка сканлайнов (как на старом ТВ) */
-      /* 2,3,4 слои: Цветные горизонтальные полосы */
+      opacity: 0.9;
+      /* Многослойные градиенты, рисующие статичные полоски разных цветов и длины */
       background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, #000 3px, #000 3px),
-        linear-gradient(90deg, transparent 5%, rgba(0, 255, 255, 0.7) 5%, rgba(0, 255, 255, 0.7) 95%, transparent 95%),
-        linear-gradient(90deg, transparent 20%, rgba(255, 0, 85, 0.7) 20%, rgba(255, 0, 85, 0.7) 80%, transparent 80%),
-        linear-gradient(90deg, transparent 10%, rgba(0, 255, 0, 0.6) 10%, rgba(0, 255, 0, 0.6) 90%, transparent 90%);
+        /* 1. Тонкие зеленые длинные линии */
+        linear-gradient(90deg, transparent 5%, #00ff00 5%, #00ff00 40%, transparent 40%),
+        /* 2. Красные короткие штрихи */
+        linear-gradient(90deg, transparent 60%, #ff0000 60%, #ff0000 75%, transparent 75%),
+        /* 3. Синие полосы */
+        linear-gradient(90deg, transparent 10%, #0000ff 10%, #0000ff 25%, transparent 25%, transparent 80%, #0000ff 80%, #0000ff 90%, transparent 90%),
+        /* 4. Голубые/Бирюзовые полосы */
+        linear-gradient(90deg, transparent 30%, #00ffff 30%, #00ffff 45%, transparent 45%),
+        /* 5. Белые вспышки */
+        linear-gradient(90deg, transparent 50%, #fff 50%, #fff 52%, transparent 52%),
+        /* 6. Еще зеленые внизу */
+        linear-gradient(90deg, transparent 15%, #00ff00 15%, #00ff00 25%, transparent 25%),
+        /* 7. Красный длинный штрих внизу */
+        linear-gradient(90deg, transparent 5%, #ff0000 5%, #ff0000 30%, transparent 30%);
       
-      /* Высота полос (первая - весь фон, остальные - узкие полоски) */
-      background-size: 100% 100%, 100% 12px, 100% 25px, 100% 8px;
+      /* Высота каждой полоски */
+      background-size: 
+        100% 3px,   /* Зеленая */
+        100% 4px,   /* Красная */
+        100% 2px,   /* Синяя */
+        100% 5px,   /* Голубая */
+        100% 2px,   /* Белая */
+        100% 3px,   /* Зеленая 2 */
+        100% 3px;   /* Красная 2 */
+      
+      /* Позиция по вертикали (Y) */
+      background-position: 
+        0 10%,      /* Зеленая */
+        0 25%,      /* Красная */
+        0 40%,      /* Синяя */
+        0 55%,      /* Голубая */
+        0 65%,      /* Белая */
+        0 80%,      /* Зеленая 2 */
+        0 92%;      /* Красная 2 */
+      
       background-repeat: no-repeat;
-      
-      /* Анимация дергания позиций */
-      animation: glitch-lines 3s infinite steps(10); 
-      opacity: 0.6;
     }
 
     .card-glitch:hover {
-      border-color: rgba(0, 255, 242, 0.5);
-      box-shadow: 0 20px 50px rgba(0, 255, 242, 0.2);
+      border-color: #333;
+      box-shadow: 0 20px 50px rgba(0, 255, 242, 0.1);
     }
     
-    /* При наведении ускоряем глюки */
+    /* При наведении немного повышаем яркость полос */
     .card-glitch:hover .card-bg {
-      animation-duration: 0.5s;
-      opacity: 0.8;
+      filter: brightness(1.2);
     }
 
     /* === АДАПТИВНОСТЬ === */
