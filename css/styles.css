@@ -1198,8 +1198,8 @@ hr
   position: absolute; /* Div будет "прилипать" к экрану */
   z-index: 2; /* Максимальное значение z-индекса */
   top: 0%;
-  left: 53%;
-  transform: scale(0.77);
+  left: 55%;
+  transform: scale(0.75);
 }
 
 .circle-contacts
