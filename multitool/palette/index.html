@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Palette</title>
+<link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Библиотеки для палитры -->
+<script src="https://cdn.jsdelivr.net/npm/colorthief@2.3.0/dist/color-thief.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+  :root {
+    --color-bg-light: #f4f6f9;
+    --color-bg-dark: #121217;
+    --color-primary-light: #5a4fcf;
+    --color-primary-dark: #4865d6;
+    --color-text-light: #333;
+    --color-text-dark: #ddd;
+    --shadow-subtle: rgba(90, 79, 207, 0.15);
+    --shadow-dark: rgba(30, 30, 70, 0.6);
+    --color-success: #27ae60;
+    --color-divider-light: #e0e0e0;
+    --color-divider-dark: #2a2b35;
+    --anim-curve: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    line-height: 1.6;
+    padding: 24px;
+    margin: 0;
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+  }
+  .dark-theme {
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  /* --- ШАПКА --- */
+  header {
+    color: white;
+    padding: 20px 16px 20px 16px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-subtle);
+    transition: background 0.3s;
+    position: relative;
+    
+    background-color: var(--color-primary-light);
+    background-image: radial-gradient(
+        circle,
+        rgba(72, 101, 214, 0.4) 20%,
+        transparent 21%
+    );
+    background-size: 30px 30px;
+    background-position: 0 0;
+  }
+  
+  .dark-theme header {
+    background-color: var(--color-primary-dark);
+    background-image: radial-gradient(
+        circle,
+        rgba(90, 79, 207, 0.4) 20%,
+        transparent 21%
+    );
+  }
+
+  /* Кнопка "Обратно" */
+  .back-btn {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .header-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 15px;
+  }
+  /* Ссылка на логотипе */
+  .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .logo-link img { 
+    width: 40px; 
+    height: 40px; 
+    transition: transform 0.3s;
+  }
+  .logo-link:hover img {
+    transform: scale(1.05);
+  }
+  
+  header h1 { font-size: 26px; margin: 0; }
+
+  /* Таб (декоративный в данном случае) */
+  .tab-switcher {
+    display: inline-flex;
+    background: rgba(0,0,0,0.15);
+    border-radius: 25px;
+    padding: 5px;
+  }
+  .tab-active {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 8px 20px;
+      color: var(--color-primary-light);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      cursor: default;
+      font-family: Arial, sans-serif;
+  }
+  .dark-theme .tab-active {
+      color: var(--color-primary-dark);
+      background: #fff; 
+  }
+
+  .view-container h2 {
+      text-align: center;
+      font-size: 22px;
+      color: var(--color-primary-light);
+      margin-top: 30px;
+      margin-bottom: 30px;
+  }
+  .dark-theme .view-container h2 {
+      color: var(--color-primary-dark);
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 38px 40px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+  }
+  
+  /* БЛОКИ */
+  .params-block, .preview-block, .faq-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px var(--shadow-subtle);
+    transition: background 0.3s, box-shadow 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+  .dark-theme .params-block,
+  .dark-theme .preview-block,
+  .dark-theme .faq-section {
+    background: #1d1e27;
+    box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
+  }
+  
+  /* FAQ - СЕРЫЙ ФОН */
+  .faq-section {
+    background: var(--color-bg-light); 
+  }
+  .dark-theme .faq-section {
+    background: #1d1e27;
+  }
+  
+  .divider { 
+      border: none; 
+      height: 1px; 
+      background-color: var(--color-divider-light); 
+      margin: 40px 0; 
+  }
+  .dark-theme .divider { 
+      background-color: var(--color-divider-dark); 
+  }
+  
+  .faq-item { margin-bottom: 15px; }
+  .faq-item:last-child { margin-bottom: 0; }
+  .faq-item h3 { font-size: 18px; color: var(--color-primary-light); margin: 0 0 8px 0; }
+  .dark-theme .faq-item h3 { color: var(--color-primary-dark); }
+  .faq-item p { margin: 0; font-size: 15px; color: #777; }
+  .dark-theme .faq-item p { color: #ccc; }
+
+  footer { text-align: center; padding: 0 10px; color: #777; font-size: 14px; }
+  
+  /* ЛАМПОЧКА СЛЕВА */
+  .theme-toggle {
+    position: fixed; bottom: 20px; left: 20px;
+    background: var(--color-primary-light); border-radius: 50%;
+    width: 41px; height: 41px; display: flex; justify-content: center; align-items: center;
+    cursor: pointer; user-select: none; font-size: 19px;
+    box-shadow: 0 3px 10px rgb(90 79 207 / 0.6);
+    transition: background 0.3s, opacity 0.3s; z-index: 1000; opacity: 0.7; color: #fff;
+  }
+  .dark-theme .theme-toggle { background: var(--color-primary-dark); }
+  .theme-toggle:hover { opacity: 1; }
+
+  /* === СТИЛИ ДЛЯ PALETTE === */
+
+  /* Drop Area */
+  .drop-area {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    border: 2px dashed var(--color-divider-light);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .dark-theme .drop-area {
+    background: #2a2b35;
+    border-color: var(--color-divider-dark);
+    color: var(--color-text-dark);
+  }
+
+  .drop-area:hover {
+    border-color: var(--color-primary-light);
+    transform: translateY(-2px);
+  }
+  .dark-theme .drop-area:hover {
+    border-color: var(--color-primary-dark);
+  }
+
+  .drop-area.active {
+    border-color: var(--color-success);
+    color: var(--color-success);
+    background: rgba(39, 174, 96, 0.1);
+  }
+
+  .drop-area input {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: pointer; z-index: 2;
+  }
+
+  .drop-icon { font-size: 40px; opacity: 0.8; }
+  .drop-text { font-size: 16px; font-weight: 600; margin: 0; }
+  .drop-subtext { font-size: 13px; color: #888; margin: 0; }
+
+  /* Preview Image */
+  #preview {
+    margin: 0 0 20px 0;
+    width: 100%;
+    text-align: center;
+  }
+  #preview img {
+    max-width: 100%;
+    max-height: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    object-fit: contain;
+  }
+
+  /* Palette Grid */
+  #palette {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .color-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .swatch {
+    width: 70px;
+    height: 70px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s ease;
+    position: relative;
+  }
+
+  .swatch::after {
+    content: attr(data-hex);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .swatch:hover::after { opacity: 1; }
+  .swatch:hover { transform: scale(1.1); z-index: 5; }
+
+  .shades { display: flex; gap: 5px; }
+  .shade {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .shade:hover { transform: scale(1.3); }
+
+  /* Buttons Grid */
+  .actions-grid {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     gap: 10px;
+     width: 100%;
+  }
+
+  .generate-btn {
+    background: var(--color-primary-light);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+    box-shadow: 0 4px 10px rgb(90 79 207 / 0.2);
+    text-align: center;
+  }
+  .generate-btn:hover { background: var(--color-primary-dark); }
+  .generate-btn:active { transform: translateY(1px); }
+  .dark-theme .generate-btn { background: var(--color-primary-dark); }
+  
+  /* Уведомление */
+  #messageBox {
+    position:fixed; bottom:20px; right:20px; 
+    background: var(--color-success); 
+    color:#fff; padding:10px 20px; 
+    border-radius: 20px; 
+    opacity:0; pointer-events:none; 
+    transition:0.3s; z-index:2000;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  @media (max-width: 990px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .back-btn {
+        position: relative; left: auto; top: auto;
+        transform: none; display: inline-block; margin-bottom: 10px;
+    }
+    .actions-grid { grid-template-columns: repeat(2, 1fr); }
+    .drop-area { height: 140px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="theme-toggle" id="theme-toggle">💡</div>
+
+  <div class="container">
+    <header>
+      <!-- Ссылка обратно -->
+      <a href="https://zvarichenkodaria.ru/multitool" class="back-btn">← Инструменты</a>
+      
+      <div class="header-title">
+          <a href="https://zvarichenkodaria.ru" class="logo-link" target="_blank">
+            <img src="../../img/logo.png" alt="Logo">
+          </a>
+          <h1>Palette</h1>
+      </div>
+      <div class="tab-switcher">
+         <div class="tab-active">Генератор</div>
+      </div>
+    </header>
+    
+    <div class="view-container active">
+        <h2>Генератор цветовой палитры</h2>
+        
+        <div class="main-grid">
+          
+          <!-- ЛЕВАЯ КОЛОНКА: Ввод / Загрузка -->
+          <div class="params-block">
+            <div class="form-group">
+              <label style="margin-bottom: 15px;">Загрузка изображения</label>
+              
+              <div class="drop-area" id="drop-area">
+                <input type="file" id="file-input" accept="image/*" />
+                <div class="drop-icon">🖼️</div>
+                <div class="drop-text">Нажмите или перетащите</div>
+                <div class="drop-subtext">JPG, PNG, WEBP — до 10 МБ</div>
+              </div>
+            </div>
+            
+            <div class="faq-item" style="margin-top: 20px;">
+                <p style="font-size: 13px;">После загрузки изображения мы автоматически найдем доминирующие цвета и создадим оттенки.</p>
+            </div>
+          </div>
+
+          <!-- ПРАВАЯ КОЛОНКА: Результат -->
+          <div class="preview-block" id="result-block">
+             <div style="color:var(--color-primary-light); font-weight:600; margin-bottom:20px; font-size:18px;">Предпросмотр и Палитра</div>
+             
+             <!-- Картинка -->
+             <div id="preview"></div>
+             
+             <!-- Цвета -->
+             <div id="palette">
+                 <div style="color: #999; font-style: italic;">Палитра появится здесь...</div>
+             </div>
+
+             <!-- Кнопки -->
+             <div class="actions-grid">
+                <button id="copy-css" class="generate-btn">Копировать CSS</button>
+                <button id="save-json" class="generate-btn">Скачать JSON</button>
+                <button id="export-png" class="generate-btn">Экспорт PNG</button>
+             </div>
+          </div>
+
+        </div>
+    </div>
+    
+    <hr class="divider">
+    
+    <div class="faq-section">
+        <div class="faq-item">
+            <h3>Как это работает?</h3>
+            <p>Инструмент анализирует пиксели загруженного изображения и выделяет 6 доминирующих цветов, создавая для каждого светлые и темные оттенки.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Безопасно ли это?</h3>
+            <p>Да. Обработка изображений происходит <strong>прямо в браузере</strong>. Ваши фото никуда не отправляются.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Зачем нужны оттенки?</h3>
+            <p>Маленькие кружки рядом с основным цветом — это автоматически сгенерированные вариации (светлее/темнее), полезные для UI-дизайна (ховеры, бордеры).</p>
+        </div>
+    </div>
+
+    <hr class="divider">
+    
+    <footer>
+        &copy; 2025 Palette Generator. Работает полностью в браузере.
+    </footer>
+  </div>
+
+  <div id="messageBox">Скопировано!</div>
+
+  <script>
+    // === ЛОГИКА ТЕМЫ ===
+    const toggleBtn = document.getElementById('theme-toggle');
+    const bodyEl = document.body;
+    
+    if(localStorage.getItem('theme') === 'dark') {
+      bodyEl.classList.add('dark-theme');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      bodyEl.classList.toggle('dark-theme');
+      localStorage.setItem('theme', bodyEl.classList.contains('dark-theme') ? 'dark' : 'light');
+    });
+
+    // === ЛОГИКА ПАЛИТРЫ ===
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+    const preview = document.getElementById('preview');
+    const palette = document.getElementById('palette');
+    const copyCssBtn = document.getElementById('copy-css');
+    const exportPngBtn = document.getElementById('export-png');
+    const saveJsonBtn = document.getElementById('save-json');
+    const messageBox = document.getElementById('messageBox');
+    const colorThief = new ColorThief();
+    let currentPalette = [];
+
+    // Показать уведомление
+    function showMessage(msg) {
+        messageBox.textContent = msg;
+        messageBox.style.opacity = "1";
+        setTimeout(() => { messageBox.style.opacity = "0"; }, 2000);
+    }
+
+    // Клик по зоне загрузки
+    dropArea.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) handleFile(file);
+    });
+
+    // Drag & Drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
+      dropArea.addEventListener(e, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(e => {
+      dropArea.addEventListener(e, () => dropArea.classList.add('active'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(e => {
+      dropArea.addEventListener(e, () => dropArea.classList.remove('active'), false);
+    });
+
+    dropArea.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const file = dt.files[0];
+      if (file && file.type.startsWith('image/')) {
+        fileInput.files = dt.files;
+        handleFile(file);
+      }
+    });
+
+    // Обработка файла
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = () => {
+          preview.innerHTML = '';
+          preview.appendChild(img);
+          // Небольшая задержка, чтобы картинка успела отрисоваться в DOM для ColorThief
+          setTimeout(() => extractColors(img), 100);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function extractColors(img) {
+      try {
+        // Получаем палитру (6 цветов)
+        const paletteData = colorThief.getPalette(img, 6);
+        currentPalette = paletteData.map(rgbToHex);
+        renderPalette(currentPalette);
+      } catch (err) {
+        showMessage('Ошибка при анализе');
+        console.error(err);
+      }
+    }
+
+    function renderPalette(colors) {
+      palette.innerHTML = '';
+      colors.forEach(hex => {
+        const block = document.createElement('div');
+        block.className = 'color-block';
+
+        // Основной цвет
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch';
+        swatch.style.backgroundColor = hex;
+        swatch.dataset.hex = hex;
+        swatch.textContent = hex.toUpperCase();
+        swatch.addEventListener('click', () => {
+          navigator.clipboard.writeText(hex);
+          showMessage('Скопировано: ' + hex);
+        });
+
+        // Оттенки
+        const shades = document.createElement('div');
+        shades.className = 'shades';
+        for (let i = -2; i <= 2; i++) {
+          if (i === 0) continue; // пропускаем сам цвет
+          const shade = document.createElement('div');
+          shade.className = 'shade';
+          const adjusted = adjustColor(hex, i * 20);
+          shade.style.backgroundColor = adjusted;
+          shade.title = adjusted;
+          shade.addEventListener('click', () => {
+            navigator.clipboard.writeText(adjusted);
+            showMessage('Скопировано: ' + adjusted);
+          });
+          shades.appendChild(shade);
+        }
+
+        block.appendChild(swatch);
+        block.appendChild(shades);
+        palette.appendChild(block);
+      });
+    }
+
+    // Кнопки действий
+    copyCssBtn.addEventListener('click', () => {
+      if (!currentPalette.length) { showMessage('Сначала загрузите фото'); return; }
+      const css = currentPalette.map((c, i) => `--color-${i+1}: ${c};`).join('\n');
+      navigator.clipboard.writeText(css);
+      showMessage('CSS переменные скопированы!');
+    });
+
+    exportPngBtn.addEventListener('click', () => {
+      if (!currentPalette.length) return;
+      // Скриншотим только блок палитры.
+      // Важно: html2canvas использует фон элемента. Если прозрачно, поставим цвет темы.
+      const bg = getComputedStyle(document.body).backgroundColor;
+      html2canvas(palette, { backgroundColor: bg, scale: 2 })
+        .then(canvas => {
+          const url = canvas.toDataURL('image/png');
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'palette.png';
+          a.click();
+        });
+      showMessage('PNG скачивается...');
+    });
+
+    saveJsonBtn.addEventListener('click', () => {
+      if (!currentPalette.length) return;
+      const data = JSON.stringify({
+        palette: currentPalette,
+        generatedAt: new Date().toISOString()
+      }, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'palette.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showMessage('JSON сохранён!');
+    });
+
+    // Утилиты
+    function rgbToHex(color) {
+      if (typeof color === 'string') return color;
+      const [r, g, b] = color;
+      return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+
+    function adjustColor(hex, percent) {
+      const num = parseInt(hex.replace('#', ''), 16);
+      const r = Math.max(0, Math.min(255, (num >> 16) + percent));
+      const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + percent));
+      const b = Math.max(0, Math.min(255, (num & 0x0000FF) + percent));
+      return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+  </script>
+
+</body>
+</html>
