@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glitch</title>
+<link rel="icon" href="../../img/favicon.png" type="image/x-icon">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();
+   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(103335861, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/103335861" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<style>
+  :root {
+    /* === ORIGINAL PALETTE COLORS === */
+    --color-bg-light: #f4f6f9;
+    --color-bg-dark: #121217;
+    --color-primary-light: #5a4fcf;
+    --color-primary-dark: #4865d6;
+    --color-text-light: #333;
+    --color-text-dark: #ddd;
+    --shadow-subtle: rgba(90, 79, 207, 0.15);
+    --shadow-dark: rgba(30, 30, 70, 0.6);
+    --color-success: #27ae60;
+    --color-divider-light: #e0e0e0;
+    --color-divider-dark: #2a2b35;
+    --anim-curve: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    line-height: 1.6;
+    padding: 24px;
+    margin: 0;
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .dark-theme {
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* --- ШАПКА --- */
+  header {
+    color: white;
+    padding: 20px 16px 20px 16px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-subtle);
+    transition: background 0.3s;
+    position: relative;
+    background-color: var(--color-primary-light);
+    background-image: repeating-linear-gradient(
+      0deg, 
+      transparent, 
+      transparent 10px, 
+      rgba(72, 101, 214, 0.4) 10px, 
+      rgba(72, 101, 214, 0.4) 20px
+    );
+  }
+  
+  .dark-theme header {
+    background-color: var(--color-primary-dark);
+    background-image: repeating-linear-gradient(
+      0deg, 
+      transparent, 
+      transparent 10px, 
+      rgba(90, 79, 207, 0.4) 10px, 
+      rgba(90, 79, 207, 0.4) 20px
+    );
+  }
+
+  .back-btn {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .header-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 15px;
+  }
+  .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .logo-link img { 
+    width: 40px; 
+    height: 40px; 
+    transition: transform 0.3s;
+  }
+  .logo-link:hover img {
+    transform: scale(1.05);
+  }
+  
+  header h1 { font-size: 26px; margin: 0; }
+
+  .tab-switcher {
+    display: inline-flex;
+    background: rgba(0,0,0,0.15);
+    border-radius: 25px;
+    padding: 5px;
+  }
+  .tab-active {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 8px 20px;
+      color: var(--color-primary-light);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      cursor: default;
+      font-family: Arial, sans-serif;
+  }
+  .dark-theme .tab-active {
+      color: var(--color-primary-dark);
+      background: #fff; 
+  }
+
+  .view-container h2 {
+      text-align: center;
+      font-size: 22px;
+      color: var(--color-primary-light);
+      margin-top: 30px;
+      margin-bottom: 30px;
+  }
+  .dark-theme .view-container h2 {
+      color: var(--color-primary-dark);
+  }
+
+  /* --- СЕТКА (LAYOUT) --- */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    
+    /* ВАЖНО: Убираем отступ снизу, чтобы не суммировался с отступом линии */
+    margin-bottom: 0; 
+    height: 460px; 
+  }
+
+  /* --- БЛОКИ --- */
+  .white-block {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px var(--shadow-subtle);
+    transition: background 0.3s, box-shadow 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    overflow: hidden;
+  }
+  .dark-theme .white-block {
+    background: #1d1e27;
+    box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
+  }
+  
+  /* --- FAQ SECTION --- */
+  .faq-section {
+    background: var(--color-bg-light); 
+    border-radius: 12px;
+    padding: 22px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px var(--shadow-subtle);
+    margin-bottom: 0; 
+  }
+  .dark-theme .faq-section {
+    background: var(--color-bg-dark);
+    box-shadow: 0 2px 8px rgba(90, 79, 207, 0.15);
+  }
+  
+  .block-title {
+    color: var(--color-primary-light);
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+    flex-shrink: 0; 
+  }
+  .dark-theme .block-title {
+    color: var(--color-primary-light); 
+  }
+
+  /* --- DROP AREA --- */
+  .drop-area {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    border: 2px dashed var(--color-divider-light);
+    border-radius: 12px;
+    box-sizing: border-box; 
+    padding: 10px;
+    text-align: center;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    margin-bottom: 0; 
+    flex-shrink: 0;
+  }
+
+  .dark-theme .drop-area {
+    background: #2a2b35;
+    border-color: var(--color-divider-dark);
+    color: var(--color-text-dark);
+  }
+
+  .drop-area:hover {
+    border-color: var(--color-primary-light);
+    transform: translateY(-2px);
+  }
+  .dark-theme .drop-area:hover {
+    border-color: var(--color-primary-dark);
+  }
+
+  .drop-area.active {
+    border-color: var(--color-success);
+    color: var(--color-success);
+    background: rgba(39, 174, 96, 0.1);
+  }
+
+  .drop-area input {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: pointer; z-index: 2;
+  }
+
+  .drop-icon { font-size: 32px; opacity: 0.8; }
+  .drop-text { font-size: 15px; font-weight: 600; margin: 0; }
+  .drop-subtext { font-size: 12px; color: #888; margin: 0; }
+
+  /* --- CONTROLS CENTER --- */
+  .controls-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px 0;
+  }
+
+  .control-group {
+      padding: 0 5px;
+      flex-shrink: 0;
+  }
+  .glitch-slider-label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-text-light);
+    font-size: 13px;
+  }
+  .dark-theme .glitch-slider-label {
+    color: var(--color-text-dark);
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none; 
+    width: 100%; 
+    background: transparent; 
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--color-primary-light);
+    cursor: pointer;
+    margin-top: -6px; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .dark-theme input[type=range]::-webkit-slider-thumb {
+    border-color: var(--color-primary-dark);
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #ddd;
+    border-radius: 2px;
+  }
+  .dark-theme input[type=range]::-webkit-slider-runnable-track {
+    background: #444;
+  }
+
+  /* --- ACTIONS STACK (RIGHT BLOCK) --- */
+  .actions-stack {
+     display: flex;
+     flex-direction: row; 
+     flex-wrap: wrap;
+     gap: 15px;
+     width: 100%;
+     justify-content: center;
+     margin-top: 15px;
+     flex-shrink: 0; 
+  }
+
+  .generate-btn {
+    background: var(--color-primary-light);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+    box-shadow: 0 4px 10px rgb(90 79 207 / 0.2);
+    text-align: center;
+    
+    /* Исправлено: Фиксированная ширина, без растяжения */
+    width: auto; 
+    min-width: 160px;
+    flex: 0 0 auto; 
+  }
+  .generate-btn:hover:not(:disabled) { background: var(--color-primary-dark); }
+  .generate-btn:active:not(:disabled) { transform: translateY(1px); }
+  .generate-btn:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+      box-shadow: none;
+  }
+  .dark-theme .generate-btn { background: var(--color-primary-dark); }
+  
+  /* --- CANVAS / PREVIEW AREA --- */
+  .canvas-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      flex: 1; 
+      min-height: 0; 
+      overflow: hidden; 
+      position: relative;
+  }
+
+  .layout-vertical {
+      flex-direction: column;
+  }
+  .layout-horizontal {
+      flex-direction: row;
+  }
+
+  .canvas-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%; 
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+  }
+
+  .canvas-box h3 {
+      font-size: 16px;
+      font-weight: 400; 
+      color: var(--color-text-light);
+      margin-top: 0;
+      margin-bottom: 8px;
+      opacity: 0.7;
+      flex-shrink: 0; /* Заголовок зафиксирован */
+  }
+  .dark-theme .canvas-box h3 {
+      color: var(--color-text-dark);
+  }
+
+  canvas {
+      max-width: 100%;
+      height: auto;
+      max-height: 100%;
+      flex: 1;
+      min-height: 0; 
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid var(--color-divider-light);
+      background: #000;
+  }
+  .dark-theme canvas {
+      border-color: #444;
+  }
+
+  /* --- OTHERS --- */
+  .divider { 
+      border: none; 
+      height: 1px; 
+      background-color: var(--color-divider-light); 
+      /* Margin: 40px (так как у grid margin-bottom=0, итоговый отступ = 40px) */
+      margin: 40px 0; 
+  }
+  .dark-theme .divider { 
+      background-color: var(--color-divider-dark); 
+  }
+  
+  .faq-item { margin-bottom: 15px; }
+  .faq-item:last-child { margin-bottom: 0; }
+  .faq-item h3 { font-size: 18px; color: var(--color-primary-light); margin: 0 0 8px 0; }
+  .dark-theme .faq-item h3 { color: var(--color-primary-dark); }
+  .faq-item p { margin: 0; font-size: 15px; color: #777; }
+  .dark-theme .faq-item p { color: #ccc; }
+
+  footer { text-align: center; padding: 0 10px; color: #777; font-size: 14px; margin-top: auto; }
+  
+  .theme-toggle {
+    position: fixed; bottom: 20px; left: 20px;
+    background: var(--color-primary-light); border-radius: 50%;
+    width: 41px; height: 41px; display: flex; justify-content: center; align-items: center;
+    cursor: pointer; user-select: none; font-size: 19px;
+    box-shadow: 0 3px 10px rgb(90 79 207 / 0.6);
+    transition: background 0.3s, opacity 0.3s; z-index: 1000; opacity: 0.7; color: #fff;
+  }
+  .dark-theme .theme-toggle { background: var(--color-primary-dark); }
+  .theme-toggle:hover { opacity: 1; }
+
+  @media (max-width: 990px) {
+    .main-grid { 
+        grid-template-columns: 1fr; 
+        height: auto;
+    }
+    .white-block {
+        height: auto;
+        min-height: 300px;
+    }
+    .back-btn {
+        position: relative; left: auto; top: auto;
+        transform: none; display: inline-block; margin-bottom: 10px;
+    }
+    .layout-horizontal { flex-direction: column; }
+    .canvas-container { 
+        flex-direction: column; 
+        height: auto;
+    }
+    canvas { max-height: 300px; }
+    .actions-stack { flex-direction: column; }
+    .generate-btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="theme-toggle" id="theme-toggle">💡</div>
+
+  <div class="container">
+    <header>
+      <a href="https://zvarichenkodaria.ru/multitool" class="back-btn">← Инструменты</a>
+      
+      <div class="header-title">
+          <a href="https://zvarichenkodaria.ru" class="logo-link" target="_blank">
+            <img src="../../img/logo.png" alt="Logo">
+          </a>
+          <h1>Glitch</h1>
+      </div>
+      <div class="tab-switcher">
+         <div class="tab-active">Генератор</div>
+      </div>
+    </header>
+    
+    <div class="view-container">
+        <h2>Генератор глитч-эффекта</h2>
+        
+        <div class="main-grid">
+            <!-- ЛЕВЫЙ БЛОК: Загрузка и Настройки -->
+            <div class="white-block">
+                <div class="block-title">Настройки</div>
+                
+                <div class="drop-area" id="drop-area">
+                    <input type="file" id="file-input" accept="image/*" />
+                    <div class="drop-icon">🌀</div>
+                    <div class="drop-text">Загрузить изображение</div>
+                    <div class="drop-subtext">JPG, PNG, WEBP</div>
+                </div>
+
+                <div class="controls-container">
+                    <!-- 1. Искажение -->
+                    <div class="control-group">
+                        <div class="glitch-slider-label">
+                            <span>Искажение</span>
+                            <span id="distortValue">70%</span>
+                        </div>
+                        <input type="range" id="glitchDistort" min="0" max="100" value="70" step="1" />
+                    </div>
+
+                    <!-- 2. Шум -->
+                    <div class="control-group">
+                        <div class="glitch-slider-label">
+                            <span>Шум</span>
+                            <span id="noiseValue">30%</span>
+                        </div>
+                        <input type="range" id="glitchNoise" min="0" max="100" value="30" step="1" />
+                    </div>
+
+                    <!-- 3. RGB -->
+                    <div class="control-group">
+                        <div class="glitch-slider-label">
+                            <span>Сдвиг RGB</span>
+                            <span id="rgbValue">50%</span>
+                        </div>
+                        <input type="range" id="glitchRGB" min="0" max="100" value="50" step="1" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- ПРАВЫЙ БЛОК: Предпросмотр и Кнопки -->
+            <div class="white-block">
+                <div class="block-title">Предпросмотр</div>
+                
+                <div class="canvas-container" id="canvasContainer">
+                    <div class="canvas-box">
+                        <h3>Оригинал</h3>
+                        <canvas id="originalCanvas"></canvas>
+                    </div>
+                    <div class="canvas-box">
+                        <h3>Результат</h3>
+                        <canvas id="resultCanvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Кнопки -->
+                <div class="actions-stack">
+                    <button id="generateBtn" class="generate-btn" disabled>Новая комбинация</button>
+                    <button id="downloadBtn" class="generate-btn" disabled>Скачать результат</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <hr class="divider">
+    
+    <div class="faq-section">
+        <div class="faq-item">
+            <h3>Как это работает?</h3>
+            <p>Алгоритм сдвигает случайные полосы пикселей, разделяет цветовые каналы (RGB Split) и добавляет цифровой шум для имитации помех старого телевизора.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Обработка локальна?</h3>
+            <p>Да. Все вычисления происходят в вашем браузере. Изображение никуда не отправляется.</p>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <footer>
+        &copy; 2025 Glitch Generator. Работает полностью в браузере.
+    </footer>
+  </div>
+
+<script>
+  // === UI & THEME LOGIC ===
+  const toggleBtn = document.getElementById('theme-toggle');
+  const bodyEl = document.body;
+  
+  if(localStorage.getItem('theme') === 'dark') {
+    bodyEl.classList.add('dark-theme');
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    bodyEl.classList.toggle('dark-theme');
+    localStorage.setItem('theme', bodyEl.classList.contains('dark-theme') ? 'dark' : 'light');
+  });
+
+  // === GLITCH UI ELEMENTS ===
+  const ui = {
+    dropArea: document.getElementById('drop-area'),
+    fileInput: document.getElementById('file-input'),
+    generateBtn: document.getElementById('generateBtn'),
+    downloadBtn: document.getElementById('downloadBtn'),
+    originalCanvas: document.getElementById('originalCanvas'),
+    resultCanvas: document.getElementById('resultCanvas'),
+    
+    // Sliders
+    distortSlider: document.getElementById('glitchDistort'),
+    noiseSlider: document.getElementById('glitchNoise'),
+    rgbSlider: document.getElementById('glitchRGB'),
+    
+    // Labels
+    distortVal: document.getElementById('distortValue'),
+    noiseVal: document.getElementById('noiseValue'),
+    rgbVal: document.getElementById('rgbValue'),
+
+    canvasContainer: document.getElementById('canvasContainer'),
+    currentImage: null,
+    
+    updateValues() {
+      this.distortVal.textContent = `${this.distortSlider.value}%`;
+      this.noiseVal.textContent = `${this.noiseSlider.value}%`;
+      this.rgbVal.textContent = `${this.rgbSlider.value}%`;
+    },
+
+    setImage(img) {
+      this.currentImage = img;
+      this.generateBtn.disabled = false;
+      this.dropArea.style.borderColor = 'var(--color-success)';
+      
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
+      
+      this.canvasContainer.classList.remove('layout-vertical', 'layout-horizontal');
+
+      if (w > h) {
+         this.canvasContainer.classList.add('layout-vertical');
+      } else {
+         this.canvasContainer.classList.add('layout-horizontal');
+      }
+
+      this.renderOriginal();
+      this.applyGlitchEffect(); 
+    },
+
+    renderOriginal() {
+      const ctx = this.originalCanvas.getContext('2d');
+      this.originalCanvas.width = this.currentImage.naturalWidth;
+      this.originalCanvas.height = this.currentImage.naturalHeight;
+      ctx.drawImage(this.currentImage, 0, 0);
+    },
+
+    renderResult(imageData) {
+      const ctx = this.resultCanvas.getContext('2d');
+      this.resultCanvas.width = imageData.width;
+      this.resultCanvas.height = imageData.height;
+      ctx.putImageData(imageData, 0, 0);
+    }
+  };
+
+  // === GLITCH ALGORITHM ===
+  const glitchEffect = {
+    applyGlitchEffect(imageData, distort, noise, rgb) {
+      const data = imageData.data;
+      const width = imageData.width;
+      const height = imageData.height;
+      const newData = new Uint8ClampedArray(data);
+
+      const d = distort / 100;
+      const n = noise / 100;
+      const c = rgb / 100;
+
+      const numGlitchLines = Math.floor(d * 50); 
+      const maxOffset = Math.floor(d * 100);      
+      const noiseAmount = Math.floor(n * 100000); 
+      const rgbOffset = Math.floor(c * 30);       
+      
+      const scanLineProb = 0.3 * d; 
+
+      // 1. SHIFT
+      if (d > 0) {
+          for (let i = 0; i < numGlitchLines; i++) {
+            const row = Math.floor(Math.random() * height);
+            const offset = Math.floor(Math.random() * maxOffset) + 1;
+            const direction = Math.random() > 0.5 ? 1 : -1;
+            for (let x = 0; x < width - offset; x++) {
+              const srcX = x;
+              const dstX = x + direction * offset;
+              if (dstX >= 0 && dstX < width) {
+                for (let k = 0; k < 4; k++) {
+                  const srcIndex = (row * width + srcX) * 4 + k;
+                  const dstIndex = (row * width + dstX) * 4 + k;
+                  newData[dstIndex] = data[srcIndex];
+                }
+              }
+            }
+          }
+      } else {
+          newData.set(data);
+      }
+
+      // 2. RGB SPLIT
+      if (c > 0) {
+          const tempBuffer = new Uint8ClampedArray(newData);
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              const index = (y * width + x) * 4;
+              
+              const rX = x - rgbOffset;
+              if (rX >= 0) {
+                const rIndex = (y * width + rX) * 4;
+                newData[index] = tempBuffer[rIndex]; 
+              }
+              
+              const bX = x + rgbOffset;
+              if (bX < width) {
+                const bIndex = (y * width + bX) * 4 + 2;
+                newData[index + 2] = tempBuffer[bIndex]; 
+              }
+            }
+          }
+      }
+
+      // 3. SCANLINES
+      if (d > 0.1) {
+          for (let y = 0; y < height; y++) {
+            if (Math.random() < scanLineProb) {
+              for (let x = 0; x < width; x++) {
+                const idx = (y * width + x) * 4;
+                newData[idx]     = Math.max(0, newData[idx] - 50);
+                newData[idx + 1] = Math.max(0, newData[idx + 1] - 50);
+                newData[idx + 2] = Math.max(0, newData[idx + 2] - 50);
+              }
+            }
+          }
+      }
+
+      // 4. NOISE
+      if (n > 0) {
+          for (let i = 0; i < noiseAmount; i++) {
+            const x = Math.floor(Math.random() * width);
+            const y = Math.floor(Math.random() * height);
+            const idx = (y * width + x) * 4;
+            newData[idx]     = Math.random() * 255;
+            newData[idx + 1] = Math.random() * 255;
+            newData[idx + 2] = Math.random() * 255;
+          }
+      }
+
+      return new ImageData(newData, width, height);
+    }
+  };
+
+  const originalRenderer = {
+    getImageData() {
+      return ui.originalCanvas.getContext('2d').getImageData(
+        0, 0, ui.originalCanvas.width, ui.originalCanvas.height
+      );
+    }
+  };
+  const resultRenderer = {
+    putImageData(imageData) {
+      ui.renderResult(imageData);
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    ui.fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        ui.dropArea.addEventListener(eventName, (e) => {
+            e.preventDefault(); e.stopPropagation();
+        }, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        ui.dropArea.addEventListener(eventName, () => ui.dropArea.classList.add('active'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        ui.dropArea.addEventListener(eventName, () => ui.dropArea.classList.remove('active'), false);
+    });
+
+    ui.dropArea.addEventListener('drop', (e) => {
+        handleFiles(e.dataTransfer.files);
+    });
+
+    function handleFiles(files) {
+        if (files.length > 0) {
+            const file = files[0];
+            if (!file.type.startsWith('image/')) return;
+            
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = () => {
+                if (ui.currentImage && ui.currentImage.src) URL.revokeObjectURL(ui.currentImage.src);
+                ui.setImage(img);
+            };
+        }
+    }
+
+    [ui.distortSlider, ui.noiseSlider, ui.rgbSlider].forEach(slider => {
+        slider.addEventListener('input', () => {
+            ui.updateValues();
+            if (ui.currentImage) ui.applyGlitchEffect();
+        });
+    });
+
+    ui.generateBtn.addEventListener('click', () => {
+        if (ui.currentImage) ui.applyGlitchEffect();
+    });
+
+    ui.downloadBtn.addEventListener('click', () => {
+        try {
+            const url = ui.resultCanvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'glitch-result.png';
+            a.click();
+        } catch (err) { alert('Ошибка при сохранении'); }
+    });
+
+    ui.applyGlitchEffect = () => {
+        const distort = parseInt(ui.distortSlider.value);
+        const noise = parseInt(ui.noiseSlider.value);
+        const rgb = parseInt(ui.rgbSlider.value);
+
+        const input = originalRenderer.getImageData();
+        const output = glitchEffect.applyGlitchEffect(input, distort, noise, rgb);
+        resultRenderer.putImageData(output);
+        ui.downloadBtn.disabled = false;
+    };
+  });
+</script>
+
+</body>
+</html>
