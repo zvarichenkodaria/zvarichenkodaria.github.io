@@ -1212,7 +1212,7 @@ hr
   position: absolute; /* Div будет "прилипать" к экрану */
   z-index: 1; /* Максимальное значение z-индекса */
   top: 25%;
-  left: 73%;
+  left: 77%;
   transform: translate(-50%, -50%);
 }
 
