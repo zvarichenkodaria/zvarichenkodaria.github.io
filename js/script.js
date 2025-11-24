@@ -114,52 +114,46 @@ document.addEventListener('mousemove', (e) => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Путь к вашему JSON файлу
   const DATA_URL = '/js/data.json';
 
   fetch(DATA_URL)
     .then(response => {
-      if (!response.ok) throw new Error('Ошибка загрузки JSON');
+      if (!response.ok) {
+        throw new Error(`HTTP ошибка! Статус: ${response.status}`);
+      }
       return response.json();
     })
     .then(data => {
-      // 1. Получаем текущий путь и нормализуем его (убираем слеш в конце, если он есть)
-      let currentPath = window.location.pathname;
+      // Нормализация пути: убираем слэш в конце и декодируем символы (на случай кириллицы в URL)
+      let currentPath = decodeURI(window.location.pathname);
       if (currentPath.length > 1 && currentPath.endsWith('/')) {
         currentPath = currentPath.slice(0, -1);
       }
 
-      // 2. Ищем совпадение в JSON
+      console.log('Текущий путь:', currentPath); // Для отладки
+
+      // Ищем совпадение
       const pageData = data.find(item => item.page === currentPath);
 
       if (pageData) {
-        // 3. Обновляем Title
-        if (pageData.title) {
-          document.title = pageData.title;
-        }
+        console.log('Данные найдены:', pageData); // Для отладки
 
-        // 4. Обновляем Description
-        if (pageData.description) {
-          updateMetaDescription(pageData.description);
-        }
+        // Обновляем Title
+        if (pageData.title) document.title = pageData.title;
+
+        // Обновляем Description
+        const metaDesc = document.querySelector('meta[name="description"]') || document.createElement('meta');
+        metaDesc.name = "description";
+        metaDesc.content = pageData.description;
+        
+        // Если тега не было, добавляем его в head
+        if (!metaDesc.parentElement) document.head.appendChild(metaDesc);
+      } else {
+        console.warn('Нет данных в JSON для пути:', currentPath);
       }
     })
-    .catch(error => console.error('SEO Script Error:', error));
+    .catch(error => console.error('Ошибка загрузки SEO данных:', error));
 });
-
-// Вспомогательная функция для обновления или создания мета-тега
-function updateMetaDescription(text) {
-  let metaDesc = document.querySelector('meta[name="description"]');
-
-  // Если тега нет — создаем его
-  if (!metaDesc) {
-    metaDesc = document.createElement('meta');
-    metaDesc.name = "description";
-    document.head.appendChild(metaDesc);
-  }
-
-  metaDesc.setAttribute("content", text);
-}
 
 
 
