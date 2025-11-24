@@ -1,3 +1,4 @@
-User-agent: * #указывает, для каких роботов установлены директивы
+User-agent: *
 Allow: /
+
 Sitemap: https://zvarichenkodaria.ru/sitemap.xml
