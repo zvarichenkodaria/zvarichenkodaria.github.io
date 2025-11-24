@@ -114,46 +114,65 @@ document.addEventListener('mousemove', (e) => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Если сайт лежит не в корне (например, GitHub Pages), добавьте префикс сюда, например: '/my-repo'
+  const BASE_PATH = ''; 
   const DATA_URL = '/js/data.json';
 
   fetch(DATA_URL)
     .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP ошибка! Статус: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`JSON не найден: ${response.status}`);
       return response.json();
     })
     .then(data => {
-      // Нормализация пути: убираем слэш в конце и декодируем символы (на случай кириллицы в URL)
-      let currentPath = decodeURI(window.location.pathname);
-      if (currentPath.length > 1 && currentPath.endsWith('/')) {
-        currentPath = currentPath.slice(0, -1);
+      // 1. Получаем "чистый" путь
+      let path = window.location.pathname;
+      
+      // Убираем .html (если есть)
+      path = path.replace(/\.html$/, '');
+      
+      // Убираем /index в конце (для главной)
+      path = path.replace(/\/index$/, '');
+      
+      // Убираем слэш в конце (если путь не просто "/")
+      if (path.length > 1 && path.endsWith('/')) {
+        path = path.slice(0, -1);
       }
+      
+      // Если путь пустой, значит это корень
+      if (path === '') path = '/';
 
-      console.log('Текущий путь:', currentPath); // Для отладки
+      console.log('🔍 Ищу страницу:', path); // СМОТРИТЕ В КОНСОЛЬ
 
-      // Ищем совпадение
-      const pageData = data.find(item => item.page === currentPath);
+      // 2. Ищем совпадение
+      const pageData = data.find(item => {
+        // Сравниваем тоже "чистые" пути из JSON на всякий случай
+        let jsonPath = item.page.replace(/\/$/, '');
+        if (jsonPath === '') jsonPath = '/';
+        return jsonPath === path;
+      });
 
       if (pageData) {
-        console.log('Данные найдены:', pageData); // Для отладки
+        console.log('✅ Найдено:', pageData.title);
+        document.title = pageData.title;
 
-        // Обновляем Title
-        if (pageData.title) document.title = pageData.title;
-
-        // Обновляем Description
-        const metaDesc = document.querySelector('meta[name="description"]') || document.createElement('meta');
-        metaDesc.name = "description";
-        metaDesc.content = pageData.description;
-        
-        // Если тега не было, добавляем его в head
-        if (!metaDesc.parentElement) document.head.appendChild(metaDesc);
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+          metaDesc = document.createElement('meta');
+          metaDesc.name = "description";
+          document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute("content", pageData.description);
       } else {
-        console.warn('Нет данных в JSON для пути:', currentPath);
+        console.warn('⚠️ Страница не найдена в JSON. Текущий путь:', path);
+        console.log('Доступные пути в JSON:', data.map(d => d.page));
       }
     })
-    .catch(error => console.error('Ошибка загрузки SEO данных:', error));
+    .catch(err => {
+      console.error('❌ Ошибка скрипта:', err);
+      // Если вы видите эту ошибку и открываете файл локально — читайте пункт 2 ниже
+    });
 });
+
 
 
 
