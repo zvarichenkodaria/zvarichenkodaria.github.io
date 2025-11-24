@@ -113,31 +113,53 @@ document.addEventListener('mousemove', (e) => {
 
 
 
-async function loadData() {
-      try {
-        const response = await fetch('data.json');
-        const data = await response.json();
+document.addEventListener("DOMContentLoaded", () => {
+  // Путь к вашему JSON файлу
+  const DATA_URL = '/js/data.json';
 
-        // Получаем текущий URL
-        const currentPath = window.location.pathname;
-        // Определяем текущую страницу, убирая начальный слэш
-        const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, "") || 'home';
-
-        // Находим объект для текущей страницы
-        const pageData = data.find(item => item.page === currentPage);
-
-        // Если данные для текущей страницы найдены, обновляем title и description
-        if (pageData) {
-          document.title = pageData.title;
-          document.querySelector('meta[name="description"]').setAttribute('content', pageData.description);
-        }
-      } catch (error) {
-        console.error('Ошибка загрузки JSON:', error);
+  fetch(DATA_URL)
+    .then(response => {
+      if (!response.ok) throw new Error('Ошибка загрузки JSON');
+      return response.json();
+    })
+    .then(data => {
+      // 1. Получаем текущий путь и нормализуем его (убираем слеш в конце, если он есть)
+      let currentPath = window.location.pathname;
+      if (currentPath.length > 1 && currentPath.endsWith('/')) {
+        currentPath = currentPath.slice(0, -1);
       }
-    }
 
-    // Вызываем функцию загрузки данных при загрузке страницы
-    window.onload = loadData;
+      // 2. Ищем совпадение в JSON
+      const pageData = data.find(item => item.page === currentPath);
+
+      if (pageData) {
+        // 3. Обновляем Title
+        if (pageData.title) {
+          document.title = pageData.title;
+        }
+
+        // 4. Обновляем Description
+        if (pageData.description) {
+          updateMetaDescription(pageData.description);
+        }
+      }
+    })
+    .catch(error => console.error('SEO Script Error:', error));
+});
+
+// Вспомогательная функция для обновления или создания мета-тега
+function updateMetaDescription(text) {
+  let metaDesc = document.querySelector('meta[name="description"]');
+
+  // Если тега нет — создаем его
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.name = "description";
+    document.head.appendChild(metaDesc);
+  }
+
+  metaDesc.setAttribute("content", text);
+}
 
 
 
